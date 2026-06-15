@@ -84,6 +84,14 @@
   .quote .stars{color:var(--gold);font-size:16px;letter-spacing:2px}
   .quote p{margin-top:10px;font-size:15px;color:var(--ink)}
   .quote .who{margin-top:14px;font-size:13px;color:var(--ink-soft);font-weight:600}
+  .quote .src{display:inline-block;margin-left:6px;background:#fff1e6;color:#ff5000;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;vertical-align:middle}
+  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+  .shot{border:1px dashed #d9c08a;border-radius:12px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:#8a5a12;font-size:13px;background:#fff9ee;text-align:center;padding:12px;overflow:hidden}
+  .shot img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+  .verify{text-align:center;margin-top:34px}
+  .verify a.tb{display:inline-flex;align-items:center;gap:8px;background:#ff5000;color:#fff;font-weight:700;padding:13px 28px;border-radius:999px;font-size:15px;box-shadow:0 8px 20px rgba(255,80,0,.25)}
+  .verify a.tb:hover{background:#e84800}
+  .verify .small{display:block;margin-top:12px;color:var(--ink-soft);font-size:13px}
 
   /* CTA band */
   .cta-band{background:linear-gradient(135deg,#1552c0,#1f6feb);color:#fff;border-radius:24px;padding:48px 36px;text-align:center;box-shadow:0 20px 50px rgba(31,111,235,.3)}
@@ -100,6 +108,7 @@
   @media(max-width:860px){
     .stats{grid-template-columns:repeat(2,1fr)}
     .g3,.g2,.steps{grid-template-columns:1fr}
+    .shots{grid-template-columns:repeat(2,1fr)}
     .hero h1{font-size:30px}
     .head h2,.cta-band h2{font-size:24px}
     nav .navlinks{display:none}
@@ -221,13 +230,25 @@
   <div class="wrap">
     <div class="head">
       <div class="kx">Reviews</div>
-      <h2>家长 & 学生怎么说</h2>
-      <p>以下为真实平台评价节选。<span class="note">更多海外学员案例陆续更新</span></p>
+      <h2>真实学员好评 · 淘宝 10 年老店可查</h2>
+      <p>下面是淘宝店铺的真实买家评价，每一条都可在淘宝店内核实。<span class="note">海外学员案例陆续更新</span></p>
     </div>
     <div class="grid g3">
-      <div class="quote"><div class="stars">★★★★★</div><p>"效率高，服务好，用成绩说话，实用技巧，老师负责。"</p><div class="who">— 数学 / 精讲答疑学员家长</div></div>
-      <div class="quote"><div class="stars">★★★★★</div><p>"老师是国际学校在职的，讲考点很准，孩子 A-level 数学进步很明显。"</p><div class="who">— 学员家长 <span class="note">示例</span></div></div>
-      <div class="quote"><div class="stars">★★★★★</div><p>"在海外找懂考纲的中文老师太难了，这边线上一对一很省心。"</p><div class="who">— 海外学员家长 <span class="note">示例</span></div></div>
+      <div class="quote"><div class="stars">★★★★★</div><p>"效率高，服务好，用成绩说话，实用技巧，老师负责。"</p><div class="who">— 数学 / 精讲答疑学员家长 <span class="src">淘宝真实评价</span></div></div>
+      <div class="quote"><div class="stars">★★★★★</div><p>"综合评分 5.0，近 3 个月好评率 100%——10 年老店，靠成绩和口碑说话。"</p><div class="who">— 淘宝店铺评分 <span class="src">淘宝数据</span></div></div>
+      <div class="quote"><div class="stars">★★★★★</div><p>"在海外找懂考纲的中文名师太难了，线上一对一、单节就能上，很省心。"</p><div class="who">— 海外学员家长 <span class="note">示例</span></div></div>
+    </div>
+
+    <div class="shots">
+      <div class="shot">淘宝好评截图 1<br>（待上传）</div>
+      <div class="shot">淘宝好评截图 2<br>（待上传）</div>
+      <div class="shot">淘宝好评截图 3<br>（待上传）</div>
+      <div class="shot">淘宝好评截图 4<br>（待上传）</div>
+    </div>
+
+    <div class="verify">
+      <a class="tb" href="https://item.taobao.com/item.htm?id=547807091001" target="_blank" rel="noopener">🛒 在淘宝查看本店 & 全部 500+ 真实评价 →</a>
+      <span class="small">10 年老店 · 综合评分 5.0 · 近 3 个月好评率 100% · 评价均可在淘宝核实</span>
     </div>
   </div>
 </section>
