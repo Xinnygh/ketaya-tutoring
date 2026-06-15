@@ -305,8 +305,11 @@
   window.__setLang=setLang;
   var saved=null;
   try{saved=localStorage.getItem('site_lang');}catch(e){}
+  var urlLang=null;
+  try{urlLang=new URLSearchParams(location.search).get('lang');}catch(e){}
+  if(urlLang!=='zh'&&urlLang!=='en') urlLang=null;
   var nav=(navigator.language||'').toLowerCase();
-  var initial = saved || (nav.indexOf('zh')===0 ? 'zh' : 'en');
+  var initial = urlLang || saved || (nav.indexOf('zh')===0 ? 'zh' : 'en');
   setLang(initial);
 })();
 </script>
