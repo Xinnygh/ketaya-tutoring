@@ -8,6 +8,9 @@
 <meta name="keywords" content="A-level tutor online, IGCSE tuition online, AP tutor, SAT prep, AMC competition, 国际课程 补习, 留学 数学 物理 网课, 新加坡 A-level, 马来西亚 IGCSE, online tutoring Chinese, overseas Chinese tutoring">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://xinnygh.github.io/ketaya-tutoring/">
+<link rel="alternate" hreflang="zh-CN" href="https://xinnygh.github.io/ketaya-tutoring/?lang=zh">
+<link rel="alternate" hreflang="en" href="https://xinnygh.github.io/ketaya-tutoring/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://xinnygh.github.io/ketaya-tutoring/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="答鸭名校联盟 · DAYA Elite Tutoring">
 <meta property="og:title" content="答鸭名校联盟 | 海外华人家庭的国际课程 & 留学名师 · 线上一对一">
@@ -36,6 +39,7 @@
   :root{
     --ink:#13233a; --ink-soft:#4a5a72; --line:#e7ecf3;
     --brand:#1f6feb; --brand-dark:#1552c0; --gold:#e8a33d;
+    --teal:#0f8f8c; --rose:#b9575f;
     --bg:#ffffff; --bg-soft:#f5f8fc; --bg-deep:#0f2540;
     --radius:16px; --shadow:0 10px 30px rgba(19,35,58,.08);
   }
@@ -50,6 +54,8 @@
   nav{display:flex;align-items:center;justify-content:space-between;height:64px}
   .logo{font-weight:800;font-size:20px;letter-spacing:.5px}
   .logo span{color:var(--brand)}
+  .nav-links{display:flex;align-items:center;gap:18px;margin-left:auto;margin-right:22px;font-size:14px;color:var(--ink-soft);font-weight:650}
+  .nav-links a:hover{color:var(--brand)}
   .nav-right{display:flex;align-items:center;gap:12px}
   .lang-btn{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.2s}
   .lang-btn:hover{border-color:var(--brand);color:var(--brand)}
@@ -57,8 +63,17 @@
   .nav-cta:hover{background:var(--brand-dark)}
 
   /* hero */
-  .hero{background:linear-gradient(160deg,#f5f9ff 0%,#eef4fe 60%,#f7faff 100%);padding:64px 0 56px;position:relative;overflow:hidden}
+  .hero{background:radial-gradient(circle at 85% 18%,rgba(31,111,235,.14),transparent 30%),linear-gradient(160deg,#f5f9ff 0%,#eef4fe 60%,#f7faff 100%);padding:64px 0 56px;position:relative;overflow:hidden}
   .hero .wrap{position:relative;z-index:2}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:34px;align-items:center}
+  .hero-copy{min-width:0}
+  .proof-panel{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 45px rgba(19,35,58,.12)}
+  .proof-panel h2{font-size:18px;line-height:1.35;margin-bottom:16px}
+  .proof-list{display:grid;gap:12px}
+  .proof-item{display:grid;grid-template-columns:38px 1fr;gap:11px;align-items:start;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fbfdff}
+  .proof-item .mark{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eaf2ff;color:var(--brand);font-weight:850}
+  .proof-item h3{font-size:14px;line-height:1.3}
+  .proof-item p{font-size:12px;color:var(--ink-soft);margin-top:2px;line-height:1.45}
   .eyebrow{display:inline-block;background:#fff;border:1px solid var(--line);color:var(--brand);font-weight:600;font-size:13px;padding:6px 14px;border-radius:999px;margin-bottom:20px;box-shadow:var(--shadow)}
   .hero h1{font-size:40px;line-height:1.25;font-weight:850;letter-spacing:-.5px;max-width:780px}
   .hero h1 b{color:var(--brand)}
@@ -102,6 +117,16 @@
   .subjects{margin-top:26px;text-align:center;color:var(--ink-soft);font-size:15px}
   .subjects b{color:var(--ink)}
 
+  /* audience split */
+  .audience{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .audience-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
+  .audience-card.parent{border-top:5px solid var(--brand)}
+  .audience-card.student{border-top:5px solid var(--teal)}
+  .audience-card h3{font-size:22px;margin-bottom:14px}
+  .audience-card ul{list-style:none;display:grid;gap:11px;color:var(--ink-soft);font-size:15px}
+  .audience-card li{position:relative;padding-left:22px}
+  .audience-card li:before{content:"";position:absolute;left:0;top:.65em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+
   /* steps */
   .steps{counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
   .step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 22px 24px;box-shadow:var(--shadow)}
@@ -123,6 +148,12 @@
   .verify a.tb:hover{background:#e84800}
   .verify .small{display:block;margin-top:12px;color:var(--ink-soft);font-size:13px}
 
+  /* FAQ */
+  .faq{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .faq-item{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .faq-item h3{font-size:17px;margin-bottom:8px}
+  .faq-item p{font-size:14px;color:var(--ink-soft)}
+
   /* CTA band */
   .cta-band{background:linear-gradient(135deg,#1552c0,#1f6feb);color:#fff;border-radius:24px;padding:48px 36px;text-align:center;box-shadow:0 20px 50px rgba(31,111,235,.3)}
   .cta-band h2{font-size:30px;font-weight:850}
@@ -136,11 +167,16 @@
   .note{display:inline-block;background:#fff7e9;border:1px dashed var(--gold);color:#8a5a12;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:600}
 
   @media(max-width:860px){
+    nav{height:auto;min-height:64px;padding-top:10px;padding-bottom:10px;gap:10px}
+    .nav-links{display:none}
     .stats{grid-template-columns:repeat(2,1fr)}
-    .g3,.g2,.steps{grid-template-columns:1fr}
+    .hero-grid,.g3,.g2,.steps,.audience,.faq{grid-template-columns:1fr}
+    .proof-panel{margin-top:8px}
     .shots{grid-template-columns:repeat(2,1fr)}
     .hero h1{font-size:30px}
     .head h2,.cta-band h2{font-size:24px}
+    .btn{width:100%;justify-content:center}
+    .contact-methods a{width:100%}
   }
 </style>
 </head>
@@ -149,6 +185,12 @@
 <header>
   <nav class="wrap">
     <div class="logo" data-zh="答鸭<span>·</span>名校联盟" data-en="DAYA<span>·</span>Elite Tutoring">答鸭<span>·</span>名校联盟</div>
+    <div class="nav-links">
+      <a href="#courses" data-zh="课程" data-en="Courses">课程</a>
+      <a href="#why" data-zh="优势" data-en="Why us">优势</a>
+      <a href="#who" data-zh="适合谁" data-en="Who for">适合谁</a>
+      <a href="#faq" data-zh="常见问题" data-en="FAQ">常见问题</a>
+    </div>
     <div class="nav-right">
       <button id="langToggle" class="lang-btn" onclick="__setLang(document.documentElement.lang==='en'?'zh':'en')">EN</button>
       <a href="#contact" class="nav-cta" data-zh="先上一节课" data-en="Book a lesson">先上一节课</a>
@@ -159,19 +201,31 @@
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow" data-zh="★ 专为东南亚华人家庭" data-en="★ For overseas Chinese families">★ 专为东南亚华人家庭</span>
-    <h1 data-zh="海外读国际课程，<b>找对老师</b>就够了。<br>中国顶尖名师 + 伦敦在职外教，线上一对一。" data-en="Studying an international curriculum abroad? <b>The right tutor</b> is all it takes.<br>Top China-based teachers + London tutors, online 1-on-1.">海外读国际课程，<b>找对老师</b>就够了。<br>中国顶尖名师 + 伦敦在职外教，线上一对一。</h1>
-    <p class="sub" data-zh="A-level / IGCSE / AP / SAT / AMC 数理名师，按考纲精准提分。新加坡、马来西亚、印尼等地华人家庭，在家就能上课。" data-en="A-level / IGCSE / AP / SAT / AMC maths & science specialists — targeted, exam-board-specific score gains. For Chinese families in Singapore, Malaysia, Indonesia and beyond — learn from home.">A-level / IGCSE / AP / SAT / AMC 数理名师，按考纲精准提分。新加坡、马来西亚、印尼等地华人家庭，在家就能上课。</p>
-    <p class="sub-hl" data-zh="单节购买、绝不捆绑，满意了再继续。" data-en="Pay per lesson, no bundles — continue only if you're happy.">单节购买、绝不捆绑，满意了再继续。</p>
-    <div class="tags">
-      <span data-zh="🧾 单节购买 · 不捆绑" data-en="🧾 Pay per lesson · no bundles">🧾 单节购买 · 不捆绑</span>
-      <span data-zh="📍 跨时区灵活授课" data-en="📍 Flexible across time zones">📍 跨时区灵活授课</span>
-      <span data-zh="🗣️ 全程中文沟通" data-en="🗣️ Communicate in Chinese">🗣️ 全程中文沟通</span>
-      <span data-zh="👩‍🏫 国际校在职名师" data-en="👩‍🏫 Current intl-school teachers">👩‍🏫 国际校在职名师</span>
-    </div>
-    <div class="cta-row">
-      <a href="#contact" class="btn btn-primary" data-zh="先上一节课 · 满意再续 →" data-en="Take one lesson · continue if happy →">先上一节课 · 满意再续 →</a>
-      <a href="#why" class="btn btn-ghost" data-zh="为什么选我们" data-en="Why choose us">为什么选我们</a>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow" data-zh="★ 专为东南亚华人家庭" data-en="★ For overseas Chinese families">★ 专为东南亚华人家庭</span>
+        <h1 data-zh="海外读国际课程，<b>找对老师</b>就够了。<br>中国顶尖名师 + 伦敦在职外教，线上一对一。" data-en="Studying an international curriculum abroad? <b>The right tutor</b> is all it takes.<br>Top China-based teachers + London tutors, online 1-on-1.">海外读国际课程，<b>找对老师</b>就够了。<br>中国顶尖名师 + 伦敦在职外教，线上一对一。</h1>
+        <p class="sub" data-zh="A-level / IGCSE / AP / SAT / AMC 数理名师，按考纲精准提分。新加坡、马来西亚、印尼等地华人家庭，在家就能上课。" data-en="A-level / IGCSE / AP / SAT / AMC maths & science specialists — targeted, exam-board-specific score gains. For Chinese families in Singapore, Malaysia, Indonesia and beyond — learn from home.">A-level / IGCSE / AP / SAT / AMC 数理名师，按考纲精准提分。新加坡、马来西亚、印尼等地华人家庭，在家就能上课。</p>
+        <p class="sub-hl" data-zh="单节购买、绝不捆绑，满意了再继续。" data-en="Pay per lesson, no bundles — continue only if you're happy.">单节购买、绝不捆绑，满意了再继续。</p>
+        <div class="tags">
+          <span data-zh="🧾 单节购买 · 不捆绑" data-en="🧾 Pay per lesson · no bundles">🧾 单节购买 · 不捆绑</span>
+          <span data-zh="📍 跨时区灵活授课" data-en="📍 Flexible across time zones">📍 跨时区灵活授课</span>
+          <span data-zh="🗣️ 全程中文沟通" data-en="🗣️ Communicate in Chinese">🗣️ 全程中文沟通</span>
+          <span data-zh="👩‍🏫 国际校在职名师" data-en="👩‍🏫 Current intl-school teachers">👩‍🏫 国际校在职名师</span>
+        </div>
+        <div class="cta-row">
+          <a href="#contact" class="btn btn-primary" data-zh="先上一节课 · 满意再续 →" data-en="Take one lesson · continue if happy →">先上一节课 · 满意再续 →</a>
+          <a href="#why" class="btn btn-ghost" data-zh="为什么选我们" data-en="Why choose us">为什么选我们</a>
+        </div>
+      </div>
+      <aside class="proof-panel">
+        <h2 data-zh="先判断适不适合，再决定要不要继续。" data-en="Check fit first, then decide whether to continue.">先判断适不适合，再决定要不要继续。</h2>
+        <div class="proof-list">
+          <div class="proof-item"><div class="mark">1</div><div><h3 data-zh="告诉我们课程体系" data-en="Tell us the curriculum">告诉我们课程体系</h3><p data-zh="A-level / IGCSE / AP / SAT / AMC，以及当前科目。" data-en="A-level / IGCSE / AP / SAT / AMC, plus current subjects.">A-level / IGCSE / AP / SAT / AMC，以及当前科目。</p></div></div>
+          <div class="proof-item"><div class="mark">2</div><div><h3 data-zh="匹配对口老师" data-en="Match the right tutor">匹配对口老师</h3><p data-zh="按考试局、年级和薄弱点匹配。" data-en="By exam board, year level and weak points.">按考试局、年级和薄弱点匹配。</p></div></div>
+          <div class="proof-item"><div class="mark">3</div><div><h3 data-zh="先上一节课" data-en="Try one lesson">先上一节课</h3><p data-zh="单节购买，不用先买大课包。" data-en="Pay per lesson, no package required.">单节购买，不用先买大课包。</p></div></div>
+        </div>
+      </aside>
     </div>
 
     <div class="stats">
@@ -226,6 +280,37 @@
   </div>
 </section>
 
+<!-- AUDIENCE -->
+<section class="block" id="audience">
+  <div class="wrap">
+    <div class="head">
+      <div class="kx">For Parents & Students</div>
+      <h2 data-zh="家长关心稳定，学生关心听得懂" data-en="Parents need reliability, students need clarity">家长关心稳定，学生关心听得懂</h2>
+      <p data-zh="同一节课，家长和学生关注点不一样。我们把咨询和上课都按这两边来设计。" data-en="Parents and students care about different things. Our consultation and lessons are designed for both sides.">同一节课，家长和学生关注点不一样。我们把咨询和上课都按这两边来设计。</p>
+    </div>
+    <div class="audience">
+      <div class="audience-card parent">
+        <h3 data-zh="给家长看的" data-en="For parents">给家长看的</h3>
+        <ul>
+          <li data-zh="老师是否真的熟悉国际课程和考试局" data-en="Whether the tutor truly knows the curriculum and exam board">老师是否真的熟悉国际课程和考试局</li>
+          <li data-zh="孩子每节课到底学了什么、问题在哪里" data-en="What the child learned in each lesson and where the problem is">孩子每节课到底学了什么、问题在哪里</li>
+          <li data-zh="不捆绑大课包，先上一节再判断" data-en="No bundled packages, try one lesson first">不捆绑大课包，先上一节再判断</li>
+          <li data-zh="跨时区线上上课，中文沟通更省心" data-en="Online across time zones, Chinese communication is easier">跨时区线上上课，中文沟通更省心</li>
+        </ul>
+      </div>
+      <div class="audience-card student">
+        <h3 data-zh="给学生看的" data-en="For students">给学生看的</h3>
+        <ul>
+          <li data-zh="数学、物理、化学不是听过就会，需要把题型拆开" data-en="Maths, physics and chemistry need problem types broken down">数学、物理、化学不是听过就会，需要把题型拆开</li>
+          <li data-zh="A-level / AP / SAT / AMC 备考要知道哪里最容易丢分" data-en="A-level / AP / SAT / AMC prep needs clear weak-point diagnosis">A-level / AP / SAT / AMC 备考要知道哪里最容易丢分</li>
+          <li data-zh="不会的问题可以直接问，不用在大班课里硬跟" data-en="Ask directly instead of trying to keep up in a large class">不会的问题可以直接问，不用在大班课里硬跟</li>
+          <li data-zh="考前可以按目标分数倒推复习重点" data-en="Before exams, review can be planned backwards from target scores">考前可以按目标分数倒推复习重点</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WHO -->
 <section class="block" id="who">
   <div class="wrap">
@@ -254,6 +339,35 @@
       <div class="step"><h3 data-zh="先上一节课" data-en="Take one lesson">先上一节课</h3><p data-zh="匹配对口名师，单节付费先上一节，亲眼看效果——不满意不用再续。" data-en="We match the right teacher; pay for a single lesson and see the results — no need to continue if you're not satisfied.">匹配对口名师，单节付费先上一节，亲眼看效果——不满意不用再续。</p></div>
       <div class="step"><h3 data-zh="定制方案" data-en="Get a plan">定制方案</h3><p data-zh="觉得合适，再根据基础和目标定提分计划。" data-en="If it fits, we build a score-improvement plan around your level and goals.">觉得合适，再根据基础和目标定提分计划。</p></div>
       <div class="step"><h3 data-zh="持续提分" data-en="Keep improving">持续提分</h3><p data-zh="线上一对一按节推进，阶段性反馈进度。" data-en="Online 1-on-1, lesson by lesson, with regular progress updates.">线上一对一按节推进，阶段性反馈进度。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block bg-soft" id="faq">
+  <div class="wrap">
+    <div class="head">
+      <div class="kx">FAQ</div>
+      <h2 data-zh="咨询前，家长常问的几个问题" data-en="Questions parents usually ask first">咨询前，家长常问的几个问题</h2>
+      <p data-zh="如果情况比较特殊，可以直接把年级、课程体系和科目发给我们先判断。" data-en="If your situation is specific, send us the year level, curriculum and subject first.">如果情况比较特殊，可以直接把年级、课程体系和科目发给我们先判断。</p>
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <h3 data-zh="可以只上一节试试吗？" data-en="Can we try just one lesson?">可以只上一节试试吗？</h3>
+        <p data-zh="可以。我们主张先单节购买，看老师是否匹配、孩子是否听得懂，再决定是否继续。" data-en="Yes. We recommend paying for one lesson first, checking tutor fit and whether the student understands, then deciding whether to continue.">可以。我们主张先单节购买，看老师是否匹配、孩子是否听得懂，再决定是否继续。</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-zh="适合新加坡、马来西亚、印尼的孩子吗？" data-en="Is it suitable for students in Singapore, Malaysia and Indonesia?">适合新加坡、马来西亚、印尼的孩子吗？</h3>
+        <p data-zh="适合。课程是线上一对一，可以按当地时区安排，家长也可以用中文沟通学习情况。" data-en="Yes. Lessons are online 1-on-1 and can be scheduled around local time zones. Parents can communicate in Chinese.">适合。课程是线上一对一，可以按当地时区安排，家长也可以用中文沟通学习情况。</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-zh="学生英文上课，会不会不适应用中文补习？" data-en="If school is in English, will Chinese tutoring be a problem?">学生英文上课，会不会不适应用中文补习？</h3>
+        <p data-zh="通常不会。概念和解题逻辑先讲清楚，再对应英文术语和考试表达，很多学生反而更容易打通。" data-en="Usually no. We clarify concepts and problem logic first, then connect them with English terms and exam wording.">通常不会。概念和解题逻辑先讲清楚，再对应英文术语和考试表达，很多学生反而更容易打通。</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-zh="怎么判断该补同步课还是考试冲刺？" data-en="How do we know whether to do school support or exam prep?">怎么判断该补同步课还是考试冲刺？</h3>
+        <p data-zh="看当前年级、考试时间和薄弱点。如果离大考还远，先稳同步；如果时间紧，就按目标分数倒推。" data-en="It depends on year level, exam timing and weak points. If exams are far away, stabilise schoolwork first; if time is short, work backwards from target scores.">看当前年级、考试时间和薄弱点。如果离大考还远，先稳同步；如果时间紧，就按目标分数倒推。</p>
+      </div>
     </div>
   </div>
 </section>
