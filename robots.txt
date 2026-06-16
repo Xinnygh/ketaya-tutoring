@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xinnygh.github.io/ketaya-tutoring/sitemap.xml
