@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free A-level & IGCSE Grade Calculator — See Your Gap to an A* | DAYA</title>
+<meta name="description" content="Free A-level / IGCSE grade calculator: enter your paper scores and weights to see your overall percentage, an indicative grade, and exactly how far you are from your target. For overseas Chinese families. 免费成绩计算器。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html">
+<link rel="alternate" hreflang="en" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html?lang=en">
+<link rel="alternate" hreflang="zh-CN" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html?lang=zh">
+<link rel="alternate" hreflang="x-default" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free A-level & IGCSE Grade Calculator — See Your Gap to an A*">
+<meta property="og:description" content="Enter your paper scores and weights to see your overall %, an indicative grade, and how far you are from your target.">
+<meta property="og:url" content="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="article.css">
+<style>
+  .calc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin:22px 0}
+  .calc h2{font-size:20px;margin:0 0 14px}
+  .crow{display:grid;grid-template-columns:1fr 90px 90px 32px;gap:8px;align-items:center;margin-bottom:8px}
+  .crow input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit}
+  .crow .rm{background:#f5f8fc;border:1px solid var(--line);border-radius:8px;cursor:pointer;height:36px;color:var(--rose,#b9575f);font-weight:800}
+  .chead{font-size:12px;color:var(--ink-soft);font-weight:700}
+  .calc-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+  .calc-controls select{padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit}
+  .btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:12px 22px;font-weight:800;font-size:15px;cursor:pointer}
+  .btn-add{background:#fff;border:1px dashed var(--brand);color:var(--brand);border-radius:9px;padding:9px 14px;font-weight:700;font-size:14px;cursor:pointer}
+  .result{margin-top:16px;padding:18px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--line);display:none}
+  .result.show{display:block}
+  .result .big{font-size:34px;font-weight:850;color:var(--brand)}
+  .result .grade{font-size:20px;font-weight:800;margin-left:8px}
+  .result .gap{margin-top:8px;font-size:15px;color:#26384f}
+  .disclaimer{font-size:12px;color:var(--ink-soft);margin-top:12px;line-height:1.5}
+  @media(max-width:600px){.crow{grid-template-columns:1fr 70px 70px 30px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap-wide">
+    <a class="logo" href="../index.html">DAYA<span>·</span><span data-zh="名校联盟" data-en="Elite Tutoring">Elite Tutoring</span></a>
+    <div class="nav-right">
+      <button id="langToggle" class="lang-btn" onclick="__setLang(document.documentElement.lang==='en'?'zh':'en')">中文</button>
+      <a href="free-learning-diagnosis.html" class="nav-cta" data-zh="免费诊断" data-en="Free diagnosis">Free diagnosis</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="breadcrumb">
+    <a href="../index.html" data-zh="首页" data-en="Home">Home</a> ›
+    <a href="index.html" data-zh="升学指南" data-en="Guides">Guides</a> ›
+    <span data-zh="成绩计算器" data-en="Grade calculator">Grade calculator</span>
+  </div>
+
+  <article>
+    <div class="kx" data-zh="免费工具" data-en="Free Tool">Free Tool</div>
+    <h1 data-zh="A-level / IGCSE 成绩计算器：算出你离目标还差多少"
+        data-en="A-level / IGCSE Grade Calculator: See How Far You Are From Your Target">A-level / IGCSE Grade Calculator: See How Far You Are From Your Target</h1>
+    <p class="lead" data-zh="把各试卷/科目的得分率和权重填进去，立刻算出加权总分、对应的大致等级，以及离你的目标还差几分。免费、即时、不收集任何信息。"
+       data-en="Enter each paper/component's score and weight to instantly get your weighted overall percentage, an indicative grade, and exactly how far you are from your target. Free, instant, and we collect nothing.">Enter each paper/component's score and weight to instantly get your weighted overall percentage, an indicative grade, and exactly how far you are from your target. Free, instant, and we collect nothing.</p>
+
+    <div class="calc">
+      <h2 data-zh="① 填入各部分得分与权重" data-en="① Enter each component's score and weight">① Enter each component's score and weight</h2>
+      <div class="crow chead">
+        <span data-zh="科目 / 试卷（可选）" data-en="Subject / paper (optional)">Subject / paper (optional)</span>
+        <span data-zh="得分 %" data-en="Score %">Score %</span>
+        <span data-zh="权重 %" data-en="Weight %">Weight %</span>
+        <span></span>
+      </div>
+      <div id="rows"></div>
+      <button class="btn-add" id="addRow" data-zh="＋ 添加一项" data-en="＋ Add component">＋ Add component</button>
+
+      <div class="calc-controls">
+        <span data-zh="② 目标等级（大致门槛）：" data-en="② Target grade (indicative threshold):">② Target grade (indicative threshold):</span>
+        <select id="target">
+          <option value="90">A* (≈90%)</option>
+          <option value="80" selected>A (≈80%)</option>
+          <option value="70">B (≈70%)</option>
+          <option value="60">C (≈60%)</option>
+        </select>
+        <button class="btn-calc" id="calcBtn" data-zh="③ 计算" data-en="③ Calculate">③ Calculate</button>
+      </div>
+
+      <div class="result" id="result"></div>
+
+      <p class="disclaimer" data-zh="⚠️ 说明：各考试局（CAIE / Edexcel 等）每次考试的实际等级分数线会浮动，这里用的是常见的大致门槛（A*≈90、A≈80、B≈70、C≈60），仅供估算参考，不代表官方分数线。"
+         data-en="⚠️ Note: actual grade boundaries vary by board (CAIE / Edexcel, etc.) and exam session. The thresholds here (A*≈90, A≈80, B≈70, C≈60) are common approximations for estimation only and are not official boundaries.">⚠️ Note: actual grade boundaries vary by board (CAIE / Edexcel, etc.) and exam session. The thresholds here (A*≈90, A≈80, B≈70, C≈60) are common approximations for estimation only and are not official boundaries.</p>
+    </div>
+
+    <div class="cta-band">
+      <h2 data-zh="离目标还差几分？我们帮你把这几分补回来" data-en="A few marks short? We help you close exactly that gap">A few marks short? We help you close exactly that gap</h2>
+      <p data-zh="先免费做一次学情诊断：国际学校在职名师当场告诉你这几分丢在哪、怎么补最快。中英双语、单节购买、绝不捆绑。"
+         data-en="Start with a free learning diagnosis: a current international-school teacher shows you exactly where those marks are lost and the fastest way to recover them. Bilingual, pay per lesson, no bundles.">Start with a free learning diagnosis: a current international-school teacher shows you exactly where those marks are lost and the fastest way to recover them. Bilingual, pay per lesson, no bundles.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20I%20used%20the%20grade%20calculator%20and%27d%20like%20a%20free%20diagnosis%20to%20close%20my%20gap%20(year%2Fexam%2Fsubject)." target="_blank" rel="noopener" data-zh="💬 WhatsApp 预约免费诊断" data-en="💬 Book free diagnosis on WhatsApp">💬 Book free diagnosis on WhatsApp</a>
+        <a class="btn btn-ghost" href="free-learning-diagnosis.html" data-zh="了解免费诊断 →" data-en="About the free diagnosis →">About the free diagnosis →</a>
+      </div>
+    </div>
+
+    <p style="margin-top:22px"><a href="index.html" data-zh="← 返回升学指南" data-en="← Back to all guides">← Back to all guides</a></p>
+  </article>
+</div>
+
+<footer>
+  <div class="wrap-wide">
+    <strong data-zh="答鸭 · 名校联盟" data-en="DAYA · Elite Tutoring">DAYA · Elite Tutoring</strong><br>
+    <span data-zh="国际课程 & 留学名师 · 线上一对一 · 服务全球华人家庭" data-en="International curricula & admissions tutors · online 1-on-1 · serving Chinese families worldwide">International curricula &amp; admissions tutors · online 1-on-1 · serving Chinese families worldwide</span><br>
+    <span style="font-size:12px;opacity:.7">© 2026 答鸭名校联盟 · <a href="../index.html">Home</a> · <a href="index.html" data-zh="升学指南" data-en="Guides">Guides</a></span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20I%27d%20like%20a%20free%20learning%20diagnosis%20for%20my%20child%20(year%2Fexam%2Fsubject)." target="_blank" rel="noopener" data-zh="💬 免费学情诊断" data-en="💬 Free diagnosis">💬 Free diagnosis</a>
+
+<script>
+(function(){
+  var T={
+    zh:{ph:'如 Paper 1',need:'要达到目标，剩余部分还需平均约',already:'已达到/超过目标 🎉',overall:'加权总分',grade:'大致等级',gapTo:'离目标还差',pts:'分',fillWeight:'请填入至少一项的得分和权重（权重>0）',weightSum:'当前权重合计',ofWeight:'（按已填权重折算）'},
+    en:{ph:'e.g. Paper 1',need:'To hit your target, the remaining part needs to average about',already:'Target already reached 🎉',overall:'Weighted overall',grade:'Indicative grade',gapTo:'Gap to target',pts:'pts',fillWeight:'Enter score and weight for at least one row (weight > 0)',weightSum:'Weights total',ofWeight:'(scaled to weights entered)'}
+  };
+  function L(){return document.documentElement.lang==='en'?'en':'zh';}
+  var rows=document.getElementById('rows');
+  function addRow(name){
+    var d=document.createElement('div'); d.className='crow';
+    d.innerHTML='<input class="cn" type="text"><input class="cs" type="number" min="0" max="100" inputmode="decimal"><input class="cw" type="number" min="0" max="100" inputmode="decimal"><button class="rm" title="remove">×</button>';
+    d.querySelector('.cn').placeholder=T[L()].ph;
+    d.querySelector('.rm').onclick=function(){d.remove();};
+    rows.appendChild(d);
+  }
+  addRow(); addRow(); addRow();
+  document.getElementById('addRow').onclick=function(){addRow();};
+
+  function gradeOf(p){ if(p>=90)return'A*'; if(p>=80)return'A'; if(p>=70)return'B'; if(p>=60)return'C'; if(p>=50)return'D'; if(p>=40)return'E'; return'U'; }
+
+  document.getElementById('calcBtn').onclick=function(){
+    var t=T[L()];
+    var rs=rows.querySelectorAll('.crow'), sumW=0, sumSW=0;
+    rs.forEach(function(r){
+      var s=parseFloat(r.querySelector('.cs').value), w=parseFloat(r.querySelector('.cw').value);
+      if(!isNaN(s)&&!isNaN(w)&&w>0){ sumW+=w; sumSW+=s*w; }
+    });
+    var res=document.getElementById('result'); res.className='result show';
+    if(sumW<=0){ res.innerHTML='<div class="gap">'+t.fillWeight+'</div>'; return; }
+    var overall=sumSW/sumW;
+    var target=parseFloat(document.getElementById('target').value);
+    var g=gradeOf(overall);
+    var html='<div><span class="big">'+overall.toFixed(1)+'%</span><span class="grade">'+t.grade+': '+g+'</span></div>';
+    if(sumW<100){ html+='<div class="gap" style="font-size:13px;color:#888">'+t.weightSum+': '+sumW+'% '+t.ofWeight+'</div>'; }
+    if(overall>=target){
+      html+='<div class="gap">✅ '+t.already+'</div>';
+    } else {
+      var gap=(target-overall);
+      html+='<div class="gap">📉 '+t.gapTo+' <b>'+gap.toFixed(1)+' '+t.pts+'</b></div>';
+      var remW=100-sumW;
+      if(remW>0){
+        var needAvg=(target*100 - overall*sumW)/remW;
+        if(needAvg<=100 && needAvg>=0){
+          html+='<div class="gap">🎯 '+t.need+' <b>'+needAvg.toFixed(1)+'%</b>'+(L()==='en'?' on the remaining '+remW+'%.':'（剩余 '+remW+'% 部分）。')+'</div>';
+        }
+      }
+    }
+    res.innerHTML=html;
+  };
+
+  function setLang(lang){
+    var en=lang==='en';
+    document.documentElement.lang=en?'en':'zh-CN';
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      var v=en?el.getAttribute('data-en'):el.getAttribute('data-zh');
+      if(v!=null) el.innerHTML=v;
+    });
+    var b=document.getElementById('langToggle'); if(b) b.textContent=en?'中文':'EN';
+    rows.querySelectorAll('.cn').forEach(function(i){i.placeholder=T[L()].ph;});
+    try{localStorage.setItem('site_lang',lang);}catch(e){}
+  }
+  window.__setLang=setLang;
+  var saved=null; try{saved=localStorage.getItem('site_lang');}catch(e){}
+  var urlLang=null; try{urlLang=new URLSearchParams(location.search).get('lang');}catch(e){}
+  if(urlLang!=='zh'&&urlLang!=='en') urlLang=null;
+  var nav=(navigator.language||'').toLowerCase();
+  setLang(urlLang||saved||(nav.indexOf('zh')===0?'zh':'en'));
+})();
+</script>
+</body>
+</html>
