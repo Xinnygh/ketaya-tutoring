@@ -168,8 +168,19 @@
   footer{padding:40px 0;border-top:1px solid var(--line);color:var(--ink-soft);font-size:14px;text-align:center}
   .note{display:inline-block;background:#fff7e9;border:1px dashed var(--gold);color:#8a5a12;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:600}
 
+  /* floating contact (sticky CTA) */
+  .fab{position:fixed;right:16px;bottom:16px;z-index:80;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+  .fab a,.fab button{display:inline-flex;align-items:center;gap:7px;border:none;cursor:pointer;font-family:inherit;font-weight:750;font-size:14px;padding:12px 18px;border-radius:999px;box-shadow:0 10px 26px rgba(19,35,58,.22);transition:.2s}
+  .fab .wa{background:#25d366;color:#fff}
+  .fab .wc{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .fab a:hover,.fab button:hover{transform:translateY(-2px)}
+  .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:650;opacity:0;pointer-events:none;transition:.3s;z-index:90;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .free-tag{display:inline-block;background:#e7f7ee;border:1px solid #abe3c4;color:#0f8f5e;font-weight:800;font-size:12px;padding:3px 11px;border-radius:999px;margin-bottom:10px}
+
   @media(max-width:860px){
     nav{height:auto;min-height:64px;padding-top:10px;padding-bottom:10px;gap:10px}
+    .fab a,.fab button{padding:11px 15px;font-size:13px}
     .nav-links{display:none}
     .stats{grid-template-columns:repeat(2,1fr)}
     .hero-grid,.g3,.g2,.steps,.audience,.faq{grid-template-columns:1fr}
@@ -219,25 +230,26 @@
           <span data-zh="👩‍🏫 国际校在职名师" data-en="👩‍🏫 Current intl-school teachers">👩‍🏫 国际校在职名师</span>
         </div>
         <div class="cta-row">
-          <a href="#contact" class="btn btn-primary" data-zh="先上一节课 · 满意再续 →" data-en="Take one lesson · continue if happy →">先上一节课 · 满意再续 →</a>
+          <a href="#contact" class="btn btn-primary" data-zh="免费问诊 · 先看孩子问题在哪 →" data-en="Free assessment · see what's holding your child back →">免费问诊 · 先看孩子问题在哪 →</a>
           <a href="#why" class="btn btn-ghost" data-zh="为什么选我们" data-en="Why choose us">为什么选我们</a>
         </div>
       </div>
       <aside class="proof-panel">
-        <h2 data-zh="先判断适不适合，再决定要不要继续。" data-en="Check fit first, then decide whether to continue.">先判断适不适合，再决定要不要继续。</h2>
+        <span class="free-tag" data-zh="第一步免费 · 0 风险" data-en="Step 1 is free · zero risk">第一步免费 · 0 风险</span>
+        <h2 data-zh="先免费问诊，判断适不适合，再决定要不要上课。" data-en="Start with a free assessment — check fit before you pay for anything.">先免费问诊，判断适不适合，再决定要不要上课。</h2>
         <div class="proof-list">
-          <div class="proof-item"><div class="mark">1</div><div><h3 data-zh="告诉我们课程体系" data-en="Tell us the curriculum">告诉我们课程体系</h3><p data-zh="A-level / IGCSE / AP / SAT / AMC，以及当前科目。" data-en="A-level / IGCSE / AP / SAT / AMC, plus current subjects.">A-level / IGCSE / AP / SAT / AMC，以及当前科目。</p></div></div>
+          <div class="proof-item"><div class="mark">1</div><div><h3 data-zh="免费学情问诊" data-en="Free assessment">免费学情问诊</h3><p data-zh="告诉我们课程体系（A-level / IGCSE / AP / SAT / AMC）和科目，免费帮你判断问题在哪。" data-en="Tell us the curriculum (A-level / IGCSE / AP / SAT / AMC) & subject — we pinpoint the problem, free.">告诉我们课程体系（A-level / IGCSE / AP / SAT / AMC）和科目，免费帮你判断问题在哪。</p></div></div>
           <div class="proof-item"><div class="mark">2</div><div><h3 data-zh="匹配对口老师" data-en="Match the right tutor">匹配对口老师</h3><p data-zh="按考试局、年级和薄弱点匹配。" data-en="By exam board, year level and weak points.">按考试局、年级和薄弱点匹配。</p></div></div>
-          <div class="proof-item"><div class="mark">3</div><div><h3 data-zh="先上一节课" data-en="Try one lesson">先上一节课</h3><p data-zh="单节购买，不用先买大课包。" data-en="Pay per lesson, no package required.">单节购买，不用先买大课包。</p></div></div>
+          <div class="proof-item"><div class="mark">3</div><div><h3 data-zh="先上一节看效果" data-en="Try one lesson">先上一节看效果</h3><p data-zh="单节购买、不用买大课包；觉得不合适可退，风险全在我们这边。" data-en="Pay per lesson, no package; refundable if it's not a fit — the risk is on us.">单节购买、不用买大课包；觉得不合适可退，风险全在我们这边。</p></div></div>
         </div>
       </aside>
     </div>
 
     <div class="stats">
       <div class="stat"><div class="n">10<span style="font-size:16px" data-zh="年+" data-en="yrs+">年+</span></div><div class="l" data-zh="深耕国际课程教学" data-en="In international-curriculum teaching">深耕国际课程教学</div></div>
-      <div class="stat"><div class="n" data-zh="1对1" data-en="1-on-1">1对1</div><div class="l" data-zh="在职名师直播授课" data-en="Live with current teachers">在职名师直播授课</div></div>
-      <div class="stat"><div class="n">100%</div><div class="l" data-zh="近期好评率" data-en="Recent positive rate">近期好评率</div></div>
-      <div class="stat"><div class="n" style="font-size:24px" data-zh="单节购买" data-en="Per lesson">单节购买</div><div class="l" data-zh="满意再续 · 不捆绑" data-en="Continue if happy · no bundles">满意再续 · 不捆绑</div></div>
+      <div class="stat"><div class="n">2000<span style="font-size:16px">+</span></div><div class="l" data-zh="成交家庭 · 103 长期续课" data-en="Families served · 103 long-term">成交家庭 · 103 长期续课</div></div>
+      <div class="stat"><div class="n">5.0</div><div class="l" data-zh="淘宝评分 · 500+ 真实好评" data-en="Taobao rating · 500+ reviews">淘宝评分 · 500+ 真实好评</div></div>
+      <div class="stat"><div class="n">100%</div><div class="l" data-zh="近 3 个月好评率" data-en="Positive rate (last 3 mo)">近 3 个月好评率</div></div>
     </div>
   </div>
 </section>
@@ -392,11 +404,11 @@
   <div class="wrap">
     <div class="head">
       <div class="kx">How It Works</div>
-      <h2 data-zh="四步开始，先上一节课试试" data-en="Four steps to start — just try one lesson">四步开始，先上一节课试试</h2>
+      <h2 data-zh="四步开始：先免费问诊，0 风险" data-en="Four steps — start with a free assessment, zero risk">四步开始：先免费问诊，0 风险</h2>
     </div>
     <div class="steps">
-      <div class="step"><h3 data-zh="联系顾问" data-en="Contact us">联系顾问</h3><p data-zh="微信 / WhatsApp 告诉我们孩子的年级、考试和科目。" data-en="Tell us your child's year, exam and subjects via WeChat / WhatsApp.">微信 / WhatsApp 告诉我们孩子的年级、考试和科目。</p></div>
-      <div class="step"><h3 data-zh="先上一节课" data-en="Take one lesson">先上一节课</h3><p data-zh="匹配对口名师，单节付费先上一节，亲眼看效果——不满意不用再续。" data-en="We match the right teacher; pay for a single lesson and see the results — no need to continue if you're not satisfied.">匹配对口名师，单节付费先上一节，亲眼看效果——不满意不用再续。</p></div>
+      <div class="step"><h3 data-zh="免费问诊" data-en="Free assessment">免费问诊</h3><p data-zh="微信 / WhatsApp 告诉我们孩子的年级、考试和科目，免费帮你判断问题在哪、该怎么补。" data-en="Tell us your child's year, exam and subjects via WeChat / WhatsApp — we assess what's wrong and how to fix it, free.">微信 / WhatsApp 告诉我们孩子的年级、考试和科目，免费帮你判断问题在哪、该怎么补。</p></div>
+      <div class="step"><h3 data-zh="先上一节看效果" data-en="Try one lesson">先上一节看效果</h3><p data-zh="匹配对口名师，单节付费先上一节，亲眼看效果——不满意可退、不用再续。" data-en="We match the right teacher; pay for a single lesson and see the results — refundable, no need to continue if you're not satisfied.">匹配对口名师，单节付费先上一节，亲眼看效果——不满意可退、不用再续。</p></div>
       <div class="step"><h3 data-zh="定制方案" data-en="Get a plan">定制方案</h3><p data-zh="觉得合适，再根据基础和目标定提分计划。" data-en="If it fits, we build a score-improvement plan around your level and goals.">觉得合适，再根据基础和目标定提分计划。</p></div>
       <div class="step"><h3 data-zh="持续提分" data-en="Keep improving">持续提分</h3><p data-zh="线上一对一按节推进，阶段性反馈进度。" data-en="Online 1-on-1, lesson by lesson, with regular progress updates.">线上一对一按节推进，阶段性反馈进度。</p></div>
     </div>
@@ -461,8 +473,8 @@
 <section class="block" id="contact">
   <div class="wrap">
     <div class="cta-band">
-      <h2 data-zh="先上一节课，满意再续" data-en="Start with one lesson, continue if you're happy">先上一节课，满意再续</h2>
-      <p data-zh="把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们，顾问帮你匹配对口名师。单节付费、绝不捆绑——先上一节看效果，觉得好再继续。" data-en="Send us your child's year, exam (e.g. A-level / AP) and the subjects to improve, and we'll match the right teacher. Pay per lesson, no bundles — take one lesson, see the results, continue if you like it.">把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们，顾问帮你匹配对口名师。单节付费、绝不捆绑——先上一节看效果，觉得好再继续。</p>
+      <h2 data-zh="先免费问诊，再决定要不要上课" data-en="Start with a free assessment, then decide">先免费问诊，再决定要不要上课</h2>
+      <p data-zh="把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们——顾问先免费帮你判断问题在哪、匹配对口名师。想上课也只需单节付费、绝不捆绑，不满意可退。" data-en="Send us your child's year, exam (e.g. A-level / AP) and the subjects to improve — we'll assess the problem and match the right teacher, free. If you want a lesson, it's pay-per-lesson, no bundles, refundable.">把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们——顾问先免费帮你判断问题在哪、匹配对口名师。想上课也只需单节付费、绝不捆绑，不满意可退。</p>
       <div class="contact-methods">
         <a href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20I%27d%20like%20to%20ask%20about%201-on-1%20tutoring%20for%20my%20child%20(year%2Fexam%2Fsubject)." target="_blank" rel="noopener" data-zh="💬 WhatsApp 咨询" data-en="💬 WhatsApp us">💬 WhatsApp 咨询</a>
         <a href="#" id="wechat-link" data-zh="🟢 微信：kkddyy7777" data-en="🟢 WeChat: kkddyy7777">🟢 微信：kkddyy7777</a>
@@ -487,6 +499,13 @@
   </div>
 </footer>
 
+<!-- floating sticky contact -->
+<div class="fab">
+  <a class="wa" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20I%27d%20like%20a%20free%20assessment%20for%20my%20child%20(year%2Fexam%2Fsubject)." target="_blank" rel="noopener" data-zh="💬 WhatsApp 免费问诊" data-en="💬 Free assessment on WhatsApp">💬 WhatsApp 免费问诊</a>
+  <button class="wc" type="button" onclick="window.__copyWeChat&&window.__copyWeChat()" data-zh="🟢 复制微信号" data-en="🟢 Copy WeChat ID">🟢 复制微信号</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
 (function(){
   var TITLES={
@@ -506,6 +525,22 @@
     try{localStorage.setItem('site_lang',lang);}catch(e){}
   }
   window.__setLang=setLang;
+
+  // WeChat copy + toast
+  window.__copyWeChat=function(){
+    var id='kkddyy7777';
+    var en=document.documentElement.lang==='en';
+    var msg=en?('WeChat ID copied: '+id+' — open WeChat & add'):('微信号已复制：'+id+' — 打开微信「加好友」粘贴即可');
+    var t=document.getElementById('toast');
+    function show(){ if(!t)return; t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},2600); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(id).then(show,show);}else{
+      try{var i=document.createElement('input');i.value=id;document.body.appendChild(i);i.select();document.execCommand('copy');document.body.removeChild(i);}catch(e){}
+      show();
+    }
+  };
+  var wcl=document.getElementById('wechat-link');
+  if(wcl){wcl.addEventListener('click',function(e){e.preventDefault();window.__copyWeChat();});}
+
   var saved=null;
   try{saved=localStorage.getItem('site_lang');}catch(e){}
   var urlLang=null;
