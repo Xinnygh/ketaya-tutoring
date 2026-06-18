@@ -181,6 +181,9 @@
   @media(max-width:860px){
     nav{height:auto;min-height:64px;padding-top:10px;padding-bottom:10px;gap:10px}
     .fab a,.fab button{padding:11px 15px;font-size:13px}
+    /* on phones the floating contact covers the hero buttons on the first screen — hide it until the user scrolls past the hero */
+    .fab{opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s,visibility .25s,transform .25s;pointer-events:none}
+    .fab.show{opacity:1;visibility:visible;transform:none;pointer-events:auto}
     .nav-links{display:none}
     .stats{grid-template-columns:repeat(2,1fr)}
     .hero-grid,.g3,.g2,.steps,.audience,.faq{grid-template-columns:1fr}
@@ -584,6 +587,22 @@
   var nav=(navigator.language||'').toLowerCase();
   var initial = urlLang || saved || (nav.indexOf('zh')===0 ? 'zh' : 'en');
   setLang(initial);
+})();
+</script>
+
+<script>
+// Reveal the floating WhatsApp/WeChat contact only after the user scrolls past the hero,
+// so it doesn't cover the hero CTAs ("先算成绩差距" / "为什么选我们") on the first mobile screen.
+(function(){
+  var fab=document.querySelector('.fab'); if(!fab) return;
+  function update(){
+    if(window.innerWidth>860){ fab.classList.add('show'); return; }
+    if(window.scrollY > window.innerHeight*0.55) fab.classList.add('show');
+    else fab.classList.remove('show');
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  update();
 })();
 </script>
 
