@@ -861,7 +861,7 @@
     var missing=[],
       hasMath=subjectHas(subjects,isPlainMath),
       hasFurther=subjectHas(subjects,isFurtherMath),
-      mathMissingLabel=hasFurther?'Mathematics (not Further Maths alone)':'Mathematics',
+      mathMissingLabel=hasFurther?(L()==='en'?'Mathematics (not Further Maths alone)':'Mathematics（普通数学，不能只用 Further Maths 代替）'):'Mathematics',
       hasPhys=subjectHas(subjects,subjectMatches([/physics|物理/])),
       hasChem=subjectHas(subjects,subjectMatches([/chemistry|化学/])),
       hasBio=subjectHas(subjects,subjectMatches([/biology|生物/]));
