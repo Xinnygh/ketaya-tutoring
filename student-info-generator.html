@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国际课程学情信息生成器 | 一键发给 WhatsApp 客服 | 答鸭名校联盟</title>
+<meta name="description" content="填写学生所在国家、年级、课程体系、科目、当前问题和可上课时间，一键生成中文 WhatsApp 学情信息。客服先登记情况，再安排合适老师。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://xinnygh.github.io/ketaya-tutoring/student-info-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="答鸭名校联盟 · DAYA Elite Tutoring">
+<meta property="og:title" content="国际课程学情信息生成器">
+<meta property="og:description" content="先把学生情况整理成中文消息，再一键发给 WhatsApp 客服。">
+<meta property="og:url" content="https://xinnygh.github.io/ketaya-tutoring/student-info-generator.html">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="guides/article.css">
+<style>
+  .tool-hero{background:linear-gradient(145deg,#f6faff 0%,#edf4ff 62%,#fff 100%);border:1px solid var(--line);border-radius:20px;padding:28px;margin:24px 0 28px}
+  .tool-hero h1{font-size:34px;line-height:1.2;margin:10px 0}
+  .tool-hero p{color:var(--ink-soft);max-width:680px}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .pill-row span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:750;color:var(--ink)}
+  .tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start;margin:20px 0 34px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+  .panel h2{font-size:22px;margin:0 0 12px}
+  .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .field{display:grid;gap:6px}
+  .field.full{grid-column:1/-1}
+  label{font-size:14px;font-weight:800;color:var(--ink)}
+  input,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;font:inherit;color:var(--ink);background:#fff}
+  textarea{min-height:112px;resize:vertical;line-height:1.55}
+  input:focus,select:focus,textarea:focus{outline:2px solid rgba(31,111,235,.18);border-color:var(--brand)}
+  .hint{font-size:12px;color:var(--ink-soft);line-height:1.45}
+  .preview{min-height:310px;font-size:14px;white-space:pre-wrap}
+  .action-row{display:grid;gap:10px;margin-top:14px}
+  .btn-action{border:0;justify-content:center}
+  .btn-secondary{background:var(--bg-soft);color:var(--ink)!important;border:1px solid var(--line)}
+  .source-note{font-size:13px;color:var(--ink-soft);margin-top:8px}
+  .quiet-list{margin:12px 0 0 18px;color:#26384f;font-size:14px}
+  .copy-state{font-size:13px;color:var(--brand-dark);min-height:20px;text-align:center}
+  @media(max-width:840px){
+    .tool-grid,.form-grid{grid-template-columns:1fr}
+    .tool-hero{padding:22px}
+    .tool-hero h1{font-size:28px}
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "国际课程学情信息生成器",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "provider": {
+    "@type": "EducationalOrganization",
+    "name": "答鸭名校联盟 DAYA Elite Tutoring",
+    "url": "https://xinnygh.github.io/ketaya-tutoring/"
+  }
+}
+</script>
+</head>
+<body>
+<header>
+  <nav class="wrap-wide">
+    <a class="logo" href="index.html">答鸭<span>·</span>名校联盟</a>
+    <div class="nav-right">
+      <a class="nav-cta" href="#generator">整理学情</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="breadcrumb">
+    <a href="index.html">首页</a> › <a href="sea-trial-lesson.html">东南亚试课</a> › <span>学情信息生成器</span>
+  </div>
+
+  <section class="tool-hero">
+    <div class="kx">WhatsApp Intake</div>
+    <h1>先整理学生情况，再一键发给客服。</h1>
+    <p>这里不会保存任何信息。填完后会生成一段中文 WhatsApp 消息，发给客服登记；第一步不是老师评分，也不是直接报价，客服会先确认情况，再安排合适老师沟通或试课。</p>
+    <div class="pill-row">
+      <span>客服先登记</span>
+      <span>再匹配老师</span>
+      <span>适合东南亚华人家庭</span>
+      <span>中英双语国际课程</span>
+    </div>
+  </section>
+
+  <section class="tool-grid" id="generator">
+    <div class="panel">
+      <h2>学生情况</h2>
+      <form class="form-grid" id="student-form">
+        <div class="field">
+          <label for="countryCity">所在国家 / 城市</label>
+          <input id="countryCity" name="countryCity" autocomplete="address-level2" placeholder="例如：马来西亚吉隆坡 / 新加坡">
+        </div>
+        <div class="field">
+          <label for="grade">年级 / 阶段</label>
+          <input id="grade" name="grade" placeholder="例如：Year 10 / AS / A2 / Grade 11">
+        </div>
+        <div class="field">
+          <label for="curriculum">课程体系 / 考试局</label>
+          <select id="curriculum" name="curriculum">
+            <option value="">请选择或补充</option>
+            <option>IGCSE / CAIE</option>
+            <option>IGCSE / Edexcel</option>
+            <option>A-Level / CAIE</option>
+            <option>A-Level / Edexcel</option>
+            <option>AP</option>
+            <option>SAT</option>
+            <option>AMC</option>
+            <option>IB</option>
+            <option>还不确定</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="subject">想咨询的科目</label>
+          <input id="subject" name="subject" placeholder="例如：A-Level 数学 / IGCSE 物理">
+        </div>
+        <div class="field">
+          <label for="scoreTarget">当前成绩 / 目标</label>
+          <input id="scoreTarget" name="scoreTarget" placeholder="例如：Mock C，目标 A / 想从 6 到 8">
+        </div>
+        <div class="field">
+          <label for="examDate">考试时间</label>
+          <input id="examDate" name="examDate" placeholder="例如：2026 年 10 月 / 还没定">
+        </div>
+        <div class="field full">
+          <label for="problem">当前主要问题</label>
+          <textarea id="problem" name="problem" placeholder="例如：函数和微积分章节断层，英文题目能看懂但步骤分拿不满；希望先试一节看老师是否匹配。"></textarea>
+        </div>
+        <div class="field full">
+          <label for="times">方便上课时间</label>
+          <input id="times" name="times" placeholder="例如：周二/周四晚上 8 点后，周末上午；马来西亚时间">
+          <div class="hint">建议给 2 个时间段，客服更容易快速匹配老师。</div>
+        </div>
+        <div class="field full">
+          <label for="materials">是否有成绩单 / 错题 / 教材截图</label>
+          <input id="materials" name="materials" placeholder="例如：有 mock 成绩和几张错题截图，可以 WhatsApp 发">
+        </div>
+      </form>
+    </div>
+
+    <aside class="panel">
+      <h2>生成的 WhatsApp 消息</h2>
+      <textarea class="preview" id="preview" readonly></textarea>
+      <div class="action-row">
+        <a class="btn btn-primary" id="whatsapp-link" target="_blank" rel="noopener" href="#">发给 WhatsApp 客服</a>
+        <button class="btn btn-secondary btn-action" type="button" id="copy-btn">复制这段消息</button>
+        <a class="btn btn-secondary" href="sea-trial-lesson.html">看单节试课流程</a>
+      </div>
+      <div class="copy-state" id="copy-state" role="status" aria-live="polite"></div>
+      <p class="source-note">当前来源：<span id="source-label">官网学情信息生成器</span></p>
+      <ul class="quiet-list">
+        <li>客服先登记信息，不会让家长误以为正在由老师评分。</li>
+        <li>如果有作业、错题、成绩截图，可以在 WhatsApp 里继续补发。</li>
+      </ul>
+    </aside>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>答鸭 · 名校联盟</strong><br>
+    国际课程 & 留学名师 · 线上一对一 · 服务全球华人家庭<br>
+    <a href="index.html">首页</a> · <a href="sea-trial-lesson.html">东南亚试课页</a> · <a href="malaysia-igcse-a-level-tutor.html">马来西亚补习</a> · <a href="singapore-igcse-a-level-tutor.html">新加坡补习</a>
+  </div>
+</footer>
+
+<a class="wa-float" id="float-whatsapp" target="_blank" rel="noopener" href="#">WhatsApp 发学情</a>
+
+<script>
+(function(){
+  var phone = '8618156122672';
+  var sourceMap = {
+    home: '官网首页',
+    sea: '东南亚试课页',
+    malaysia: '马来西亚补习页',
+    singapore: '新加坡补习页'
+  };
+  var params = new URLSearchParams(window.location.search);
+  var source = sourceMap[params.get('source')] || '官网学情信息生成器';
+  var fieldIds = ['countryCity','grade','curriculum','subject','scoreTarget','examDate','problem','times','materials'];
+  var labels = {
+    countryCity: '所在国家/城市',
+    grade: '年级/阶段',
+    curriculum: '课程体系/考试局',
+    subject: '咨询科目',
+    scoreTarget: '当前成绩/目标',
+    examDate: '考试时间',
+    problem: '当前主要问题',
+    times: '方便上课时间',
+    materials: '可补充材料'
+  };
+  var form = document.getElementById('student-form');
+  var preview = document.getElementById('preview');
+  var whatsapp = document.getElementById('whatsapp-link');
+  var floatWhatsapp = document.getElementById('float-whatsapp');
+  var copyBtn = document.getElementById('copy-btn');
+  var copyState = document.getElementById('copy-state');
+  document.getElementById('source-label').textContent = source;
+
+  function valueOf(id){
+    var value = document.getElementById(id).value.trim();
+    return value || '待补充';
+  }
+
+  function buildMessage(){
+    var lines = [
+      '你好，我想咨询国际课程线上一对一。先把学生情况发给客服登记：',
+      ''
+    ];
+    fieldIds.forEach(function(id){
+      lines.push('- ' + labels[id] + '：' + valueOf(id));
+    });
+    lines.push('');
+    lines.push('我知道第一步是客服登记信息，再安排合适老师沟通或试课。');
+    lines.push('来源：' + source);
+    return lines.join('\n');
+  }
+
+  function updateMessage(){
+    var message = buildMessage();
+    var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
+    preview.value = message;
+    whatsapp.href = url;
+    floatWhatsapp.href = url;
+    copyState.textContent = '';
+  }
+
+  form.addEventListener('input', updateMessage);
+  form.addEventListener('change', updateMessage);
+  copyBtn.addEventListener('click', function(){
+    var text = preview.value;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){
+        copyState.textContent = '已复制，可以直接粘贴到 WhatsApp。';
+      }).catch(function(){
+        preview.select();
+        copyState.textContent = '复制失败，请手动选中文案复制。';
+      });
+      return;
+    }
+    preview.select();
+    document.execCommand('copy');
+    copyState.textContent = '已复制，可以直接粘贴到 WhatsApp。';
+  });
+
+  updateMessage();
+})();
+</script>
+</body>
+</html>
