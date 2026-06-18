@@ -54,10 +54,13 @@
   .disclaimer{font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.55}
   .source-footnotes{font-size:11.5px;color:var(--ink-soft);line-height:1.55;border-top:1px solid var(--line);margin-top:18px;padding-top:12px}
   .source-footnotes p{margin:5px 0}
-  .source-footnotes a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px}
+  .source-footnotes a,#rules{display:inline-flex;align-items:center;min-height:30px;color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px}
   .source-footnotes a:hover{color:var(--brand)}
   .source-title{font-weight:800;color:var(--ink);font-size:12px;margin-bottom:6px}
   .source-links{display:inline-flex;flex-wrap:wrap;gap:4px 8px}
+  .logo,footer a{display:inline-flex;align-items:center;min-height:40px}
+  footer a,.breadcrumb a,.back-guide-link{box-sizing:border-box;min-width:40px;justify-content:center}
+  .breadcrumb a,.back-guide-link{display:inline-flex;align-items:center;min-height:32px}
   .path-tabs{display:flex;gap:8px;margin:18px 0 0;position:sticky;top:74px;z-index:3;background:#fff;padding:8px;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
   .path-tab{flex:1;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);border-radius:9px;padding:10px 8px;font-weight:800;font-family:inherit;cursor:pointer}
   .path-tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -117,7 +120,7 @@
 
     <div class="path-tabs" id="pathTabs" aria-label="application route">
       <button class="path-tab active" type="button" data-path="uk" data-zh="英国方向 · A-level / IGCSE" data-en="UK route · A-level / IGCSE">英国方向 · A-level / IGCSE</button>
-      <button class="path-tab" type="button" data-path="us" data-zh="美本方向 · SAT / AP" data-en="US route · SAT / AP">美本方向 · SAT / AP</button>
+      <button class="path-tab" type="button" data-path="us" data-zh="美本方向 · SAT / ACT / AP" data-en="US route · SAT / ACT / AP">美本方向 · SAT / ACT / AP</button>
     </div>
 
     <div id="ukwrap" data-path-panel="uk">
@@ -227,7 +230,7 @@
     </div>
     </div>
 
-    <!-- US: AP & SAT -->
+    <!-- US: AP & SAT / ACT -->
     <div class="calc" id="uswrap" data-path-panel="us" style="display:none">
       <h2 data-zh="美本方向：目标院校差距评估" data-en="US route: target university gap">美本方向：目标院校差距评估</h2>
       <p class="hint" data-zh="SAT/ACT 和 AP 不是二选一：SAT/ACT 是标化考试，AP 是课程难度/学术能力补充。先选目标院校档次，再填已有成绩，看离目标还差多少。" data-en="SAT/ACT and AP are not substitutes: SAT/ACT is the standardized test, while AP shows course rigor and academic strength. Pick a target tier, enter what you already have, and see the gap.">SAT/ACT 和 AP 不是二选一：SAT/ACT 是标化考试，AP 是课程难度/学术能力补充。先选目标院校档次，再填已有成绩，看离目标还差多少。</p>
@@ -236,11 +239,13 @@
         <select id="usGoal"></select>
       </div>
       <div class="field">
-        <label data-zh="已考 SAT（数学 + 阅读写作，各 200–800；没考可留空）" data-en="Completed SAT (Math + EBRW, each 200–800; leave blank if not taken)">已考 SAT（数学 + 阅读写作，各 200–800；没考可留空）</label>
+        <label data-zh="已考 SAT 或 ACT（可二选一；没考可留空）" data-en="Completed SAT or ACT (enter either; leave blank if not taken)">已考 SAT 或 ACT（可二选一；没考可留空）</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input id="satM" type="number" min="200" max="800" inputmode="numeric" placeholder="Math 200–800" style="flex:1;min-width:130px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
           <input id="satR" type="number" min="200" max="800" inputmode="numeric" placeholder="EBRW 200–800" style="flex:1;min-width:130px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
+          <input id="actC" type="number" min="1" max="36" inputmode="numeric" placeholder="ACT 1–36" style="flex:1;min-width:120px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
         </div>
+        <div class="mini-note" data-zh="SAT 和 ACT 填一个即可；都填时按更强的标化估算。" data-en="Enter SAT or ACT; if both are entered, the stronger standardized score is used.">SAT 和 ACT 填一个即可；都填时按更强的标化估算。</div>
       </div>
       <div class="field">
         <label data-zh="已考 AP（科目 + 分数 1–5；可加多门，没考可留空）" data-en="Completed AP scores (subject + 1–5; add several, leave blank if none)">已考 AP（科目 + 分数 1–5；可加多门，没考可留空）</label>
@@ -253,8 +258,8 @@
       </div>
       <button class="btn-calc" id="usCalc" data-zh="计算离目标院校还差多少 →" data-en="Calculate gap to target →">计算离目标院校还差多少 →</button>
       <div id="usResult" style="margin-top:14px"></div>
-      <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为公开 middle-50% 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。"
-         data-en="⚠️ US admission is holistic: SAT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT ranges are rough public middle-50% references; some schools have reinstated SAT/ACT, while UC campuses do not consider SAT/ACT. Policies change quickly, so always check official pages.">⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为公开 middle-50% 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。</p>
+      <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/ACT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT/ACT 区间为公开 middle-50% 与官方 concordance 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。"
+         data-en="⚠️ US admission is holistic: SAT/ACT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT/ACT ranges are rough public middle-50% and official concordance references; some schools have reinstated SAT/ACT, while UC campuses do not consider SAT/ACT. Policies change quickly, so always check official pages.">⚠️ 美本是 holistic（综合）录取：SAT/ACT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT/ACT 区间为公开 middle-50% 与官方 concordance 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。</p>
     </div>
 
     <!-- CTA -->
@@ -281,9 +286,10 @@
           <a href="https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/mathematics-2018/international-a-level-maths-eligibility-calculator.html" target="_blank" rel="noopener">Pearson IAL Maths eligibility</a>
         </span>
       </p>
-      <p><span data-zh="美本 / SAT / AP：" data-en="US route / SAT / AP:">美本 / SAT / AP：</span>
+      <p><span data-zh="美本 / SAT / ACT / AP：" data-en="US route / SAT / ACT / AP:">美本 / SAT / ACT / AP：</span>
         <span class="source-links">
           <a href="https://satsuite.collegeboard.org/sat/scores" target="_blank" rel="noopener">College Board SAT scores</a>
+          <a href="https://www.act.org/content/dam/act/unsecured/documents/ACT-SAT-Concordance-Tables.pdf" target="_blank" rel="noopener">ACT/SAT concordance</a>
           <a href="https://apstudents.collegeboard.org/what-is-ap" target="_blank" rel="noopener">College Board AP</a>
           <a href="https://mitadmissions.org/apply/firstyear/tests-scores/" target="_blank" rel="noopener">MIT tests & scores</a>
           <a href="https://admission.universityofcalifornia.edu/counselors/preparing-freshman-students/freshman-requirements.html" target="_blank" rel="noopener">UC testing policy</a>
@@ -293,7 +299,7 @@
       <p id="courseSourcesWrap" style="display:none"><span data-zh="当前专业 offer 来源：" data-en="Current course offer sources:">当前专业 offer 来源：</span><span class="source-links" id="courseSources"></span></p>
     </div>
 
-    <p style="margin-top:20px"><a href="index.html" data-zh="← 返回升学指南" data-en="← Back to all guides">← Back to all guides</a></p>
+    <p style="margin-top:20px"><a class="back-guide-link" href="index.html" data-zh="← 返回升学指南" data-en="← Back to all guides">← Back to all guides</a></p>
   </article>
 </div>
 
@@ -366,7 +372,7 @@
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 / UMS 规则，本表按可输入数据估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level。大学申请通常看 3 门；请先加满 3 门，再看具体大学匹配。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
-      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',yourTargetProfile:'你的目标成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitTarget:'目标匹配',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',fitMissing:'🔴 需补必需科目',fitSubjectGrade:'🟡 必需科目需提分',missingSubject:'缺少必需科目',subjectGradeGap:'必需科目目标偏低',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',apGap:'AP 4–5 分还差',satMet:'SAT 已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT；顶尖美本通常不能只靠 AP 替代 SAT/ACT；UC 系等学校不参考 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',usTargetReq:'目标建议',usTargetOnly:'只选目标也可以先咨询：客服会帮你拆 SAT/AP/GPA/活动差距。',usNonScore:'非分数门槛：GPA/课程难度、文书、活动、推荐信；各校 SAT/ACT 政策不同，UC 系不看 SAT/ACT。',
+      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',yourTargetProfile:'你的目标成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitTarget:'目标匹配',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',fitMissing:'🔴 需补必需科目',fitSubjectGrade:'🟡 必需科目需提分',missingSubject:'缺少必需科目',subjectGradeGap:'必需科目目标偏低',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',testGap:'标化还差',apGap:'AP 4–5 分还差',satMet:'标化已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT/ACT；顶尖美本通常需要或强烈建议标化，UC 系不参考 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',usTargetReq:'目标建议',usTargetOnly:'只选目标也可以先咨询：客服会帮你拆 SAT/ACT/AP/GPA/活动差距。',usNonScore:'非分数门槛：GPA/课程难度、文书、活动、推荐信；各校 SAT/ACT 政策不同，UC 系不看 SAT/ACT。',
       sendGap:'把这个差距发给客服 →',nonGrade:'非成绩门槛',gradeMetBut:'分数达标，但还要准备这些门槛',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick “done” for completed units and enter marks; tick “counts” for future units that will count toward the final grade.',routeHint:'Choose the official route; tick completed papers and enter raw marks, leave future papers unticked.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Tick completed papers and enter %; leave future papers unticked. The figure after each name is the weighting.',umsHint:'Enter UMS or UMS percentage; tick completed units and tick future units that will count.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'Current projection',grade:'Grade',need:'Tick completed units and enter marks',
@@ -377,7 +383,7 @@
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: A-level A* also depends on A2 / UMS rules; this is estimated from the data entered.',
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s). Universities usually look at 3; add the rest before using the university match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
-      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',yourTargetProfile:'Your target grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitTarget:'Target fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',fitMissing:'🔴 Missing required subject',fitSubjectGrade:'🟡 Required subject needs a higher grade',missingSubject:'Missing required subject',subjectGradeGap:'Required subject target is low',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',apGap:'AP 4–5 gap',satMet:'SAT is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT entered yet; for top US colleges, AP usually does not replace SAT/ACT; UC campuses do not consider SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',usTargetReq:'Target recommendation',usTargetOnly:'You can message us with only a target: we will break down SAT/AP/GPA/activity gaps.',usNonScore:'Non-score checkpoints: GPA/course rigor, essays, activities and recommendations; SAT/ACT policies vary, and UC campuses do not consider SAT/ACT.',
+      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',yourTargetProfile:'Your target grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitTarget:'Target fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',fitMissing:'🔴 Missing required subject',fitSubjectGrade:'🟡 Required subject needs a higher grade',missingSubject:'Missing required subject',subjectGradeGap:'Required subject target is low',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',testGap:'Standardized score gap',apGap:'AP 4–5 gap',satMet:'Standardized score is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT/ACT entered yet; top US colleges often require or strongly value standardized testing; UC campuses do not consider SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',usTargetReq:'Target recommendation',usTargetOnly:'You can message us with only a target: we will break down SAT/ACT/AP/GPA/activity gaps.',usNonScore:'Non-score checkpoints: GPA/course rigor, essays, activities and recommendations; SAT/ACT policies vary, and UC campuses do not consider SAT/ACT.',
       sendGap:'Send this gap to an advisor →',nonGrade:'Non-grade checkpoints',gradeMetBut:'Grades meet the offer, but these still matter',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
@@ -816,12 +822,12 @@
     if(currentPath==='us'&&usPlanMeta){
       lines.push(lang==='en'?'US target plan:':'美本目标方案：');
       lines.push('- '+usPlanMeta.goal);
-      lines.push('- '+(lang==='en'?'Suggested SAT target: ':'建议 SAT 目标：')+usPlanMeta.targetSat+'+');
+      lines.push('- '+(lang==='en'?'Suggested SAT/ACT target: ':'建议 SAT/ACT 目标：')+'SAT '+usPlanMeta.targetSat+'+ / ACT '+usPlanMeta.targetACT+'+');
       lines.push('- '+(lang==='en'?'Suggested AP target: ':'建议 AP 目标：')+usPlanMeta.targetAP+' '+(lang==='en'?'APs at 4-5':'门 AP 4-5 分'));
       lines.push('- '+(lang==='en'?'Non-score checkpoints: GPA/course rigor, essays, activities, recommendations; school testing policies vary.':'非分数门槛：GPA/课程难度、文书、活动、推荐信；各校标化政策不同。'));
-      if(usPlanMeta.total!=null){
-        lines.push('- SAT: '+usPlanMeta.total+' (Math '+usPlanMeta.math+', EBRW '+usPlanMeta.ebrw+')');
-        if(usPlanMeta.satGap>0)lines.push('- '+(lang==='en'?'SAT gap: +':'SAT 还差：+')+usPlanMeta.satGap);
+      if(usPlanMeta.testLabel){
+        lines.push('- '+(lang==='en'?'Standardized score: ':'标化成绩：')+usPlanMeta.testLabel);
+        if(usPlanMeta.testGap>0)lines.push('- '+(lang==='en'?'Standardized gap: ':'标化还差：')+usPlanMeta.testGapLabel);
         if(usPlanMeta.weak)lines.push('- '+(lang==='en'?'Priority section: ':'优先补分模块：')+usPlanMeta.weak);
       }
       if(usPlanMeta.apScores&&usPlanMeta.apScores.length)lines.push('- '+(lang==='en'?'AP scores: ':'AP 成绩：')+usPlanMeta.apScores.join(', '));
@@ -926,20 +932,24 @@
     document.getElementById('courseTable').innerHTML=h;
   }
 
-  // ---- US route: SAT + AP (indicative middle-50% ranges) ----
+  // ---- US route: SAT / ACT + AP (indicative middle-50% ranges) ----
   var apList=[];
   var US_TIERS=[
-    {min:1500,targetSat:1500,targetAP:4,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'≈1500–1570',ap:{zh:'建议 4+ 门 AP 4–5，核心科目越强越好',en:'4+ APs at 4–5 recommended; strong core subjects help'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
-    {min:1450,targetSat:1450,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'≈1450–1540',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'Johns Hopkins · Duke · Northwestern · Vanderbilt · Rice'},
-    {min:1350,targetSat:1350,targetAP:2,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'≈1350–1480',ap:{zh:'建议 2+ 门 AP 4–5',en:'2+ APs at 4–5 recommended'},ex:'NYU · Boston U · UIUC · Wisconsin · Case Western'},
-    {min:1250,targetSat:1250,targetAP:1,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'≈1250–1400',ap:{zh:'有 AP 4–5 会加分',en:'AP 4–5 helps'},ex:'Penn State · Ohio State · Pittsburgh'},
-    {min:0,targetSat:1150,targetAP:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'<1250',ap:{zh:'先补 SAT/GPA 基础',en:'Build SAT/GPA foundation first'},ex:''}
+    {min:1500,targetSat:1500,targetACT:34,targetAP:4,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'SAT ≈1500–1570 / ACT ≈34–36',ap:{zh:'建议 4+ 门 AP 4–5，核心科目越强越好',en:'4+ APs at 4–5 recommended; strong core subjects help'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
+    {min:1450,targetSat:1450,targetACT:33,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'SAT ≈1450–1540 / ACT ≈33–35',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'Johns Hopkins · Duke · Northwestern · Vanderbilt · Rice'},
+    {min:1350,targetSat:1350,targetACT:29,targetAP:2,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'SAT ≈1350–1480 / ACT ≈29–33',ap:{zh:'建议 2+ 门 AP 4–5',en:'2+ APs at 4–5 recommended'},ex:'NYU · Boston U · UIUC · Wisconsin · Case Western'},
+    {min:1250,targetSat:1250,targetACT:26,targetAP:1,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'SAT ≈1250–1400 / ACT ≈26–31',ap:{zh:'有 AP 4–5 会加分',en:'AP 4–5 helps'},ex:'Penn State · Ohio State · Pittsburgh'},
+    {min:0,targetSat:1150,targetACT:23,targetAP:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'SAT <1250 / ACT <26',ap:{zh:'先补标化/GPA 基础',en:'Build test/GPA foundation first'},ex:''}
   ];
   function usTier(total){for(var i=0;i<US_TIERS.length;i++){if(total>=US_TIERS[i].min)return i;}return US_TIERS.length-1;}
+  function actToSat(act){
+    var map={36:1590,35:1540,34:1500,33:1460,32:1430,31:1400,30:1370,29:1340,28:1310,27:1280,26:1240,25:1210,24:1180,23:1140,22:1110,21:1080,20:1040,19:1010,18:970,17:930,16:890,15:850,14:800,13:760,12:710,11:670,10:630,9:590};
+    return map[Math.max(9,Math.min(36,Math.round(act)))]||null;
+  }
   function fillUSGoal(){
     var s=document.getElementById('usGoal');if(!s)return;
     var keep=s.value;
-    s.innerHTML=US_TIERS.map(function(x,i){return '<option value="'+i+'">'+(L()==='en'?x.en:x.zh)+' · SAT '+x.sat+'</option>';}).join('');
+    s.innerHTML=US_TIERS.map(function(x,i){return '<option value="'+i+'">'+(L()==='en'?x.en:x.zh)+' · '+x.sat+'</option>';}).join('');
     if(keep)s.value=keep;
   }
   function renderAP(){
@@ -948,32 +958,37 @@
     box.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){apList.splice(+b.getAttribute('data-x'),1);renderAP();if(currentPath==='us')renderUS();};});
   }
   function renderUS(){
-    var t=T[L()],m=parseFloat(document.getElementById('satM').value),r=parseFloat(document.getElementById('satR').value);
+    var t=T[L()],m=parseFloat(document.getElementById('satM').value),r=parseFloat(document.getElementById('satR').value),act=parseFloat(document.getElementById('actC').value);
     var satMath=!isNaN(m)?Math.max(200,Math.min(800,m)):null,satRead=!isNaN(r)?Math.max(200,Math.min(800,r)):null;
     var total=(satMath!=null&&satRead!=null)?satMath+satRead:null;
+    var actScore=!isNaN(act)?Math.max(1,Math.min(36,act)):null,actSat=actScore!=null?actToSat(actScore):null;
+    var useAct=actSat!=null&&(total==null||actSat>total),standard=useAct?actSat:total;
+    var testLabel=total!=null&&actScore!=null?('SAT '+total+' / ACT '+actScore):(useAct?('ACT '+actScore+' ≈ SAT '+actSat):(total!=null?'SAT '+total:'SAT/ACT —'));
     var ap5=apList.filter(function(a){return a.s>=4;}).length;
     var goal=US_TIERS[+(document.getElementById('usGoal').value||0)]||US_TIERS[0];
     var html='<div class="rcard"><h3>'+t.dreamGap+'</h3><div class="tier">🎓 '+(L()==='en'?goal.en:goal.zh)+'</div>';
-    html+='<div class="ucas">'+(total!=null?'SAT '+total+' / 1600':'SAT —')+' · '+t.apStrong+' '+ap5+'</div>';
-    html+='<div class="mini-note"><b>'+t.usTargetReq+'：</b>SAT '+goal.targetSat+'+ · '+goal.targetAP+' '+(L()==='en'?'APs at 4-5':'门 AP 4-5 分')+'</div>';
+    html+='<div class="ucas">'+testLabel+' · '+t.apStrong+' '+ap5+'</div>';
+    html+='<div class="mini-note"><b>'+t.usTargetReq+'：</b>SAT '+goal.targetSat+'+ / ACT '+goal.targetACT+'+ · '+goal.targetAP+' '+(L()==='en'?'APs at 4-5':'门 AP 4-5 分')+'</div>';
     html+='<div class="mini-note check-note">'+t.usNonScore+'</div>';
-    if(total==null&&apList.length===0)html+='<div class="mini-note">'+t.usTargetOnly+'</div>';
-    if(total==null)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.satBlank+'</div>';
-    else if(total>=goal.targetSat)html+='<div class="gap-ok">'+t.satMet+'</div>';
-    else html+='<div class="gap-pos">'+t.satGap+' +'+(goal.targetSat-total)+'</div>';
+    if(standard==null&&apList.length===0)html+='<div class="mini-note">'+t.usTargetOnly+'</div>';
+    var testGap=standard==null?null:(useAct?Math.max(0,goal.targetACT-actScore):Math.max(0,goal.targetSat-total));
+    var testGapLabel=useAct?('ACT +'+testGap):('SAT +'+testGap);
+    if(standard==null)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.satBlank+'</div>';
+    else if(standard>=goal.targetSat)html+='<div class="gap-ok">'+t.satMet+'</div>';
+    else html+='<div class="gap-pos">'+t.testGap+' '+testGapLabel+'</div>';
     if(apList.length===0)html+='<div class="mini-note">'+t.apBlank+'</div>';
     else if(ap5>=goal.targetAP)html+='<div class="gap-ok">'+t.apMet+'</div>';
     else html+='<div class="gap-pos">'+t.apGap+' '+(goal.targetAP-ap5)+'</div>';
-    if(total!=null&&total<goal.targetSat){
+    if(!useAct&&total!=null&&total<goal.targetSat){
       var weak=satMath<satRead?'Math':'Reading/Writing';
       html+='<div class="mini-note">'+(L()==='en'?'Priority section: ':'优先补分模块：')+weak+'</div>';
     }
     html+='<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
     html+='</div>';
-    html+='<div style="overflow-x:auto"><table class="gt"><tr><th style="text-align:left">'+t.usTier+'</th><th>SAT</th><th>AP</th><th>'+t.usEx+'</th></tr>'+US_TIERS.map(function(x,i){var hl=(total!=null&&usTier(total)===i)?' style="background:#eaf2ff"':'';return '<tr'+hl+'><td style="text-align:left">'+(L()==='en'?x.en:x.zh)+'</td><td>'+x.sat+'</td><td>'+(L()==='en'?x.ap.en:x.ap.zh)+'</td><td style="font-size:12px">'+x.ex+'</td></tr>';}).join('')+'</table></div>';
+    html+='<div style="overflow-x:auto"><table class="gt"><tr><th style="text-align:left">'+t.usTier+'</th><th>SAT / ACT</th><th>AP</th><th>'+t.usEx+'</th></tr>'+US_TIERS.map(function(x,i){var hl=(standard!=null&&usTier(standard)===i)?' style="background:#eaf2ff"':'';return '<tr'+hl+'><td style="text-align:left">'+(L()==='en'?x.en:x.zh)+'</td><td>'+x.sat+'</td><td>'+(L()==='en'?x.ap.en:x.ap.zh)+'</td><td style="font-size:12px">'+x.ex+'</td></tr>';}).join('')+'</table></div>';
     document.getElementById('usResult').innerHTML=html;
-    usPlanMeta={goal:L()==='en'?goal.en:goal.zh,targetSat:goal.targetSat,targetAP:goal.targetAP,total:total,math:satMath,ebrw:satRead,satGap:total!=null?Math.max(0,goal.targetSat-total):null,weak:(total!=null&&total<goal.targetSat)?(satMath<satRead?'Math':'Reading/Writing'):'',apStrong:ap5,apGap:Math.max(0,goal.targetAP-ap5),apScores:apList.map(function(a){return a.n+' '+a.s;})};
-    lastSubjectMeta={board:'US route',subject:L()==='en'?'Target '+(goal.en):'目标 '+goal.zh,grade:total!=null?('SAT '+total):'SAT —',pct:0};
+    usPlanMeta={goal:L()==='en'?goal.en:goal.zh,targetSat:goal.targetSat,targetACT:goal.targetACT,targetAP:goal.targetAP,total:total,act:actScore,math:satMath,ebrw:satRead,testLabel:standard!=null?testLabel:'',testGap:testGap,testGapLabel:testGapLabel,weak:(!useAct&&total!=null&&total<goal.targetSat)?(satMath<satRead?'Math':'Reading/Writing'):'',apStrong:ap5,apGap:Math.max(0,goal.targetAP-ap5),apScores:apList.map(function(a){return a.n+' '+a.s;})};
+    lastSubjectMeta={board:'US route',subject:L()==='en'?'Target '+(goal.en):'目标 '+goal.zh,grade:standard!=null?testLabel:'SAT/ACT —',pct:0};
     updateWhatsAppLinks();
   }
   function applyPathTabs(){
@@ -998,7 +1013,7 @@
   document.getElementById('targetViewMatch').onclick=scrollToUniversityMatch;
   targetOnlyNameEl.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addTargetOnly();}});
   document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();if(currentPath==='us')renderUS();};
-  ['satM','satR'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){if(currentPath==='us')renderUS();});});
+  ['satM','satR','actC'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){if(currentPath==='us')renderUS();});});
   document.getElementById('usCalc').onclick=renderUS;
   document.getElementById('usGoal').onchange=renderUS;
   document.getElementById('pathTabs').onclick=function(e){
