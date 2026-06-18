@@ -23,10 +23,14 @@
   .field{margin-bottom:12px}
   .field label{display:block;font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:5px}
   .field select,.field input{width:100%;min-height:46px;box-sizing:border-box;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:inherit;background:#fff}
-  .urow{display:grid;grid-template-columns:1fr 78px 70px;gap:8px;align-items:center;margin-bottom:7px}
+  .urow{display:grid;grid-template-columns:74px 1fr 78px 70px;gap:8px;align-items:center;margin-bottom:7px}
+  .urow.pickrow{grid-template-columns:58px 58px minmax(0,1fr) 78px 70px}
   .urow .un{font-size:13.5px}
   .urow input{width:100%;min-height:42px;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit}
+  .urow input:disabled{background:#f7f7f7;color:#aaa}
   .urow .umax{font-size:12px;color:var(--ink-soft);text-align:center}
+  .unit-check{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--bg-soft);font-size:12px;font-weight:800;color:var(--ink-soft);cursor:pointer}
+  .unit-check input{width:auto;min-height:0;margin:0}
   .rules-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;background:#fff6e8;border:1px solid var(--gold);color:#8a5a12;padding:8px 12px;border-radius:9px;margin-top:6px;text-decoration:none!important}
   .live{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);font-size:15px}
   .live b{color:var(--brand)}
@@ -52,9 +56,11 @@
   .path-tab{flex:1;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);border-radius:9px;padding:10px 8px;font-weight:800;font-family:inherit;cursor:pointer}
   .path-tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
   @media(max-width:600px){
-    .urow{grid-template-columns:minmax(0,1fr) 78px 48px;gap:6px;align-items:center;margin-bottom:9px}
+    .urow{grid-template-columns:62px minmax(0,1fr) 78px 48px;gap:6px;align-items:center;margin-bottom:9px}
+    .urow.pickrow{grid-template-columns:52px 52px minmax(0,1fr) 72px 44px}
     .urow .un{font-size:13px;line-height:1.25}
     .urow input,.urow select{min-height:44px;padding:9px 8px;font-size:16px}
+    .unit-check{min-height:44px;font-size:11px}
     .urow .umax{font-size:12px}
     .route-select{min-height:48px;font-size:14px}
     .calc{padding:15px}
@@ -112,12 +118,16 @@
       </div>
       <a class="rules-link" id="rules" href="#" target="_blank" rel="noopener" data-zh="📖 看该科官方评分规则 & 历年分数线" data-en="📖 Official grading rules & past grade boundaries">📖 Official grading rules &amp; past grade boundaries</a>
 
-      <h2 style="margin-top:18px" data-zh="② 填入各单元分数" data-en="② Enter your marks per unit">② Enter your marks per unit</h2>
-      <p class="hint" id="unitHint" data-zh="填你的得分（不知道确切分就填估计），右边是该单元满分。" data-en="Enter your mark (estimate if unsure); the max for each unit is shown on the right.">填你的得分（不知道确切分就填估计），右边是该单元满分。</p>
+      <h2 style="margin-top:18px" data-zh="② 勾已考单元，填现实分数和目标" data-en="② Tick completed units, enter current marks and target">② Tick completed units, enter current marks and target</h2>
+      <p class="hint" id="unitHint" data-zh="勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。" data-en="Tick completed papers/units and enter marks; leave future units blank. The tool reverse-calculates what to take next, approximate marks needed, and whether low-score units may need retaking.">勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。</p>
       <div id="units"></div>
       <div class="field">
         <label data-zh="本科目标等级（用于反推未考单元）" data-en="Target grade for this subject (for unfinished units)">本科目标等级（用于反推未考单元）</label>
         <select id="subjectTarget"></select>
+      </div>
+      <div class="field">
+        <label data-zh="目标分数 %（可选；比等级更精确）" data-en="Target percentage (optional; more precise than grade)">目标分数 %（可选；比等级更精确）</label>
+        <input id="subjectTargetPct" type="number" min="0" max="100" inputmode="decimal" placeholder="例如 85">
       </div>
       <div class="live" id="live"></div>
       <button class="btn-add" id="addBtn" data-zh="加入我的成绩单 ↓" data-en="Add to my results ↓">加入我的成绩单 ↓</button>
@@ -149,7 +159,12 @@
         <label data-zh="选专业方向（看各校录取要求 & 你够不够 / 反查要多少分）" data-en="Pick a course (see each uni's requirement & your fit / what you'd need)">选专业方向（看各校录取要求 & 你够不够 / 反查要多少分）</label>
         <select id="course"></select>
       </div>
+      <div class="field">
+        <label data-zh="心仪大学 / 目标 offer（用于反推总成绩差距）" data-en="Dream university / target offer (reverse-calculate your gap)">心仪大学 / 目标 offer（用于反推总成绩差距）</label>
+        <select id="dreamUni"></select>
+      </div>
       <div id="courseReq" class="hint" style="margin:0 0 8px"></div>
+      <div id="dreamGap" class="rcard" style="display:none"></div>
       <div style="overflow-x:auto"><table class="gt" id="courseTable"></table></div>
       <p class="disclaimer" data-zh="⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。" data-en="⚠️ Offers are common standard offers published by each university (for reference — check the official page for the current year). ✅Match / 🟡Reach / 🔴Stretch is estimated from grades only; real admission also depends on your personal statement, references, admissions tests/interviews, competitions & activities, English scores and that year's competition — <b>meeting the grades is not a guarantee, and a strong overall profile can offset slightly lower grades</b>.">⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。</p>
     </div>
@@ -157,17 +172,21 @@
 
     <!-- US: AP & SAT -->
     <div class="calc" id="uswrap" data-path-panel="us" style="display:none">
-      <h2 data-zh="美本方向：SAT / AP 快速评估" data-en="US route: SAT / AP quick estimate">美本方向：SAT / AP 快速评估</h2>
-      <p class="hint" data-zh="申美本主要看 SAT + AP + 在校 GPA + 文书/活动。下面按你的 SAT 总分和 AP 高分（4–5 分）估算大致档次。" data-en="US admission looks at SAT + AP + GPA + essays/activities. Below estimates a tier from your SAT total and strong (4–5) AP scores.">申美本主要看 SAT + AP + 在校 GPA + 文书/活动。下面按你的 SAT 总分和 AP 高分（4–5 分）估算大致档次。</p>
+      <h2 data-zh="美本方向：目标院校差距评估" data-en="US route: target university gap">美本方向：目标院校差距评估</h2>
+      <p class="hint" data-zh="SAT/ACT 和 AP 不是二选一：SAT/ACT 是标化考试，AP 是课程难度/学术能力补充。先选目标院校档次，再填已有成绩，看离目标还差多少。" data-en="SAT/ACT and AP are not substitutes: SAT/ACT is the standardized test, while AP shows course rigor and academic strength. Pick a target tier, enter what you already have, and see the gap.">SAT/ACT 和 AP 不是二选一：SAT/ACT 是标化考试，AP 是课程难度/学术能力补充。先选目标院校档次，再填已有成绩，看离目标还差多少。</p>
       <div class="field">
-        <label data-zh="SAT（数学 + 阅读写作，各 200–800）" data-en="SAT (Math + EBRW, each 200–800)">SAT（数学 + 阅读写作，各 200–800）</label>
+        <label data-zh="目标美本 / 档次" data-en="Target US university / tier">目标美本 / 档次</label>
+        <select id="usGoal"></select>
+      </div>
+      <div class="field">
+        <label data-zh="已考 SAT（数学 + 阅读写作，各 200–800；没考可留空）" data-en="Completed SAT (Math + EBRW, each 200–800; leave blank if not taken)">已考 SAT（数学 + 阅读写作，各 200–800；没考可留空）</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input id="satM" type="number" min="200" max="800" inputmode="numeric" placeholder="Math 200–800" style="flex:1;min-width:130px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
           <input id="satR" type="number" min="200" max="800" inputmode="numeric" placeholder="EBRW 200–800" style="flex:1;min-width:130px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
         </div>
       </div>
       <div class="field">
-        <label data-zh="AP 成绩（科目 + 分数 1–5，可加多门）" data-en="AP scores (subject + 1–5, add several)">AP 成绩（科目 + 分数 1–5，可加多门）</label>
+        <label data-zh="已考 AP（科目 + 分数 1–5；可加多门，没考可留空）" data-en="Completed AP scores (subject + 1–5; add several, leave blank if none)">已考 AP（科目 + 分数 1–5；可加多门，没考可留空）</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <input id="apName" type="text" placeholder="Calculus BC / Physics C ..." style="flex:2;min-width:150px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
           <select id="apScore" style="padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
@@ -175,7 +194,7 @@
         </div>
         <div id="apList" style="margin-top:8px"></div>
       </div>
-      <button class="btn-calc" id="usCalc" data-zh="看美本对应学校 →" data-en="See matching US universities →">看美本对应学校 →</button>
+      <button class="btn-calc" id="usCalc" data-zh="计算离目标院校还差多少 →" data-en="Calculate gap to target →">计算离目标院校还差多少 →</button>
       <div id="usResult" style="margin-top:14px"></div>
       <a class="rules-link" href="https://satsuite.collegeboard.org/sat/scores" target="_blank" rel="noopener" data-zh="📖 SAT / AP 官方（College Board）" data-en="📖 Official SAT / AP (College Board)">📖 SAT / AP 官方（College Board）</a>
       <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。" data-en="⚠️ US admission is holistic: SAT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT ranges are published middle-50% figures (approximate; in 2026 most top schools again require SAT/ACT), for reference only — check each university's official page.">⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。</p>
@@ -219,8 +238,16 @@
   var CAIE_MATH_ROUTES=[
     {name:'A Level route: P1 + P3 + P4 Mechanics + P5 Statistics 1',units:[{n:'P1 Pure Mathematics 1',max:75},{n:'P3 Pure Mathematics 3',max:75},{n:'P4 Mechanics',max:50},{n:'P5 Probability & Statistics 1',max:50}]},
     {name:'A Level route: P1 + P3 + P5 Statistics 1 + P6 Statistics 2',units:[{n:'P1 Pure Mathematics 1',max:75},{n:'P3 Pure Mathematics 3',max:75},{n:'P5 Probability & Statistics 1',max:50},{n:'P6 Probability & Statistics 2',max:50}]},
+    {name:'AS route: P1 + P2 Pure Mathematics 2',as:true,units:[{n:'P1 Pure Mathematics 1',max:75},{n:'P2 Pure Mathematics 2',max:50}]},
     {name:'AS route: P1 + P4 Mechanics',as:true,units:[{n:'P1 Pure Mathematics 1',max:75},{n:'P4 Mechanics',max:50}]},
     {name:'AS route: P1 + P5 Statistics 1',as:true,units:[{n:'P1 Pure Mathematics 1',max:75},{n:'P5 Probability & Statistics 1',max:50}]}
+  ];
+  var EDX_MATH_ROUTES=[
+    {name:'IAL Mathematics: P1 + P2 + P3 + P4 + M1 + S1',units:[{n:'P1 Pure 1 UMS',max:100},{n:'P2 Pure 2 UMS',max:100},{n:'P3 Pure 3 UMS',max:100},{n:'P4 Pure 4 UMS',max:100},{n:'M1 Mechanics 1 UMS',max:100},{n:'S1 Statistics 1 UMS',max:100}]},
+    {name:'IAL Mathematics: P1 + P2 + P3 + P4 + M1 + M2',units:[{n:'P1 Pure 1 UMS',max:100},{n:'P2 Pure 2 UMS',max:100},{n:'P3 Pure 3 UMS',max:100},{n:'P4 Pure 4 UMS',max:100},{n:'M1 Mechanics 1 UMS',max:100},{n:'M2 Mechanics 2 UMS',max:100}]},
+    {name:'IAL Mathematics: P1 + P2 + P3 + P4 + S1 + S2',units:[{n:'P1 Pure 1 UMS',max:100},{n:'P2 Pure 2 UMS',max:100},{n:'P3 Pure 3 UMS',max:100},{n:'P4 Pure 4 UMS',max:100},{n:'S1 Statistics 1 UMS',max:100},{n:'S2 Statistics 2 UMS',max:100}]},
+    {name:'AS Mathematics: P1 + P2 + M1',as:true,units:[{n:'P1 Pure 1 UMS',max:100},{n:'P2 Pure 2 UMS',max:100},{n:'M1 Mechanics 1 UMS',max:100}]},
+    {name:'AS Mathematics: P1 + P2 + S1',as:true,units:[{n:'P1 Pure 1 UMS',max:100},{n:'P2 Pure 2 UMS',max:100},{n:'S1 Statistics 1 UMS',max:100}]}
   ];
   var DATA={
     caie:{label:'CAIE (Cambridge International)',exam:'al',rules:CAIE_RULES,subjects:{
@@ -232,7 +259,7 @@
       'Other CAIE subject (overall %)':{overall:true,rules:CAIE_RULES}
     }},
     edexcel:{label:'Edexcel / Pearson (IAL)',exam:'al',rules:EDX_RULES,subjects:{
-      'Mathematics (IAL) — UMS 单元估算':{pick:true,ums:true,pool:[{n:'P1 Pure 1 UMS',max:100},{n:'P2 Pure 2 UMS',max:100},{n:'P3 Pure 3 UMS',max:100},{n:'P4 Pure 4 UMS',max:100},{n:'M1 Mechanics 1 UMS',max:100},{n:'M2 Mechanics 2 UMS',max:100},{n:'S1 Statistics 1 UMS',max:100},{n:'S2 Statistics 2 UMS',max:100},{n:'D1 Decision 1 UMS',max:100},{n:'FP1 Further Pure 1 UMS',max:100},{n:'FP2 Further Pure 2 UMS',max:100},{n:'FP3 Further Pure 3 UMS',max:100}],rules:EDX_RULES,note:{zh:'请填 UMS，不是 raw mark。Edexcel IAL 最终成绩按 UMS/cash-in，A* 还要看 A2 单元表现；如果只有 raw mark，本工具只能粗估。',en:'Enter UMS, not raw marks. Edexcel IAL final grades use UMS/cash-in, and A* also depends on A2 unit performance; raw marks are only a rough estimate here.'}},
+      'Mathematics (IAL) — 常见 6 单元路径':{routes:EDX_MATH_ROUTES,ums:true,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/mathematics-2018/international-a-level-maths-eligibility-calculator.html',note:{zh:'请填 UMS，不是 raw mark。本工具只列常见 Mathematics 路径（P1-P4 + M/S 应用单元；AS 为 3 单元）。D1 或其它组合请先用 Pearson 官方 Eligibility Calculator 核对，避免选错 cash-in。A* 还要看 A2/P3-P4 表现，本工具按 UMS 粗估。',en:'Enter UMS, not raw marks. This tool lists common Mathematics routes only (P1-P4 + M/S applied units; AS is 3 units). For D1 or other combinations, check Pearson official Eligibility Calculator first to avoid an invalid cash-in. A* also depends on A2/P3-P4 performance; this is a UMS estimate.'}},
       'Physics (IAL) — UMS %':{units:EDX_SCI,ums:true,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/physics-2018.html',note:{zh:'请填各单元 UMS 得分率；raw mark 每次考试会先转换成 UMS。',en:'Enter each unit as UMS percentage; raw marks are converted to UMS each session.'}},
       'Chemistry (IAL) — UMS %':{units:EDX_SCI,ums:true,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/chemistry-2018.html',note:{zh:'请填各单元 UMS 得分率；raw mark 每次考试会先转换成 UMS。',en:'Enter each unit as UMS percentage; raw marks are converted to UMS each session.'}},
       'Biology (IAL) — UMS %':{units:EDX_SCI,ums:true,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/biology-2018.html',note:{zh:'请填各单元 UMS 得分率；raw mark 每次考试会先转换成 UMS。',en:'Enter each unit as UMS percentage; raw marks are converted to UMS each session.'}},
@@ -251,25 +278,27 @@
   };
 
   var T={
-    zh:{none:'—',pickHint:'勾选最终会计入这一科的所有卷/单元；已考的填分，没考的留空，系统会反推剩余单元要求。',routeHint:'先选官方考试组合；已考卷填 raw mark，没考卷留空。',overallHint:'这一科按整体得分率估算，填你的 % 即可。',fixedHint:'已考卷填得分率 %，没考卷留空；卷名后是该卷占比。',umsHint:'请填 UMS 或 UMS 得分率；已出分单元填 UMS，未考单元留空。',overallU:'整体得分率',pick:'先选科目',liveGrade:'本科估算',grade:'等级',need:'输入分数后显示',
-      done:'已完成',remaining:'未考/未填',needRemain:'若目标 {g}，剩余单元平均需要',unitNeed:'未考小单元大约需要',impossible:'目标 {g} 需要剩余单元超过 100%，基本不现实',alreadyTarget:'按已填单元，目标 {g} 已经够线',targetNow:'先选择本科目标等级，可反推未考单元要求',estimated:'预测最终',partial:'含未考单元预测',actual:'已填完整',
+    zh:{none:'—',pickHint:'先勾“已考”并填分；还会计入最终成绩但没考的单元勾“计入”。系统会按目标反推未来单元要求。',routeHint:'先选官方考试组合；已考卷勾“已考”并填 raw mark，未考卷不要勾。',overallHint:'这一科按整体得分率估算，填你的 % 即可。',fixedHint:'已考卷勾“已考”并填得分率 %；没考卷不要勾，卷名后是该卷占比。',umsHint:'请填 UMS 或 UMS 得分率；已出分单元勾“已考”，未考但会计入的单元勾“计入”。',overallU:'整体得分率',pick:'先选科目',liveGrade:'当前预测',grade:'等级',need:'先勾已考单元并填分',
+      done:'已考',planned:'计入',remaining:'未考/未填',needRemain:'若目标 {g}，未考单元平均需要',unitNeed:'建议下一步考',retake:'建议重刷',retakeNeed:'只靠未考单元不够，还需从已考单元补回约',impossible:'目标 {g} 需要未考单元超过 100%，需要重刷或调整目标',alreadyTarget:'按已考单元，目标 {g} 已经够线',targetNow:'先选择目标等级或目标分数，可反推未考单元要求',estimated:'按目前均分预测',partial:'含未考单元预测',actual:'已填完整',
+      targetPct:'目标分数',currentDone:'已考贡献',projected:'按当前表现预测最终',highRisk:'要求偏高，建议尽快做学情诊断',addPlan:'先勾未来会计入最终成绩的单元，才能准确反推',invalidDone:'已勾“已考”的单元需要填分',
       overall:'综合成绩档',top3:'最高 3 门',allAL:'全部 A-level',ucas:'UCAS 分（A-level 计）',uniTitle:'你的成绩大致能冲的大学方向',gapTitle:'离目标还差多少',
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 / UMS 规则，本表按可输入数据估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level。大学申请通常看 3 门；请先加满 3 门，再看具体大学匹配。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
-      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',official:'官网',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',
+      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',apGap:'AP 4–5 分还差',satMet:'SAT 已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT；顶尖美本通常不能只靠 AP 替代 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
-    en:{none:'—',pickHint:'Tick all papers/units that will count for this subject; enter completed marks and leave unfinished units blank.',routeHint:'Choose the official route; enter raw marks for completed papers and leave future papers blank.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Enter % for completed papers and leave unfinished papers blank; the figure after each name is the weighting.',umsHint:'Enter UMS or UMS percentage; fill completed units and leave unfinished units blank.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'This subject',grade:'Grade',need:'Enter marks to see',
-      done:'Completed',remaining:'Unfinished / blank',needRemain:'To reach {g}, remaining units need on average',unitNeed:'Approximate marks needed per unfinished unit',impossible:'Target {g} needs over 100% on remaining units, so it is not realistic',alreadyTarget:'With entered units, target {g} is already on track',targetNow:'Choose a target grade to reverse-calculate unfinished units',estimated:'Projected final',partial:'includes unfinished-unit projection',actual:'all entered',
+    en:{none:'—',pickHint:'Tick “done” for completed units and enter marks; tick “counts” for future units that will count toward the final grade.',routeHint:'Choose the official route; tick completed papers and enter raw marks, leave future papers unticked.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Tick completed papers and enter %; leave future papers unticked. The figure after each name is the weighting.',umsHint:'Enter UMS or UMS percentage; tick completed units and tick future units that will count.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'Current projection',grade:'Grade',need:'Tick completed units and enter marks',
+      done:'Done',planned:'Counts',remaining:'Future / blank',needRemain:'To reach {g}, future units need on average',unitNeed:'Take next',retake:'Consider retaking',retakeNeed:'Future units alone are not enough; recover about',impossible:'Target {g} needs over 100% on future units, so retake or adjust target',alreadyTarget:'With completed units, target {g} is already on track',targetNow:'Choose a target grade or target percentage to reverse-calculate future units',estimated:'projected from current average',partial:'includes future-unit projection',actual:'all entered',
+      targetPct:'Target %',currentDone:'Completed contribution',projected:'Projected final at current pace',highRisk:'High requirement; book a diagnosis soon',addPlan:'Tick future units that will count for an accurate reverse calculation',invalidDone:'Completed units need a mark',
       overall:'Overall profile',top3:'Top 3',allAL:'All A-levels',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: A-level A* also depends on A2 / UMS rules; this is estimated from the data entered.',
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s). Universities usually look at 3; add the rest before using the university match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
-      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',official:'Official',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',
+      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',apGap:'AP 4–5 gap',satMet:'SAT is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT entered yet; for top US colleges, AP usually does not replace SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
-  var boardSel=document.getElementById('board'),subjSel=document.getElementById('subject'),unitsEl=document.getElementById('units'),liveEl=document.getElementById('live'),rulesEl=document.getElementById('rules'),subjectTargetSel=document.getElementById('subjectTarget');
+  var boardSel=document.getElementById('board'),subjSel=document.getElementById('subject'),unitsEl=document.getElementById('units'),liveEl=document.getElementById('live'),rulesEl=document.getElementById('rules'),subjectTargetSel=document.getElementById('subjectTarget'),subjectTargetPctEl=document.getElementById('subjectTargetPct');
   var profile=[]; // {name,exam,pct,grade,target,scale,board,complete,required,status}
   var lastSubjectMeta=null;
   var currentPath='uk';
@@ -288,9 +317,31 @@
     var keep=subjectTargetSel.value;
     subjectTargetSel.innerHTML=targetList(fake).map(function(o){return '<option value="'+o+'"'+(o===keep?' selected':'')+'>'+(o===''?(L()==='en'?'No target yet':'暂不设置'):o)+'</option>';}).join('');
   }
+  function targetPctValue(){
+    var v=parseFloat(subjectTargetPctEl.value);
+    if(!isNaN(v))return Math.max(0,Math.min(100,v));
+    return pctForGrade(subjectTargetSel.value||'');
+  }
+  function unitRowMark(u,kind){
+    var max=u.max||100,label=kind==='percent'?'%':'/'+max;
+    return '<div class="urow" data-max="'+max+'" data-kind="'+kind+'"><label class="unit-check"><input type="checkbox" class="doneck"> '+T[L()].done+'</label><span class="un">'+u.n+'</span><input class="um" type="number" min="0" max="'+max+'" inputmode="decimal" disabled><span class="umax">'+label+'</span></div>';
+  }
+  function bindUnitInputs(){
+    unitsEl.querySelectorAll('.doneck').forEach(function(c){
+      c.addEventListener('change',function(){
+        var input=c.closest('.urow').querySelector('.um');
+        input.disabled=!c.checked;
+        if(!c.checked)input.value='';
+        liveCalc();
+      });
+    });
+    unitsEl.querySelectorAll('.um').forEach(function(i){i.addEventListener('input',liveCalc);});
+    unitsEl.querySelectorAll('.uck').forEach(function(c){c.addEventListener('change',liveCalc);});
+  }
 
   function cur(){return DATA[boardSel.value].subjects[subjSel.value];}
   function curExam(){return DATA[boardSel.value].exam;}
+  function resetSubjectGoal(){subjectTargetSel.value='';subjectTargetPctEl.value='';}
 
   function fillBoards(){boardSel.innerHTML=Object.keys(DATA).map(function(k){return '<option value="'+k+'">'+DATA[k].label+'</option>';}).join('');}
   function fillSubjects(){var b=DATA[boardSel.value];subjSel.innerHTML=Object.keys(b.subjects).map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');}
@@ -305,9 +356,9 @@
     } else if(s.routes){
       html='<select id="routeSel" class="route-select">'+s.routes.map(function(r,i){return '<option value="'+i+'">'+r.name+'</option>';}).join('')+'</select><div id="routeUnits"></div>';
     } else if(s.pick){
-      html=s.pool.map(function(u){return '<div class="urow" data-max="'+u.max+'"><span class="un"><label style="cursor:pointer"><input type="checkbox" class="uck" style="margin-right:6px">'+u.n+'</label></span><input class="um" type="number" min="0" max="'+u.max+'" inputmode="decimal"><span class="umax">/'+u.max+'</span></div>';}).join('');
+      html=s.pool.map(function(u){return '<div class="urow pickrow" data-max="'+u.max+'" data-kind="mark"><label class="unit-check"><input type="checkbox" class="uck"> '+t.planned+'</label><label class="unit-check"><input type="checkbox" class="doneck"> '+t.done+'</label><span class="un">'+u.n+'</span><input class="um" type="number" min="0" max="'+u.max+'" inputmode="decimal" disabled><span class="umax">/'+u.max+'</span></div>';}).join('');
     } else {
-      html=s.units.map(function(u){return '<div class="urow" data-w="'+u.w+'"><span class="un">'+u.n+' · '+u.w+'%</span><input class="um" type="number" min="0" max="100" inputmode="decimal" placeholder="%"><span class="umax">%</span></div>';}).join('');
+      html=s.units.map(function(u){return '<div class="urow" data-w="'+u.w+'" data-kind="percent"><label class="unit-check"><input type="checkbox" class="doneck"> '+t.done+'</label><span class="un">'+u.n+' · '+u.w+'%</span><input class="um" type="number" min="0" max="100" inputmode="decimal" placeholder="%" disabled><span class="umax">%</span></div>';}).join('');
     }
     if(s.note)html+='<p class="mini-note">'+(L()==='en'?s.note.en:s.note.zh)+'</p>';
     unitsEl.innerHTML=html;
@@ -315,14 +366,13 @@
       var rs=document.getElementById('routeSel');
       function drawRoute(){
         var route=s.routes[+rs.value];
-        document.getElementById('routeUnits').innerHTML=route.units.map(function(u){return '<div class="urow" data-max="'+u.max+'"><span class="un">'+u.n+'</span><input class="um" type="number" min="0" max="'+u.max+'" inputmode="decimal"><span class="umax">/'+u.max+'</span></div>';}).join('');
-        unitsEl.querySelectorAll('.um').forEach(function(i){i.addEventListener('input',liveCalc);});
+        document.getElementById('routeUnits').innerHTML=route.units.map(function(u){return unitRowMark(u,'mark');}).join('');
+        bindUnitInputs();
         liveCalc();
       }
       rs.addEventListener('change',drawRoute);drawRoute();return;
     }
-    unitsEl.querySelectorAll('.um').forEach(function(i){i.addEventListener('input',liveCalc);});
-    unitsEl.querySelectorAll('.uck').forEach(function(c){c.addEventListener('change',liveCalc);});
+    bindUnitInputs();
     liveCalc();
   }
   function subjectProgress(){
@@ -331,45 +381,69 @@
     if(!rows.length)return null;
     if(s.overall){
       var v=parseFloat(rows[0].querySelector('.um').value);
-      return isNaN(v)?null:{pct:cl(v,100),completedPct:cl(v,100),coverage:100,missing:0,required:null,status:'actual'};
+      return isNaN(v)?null:finishProgress({completedPct:cl(v,100),coverage:100,missingUnits:[],doneUnits:[{name:tName(),score:cl(v,100),max:100,pct:cl(v,100),type:'percent'}]});
     }
-    if(s.routes){
-      var earnedR=0,totalR=0,doneR=0,anyR=false,missingR=[];
-      rows.forEach(function(r){var mx=+r.getAttribute('data-max'),name=r.querySelector('.un').textContent.trim();totalR+=mx;var v=parseFloat(r.querySelector('.um').value);if(!isNaN(v)){anyR=true;earnedR+=cl(v,mx);doneR+=mx;}else{missingR.push({name:name,max:mx,type:'mark'});}});
-      if(!anyR||totalR<=0)return null;
-      return finishProgress(earnedR/totalR*100,doneR/totalR*100,100-doneR/totalR*100,missingR);
-    }
-    if(s.pick){
-      var earned=0,total=0,done=0,any=false,missing=[];
-      rows.forEach(function(r){var ck=r.querySelector('.uck');if(ck&&ck.checked){var mx=+r.getAttribute('data-max'),name=r.querySelector('.un').textContent.trim();total+=mx;var v=parseFloat(r.querySelector('.um').value);if(!isNaN(v)){any=true;earned+=cl(v,mx);done+=mx;}else{missing.push({name:name,max:mx,type:'mark'});}}});
-      if(!any||total<=0)return null;
-      return finishProgress(earned/total*100,done/total*100,100-done/total*100,missing);
-    }
-    var totalW=0,doneW=0,acc=0,any2=false,missingW=[];
-    rows.forEach(function(r){var w=+r.getAttribute('data-w'),name=r.querySelector('.un').textContent.trim();totalW+=w;var v=parseFloat(r.querySelector('.um').value);if(!isNaN(v)){any2=true;acc+=cl(v,100)*w;doneW+=w;}else{missingW.push({name:name,type:'percent'});}});
-    if(!any2||totalW<=0)return null;
-    return finishProgress(acc/totalW,doneW/totalW*100,100-doneW/totalW*100,missingW);
+    return progressFromRows(rows,s.pick);
   }
-  function finishProgress(completedPct,coverage,missing,missingUnits){
-    var target=subjectTargetSel.value,req=null,pct=completedPct,status=missing>0?'partial':'actual';
-    if(missing>0&&target){
-      req=(pctForGrade(target)-completedPct)/(missing/100);
-      pct=completedPct+(Math.max(0,Math.min(100,req))*(missing/100));
+  function tName(){return subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim();}
+  function progressFromRows(rows,usesPlan){
+    var total=0,doneWeight=0,doneContribution=0,anyDone=false,missingUnits=[],doneUnits=[],invalid=false;
+    rows.forEach(function(r){
+      var planned=!usesPlan||!r.querySelector('.uck')||r.querySelector('.uck').checked;
+      if(!planned)return;
+      var kind=r.getAttribute('data-kind')||'mark';
+      var weight=kind==='percent'?(+r.getAttribute('data-w')||0):(+r.getAttribute('data-max')||100);
+      var max=kind==='percent'?100:(+r.getAttribute('data-max')||100);
+      var name=r.querySelector('.un').textContent.trim();
+      total+=weight;
+      var done=r.querySelector('.doneck')&&r.querySelector('.doneck').checked;
+      var input=r.querySelector('.um'),v=parseFloat(input.value);
+      if(done&&isNaN(v)){invalid=true;return;}
+      if(done){
+        anyDone=true;
+        v=Math.max(0,Math.min(max,v));
+        var unitPct=kind==='percent'?v:(v/max*100);
+        doneWeight+=weight;
+        doneContribution+=unitPct*weight;
+        doneUnits.push({name:name,score:v,max:max,pct:unitPct,type:kind,weight:weight});
+      } else {
+        missingUnits.push({name:name,max:max,type:kind,weight:weight});
+      }
+    });
+    if(invalid)return {invalid:true};
+    if(!anyDone||total<=0)return null;
+    return finishProgress({completedPct:doneContribution/total,coverage:doneWeight/total*100,missingUnits:missingUnits,doneUnits:doneUnits,totalWeight:total});
+  }
+  function finishProgress(data){
+    var target=subjectTargetSel.value,targetPct=targetPctValue(),missing=Math.max(0,100-data.coverage),req=null,pct=data.completedPct,status=missing>0?'partial':'actual';
+    var doneAvg=data.coverage>0?data.completedPct/(data.coverage/100):0;
+    if(missing>0&&targetPct>0){
+      req=(targetPct-data.completedPct)/(missing/100);
+      pct=data.completedPct+(Math.max(0,Math.min(100,req))*(missing/100));
     } else if(missing>0) {
-      pct=completedPct/(coverage/100);
+      pct=data.completedPct+(doneAvg*(missing/100));
     }
-    return {pct:Math.max(0,Math.min(100,pct)),completedPct:completedPct,coverage:coverage,missing:missing,missingUnits:missingUnits||[],required:req,status:status};
+    var retakeNeed=(targetPct>0&&missing>0)?Math.max(0,targetPct-(data.completedPct+missing)):0;
+    var low=data.doneUnits.slice().filter(function(u){return targetPct>0&&u.pct<Math.max(40,targetPct-10);}).sort(function(a,b){return a.pct-b.pct;}).slice(0,3);
+    return {pct:Math.max(0,Math.min(100,pct)),completedPct:data.completedPct,doneAvg:doneAvg,coverage:data.coverage,missing:missing,missingUnits:data.missingUnits||[],doneUnits:data.doneUnits||[],required:req,targetPct:targetPct,targetGrade:target,status:status,retakeNeed:retakeNeed,lowUnits:low};
   }
   function liveCalc(){
     var t=T[L()],prog=subjectProgress();
+    if(prog&&prog.invalid){liveEl.innerHTML='<span class="gap-pos">'+t.invalidDone+'</span>';document.getElementById('addBtn').disabled=true;return;}
     if(prog===null){liveEl.innerHTML=t.liveGrade+'：<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;return;}
-    var g=gradeFromPct(prog.pct,curExam(),cur().scale),html=t.liveGrade+'：<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
-    html+='<div class="mini-note">'+t.done+' '+prog.coverage.toFixed(0)+'%';
+    var g=gradeFromPct(prog.pct,curExam(),cur().scale),label=prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade,html=label+'：<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
+    html+='<div class="mini-note">'+t.currentDone+'：'+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'%';
     if(prog.missing>0)html+=' · '+t.remaining+' '+prog.missing.toFixed(0)+'%';
     html+='</div>';
+    if(prog.missing>0&&!prog.targetPct)html+='<div class="mini-note">'+t.projected+'：'+prog.pct.toFixed(1)+'%（'+t.estimated+'）</div>';
+    if(prog.missing>0&&!prog.targetPct&&prog.missingUnits&&prog.missingUnits.length){
+      html+='<div class="mini-note">'+t.unitNeed+'：'+prog.missingUnits.slice(0,6).map(function(u){return u.name;}).join('； ')+'</div>';
+    } else if(prog.missing>0&&!prog.targetPct){
+      html+='<div class="mini-note">'+t.addPlan+'</div>';
+    }
     if(prog.missing>0){
-      var target=subjectTargetSel.value;
-      if(!target)html+='<div class="mini-note">'+t.targetNow+'</div>';
+      var target=subjectTargetSel.value||((prog.targetPct||0)>0?(t.targetPct+' '+prog.targetPct.toFixed(0)+'%'):'');
+      if(!prog.targetPct)html+='<div class="mini-note">'+t.targetNow+'</div>';
       else if(prog.required<=0)html+='<div class="mini-note gap-ok">'+t.alreadyTarget.replace('{g}',target)+'</div>';
       else if(prog.required>100)html+='<div class="mini-note gap-pos">'+t.impossible.replace('{g}',target)+'</div>';
       else {
@@ -377,7 +451,15 @@
         if(prog.missingUnits&&prog.missingUnits.length){
           html+='<div class="mini-note">'+t.unitNeed+'：'+prog.missingUnits.slice(0,6).map(function(u){return u.type==='mark'?u.name+' ≈ '+Math.ceil(u.max*prog.required/100)+'/'+u.max:u.name+' ≈ '+prog.required.toFixed(0)+'%';}).join('； ')+'</div>';
         }
+        if(prog.required>=88)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.highRisk+'</div>';
       }
+      if(prog.lowUnits&&prog.lowUnits.length&&(prog.required>85||prog.retakeNeed>0)){
+        html+='<div class="mini-note">'+t.retake+'：'+prog.lowUnits.map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';}).join('； ')+'</div>';
+      }
+      if(prog.retakeNeed>0)html+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+prog.retakeNeed.toFixed(1)+'%</div>';
+    } else if(prog.targetPct&&prog.pct<prog.targetPct){
+      html+='<div class="mini-note gap-pos">'+t.needp+(prog.targetPct-prog.pct).toFixed(1)+'%</div>';
+      if(prog.lowUnits&&prog.lowUnits.length)html+='<div class="mini-note">'+t.retake+'：'+prog.lowUnits.map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';}).join('； ')+'</div>';
     }
     liveEl.innerHTML=html;
     document.getElementById('addBtn').disabled=false;
@@ -385,10 +467,11 @@
 
   document.getElementById('addBtn').onclick=function(){
     var prog=subjectProgress();if(prog===null)return;
+    if(prog.invalid){liveCalc();return;}
     var p=prog.pct,s=cur(),nm=subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim(),ex=curExam(),g=gradeFromPct(p,ex,s.scale),target=subjectTargetSel.value||'';
     var idx=-1;profile.forEach(function(x,i){if(x.name===nm&&x.exam===ex)idx=i;});
     lastSubjectMeta={board:DATA[boardSel.value].label,subject:nm,grade:g,pct:p};
-    var item={name:nm,exam:ex,pct:p,grade:g,target:target,scale:s.scale||'',board:DATA[boardSel.value].label,complete:Math.round(prog.coverage),required:prog.required,status:prog.status};
+    var item={name:nm,exam:ex,pct:p,grade:g,target:target,targetPct:prog.targetPct,scale:s.scale||'',board:DATA[boardSel.value].label,complete:Math.round(prog.coverage),required:prog.required,status:prog.status,futureUnits:(prog.missingUnits||[]).map(function(u){return u.name;}),lowUnits:(prog.lowUnits||[]).map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';}),retakeNeed:prog.retakeNeed};
     if(idx>=0){profile[idx]=Object.assign(profile[idx],item);} else {profile.push(item);}
     renderMy();renderResults();
     document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -402,7 +485,11 @@
       var isPartial=x.status==='partial'||(x.complete&&x.complete<100);
       var badge=isPartial?'<span class="badge badge-warn">'+t.partial+'</span>':'<span class="badge">'+t.actual+'</span>';
       var req=(isPartial&&x.required!=null&&x.required>0&&x.required<=100)?'<span style="color:var(--ink-soft);font-size:12px"> · '+t.remaining+' '+(100-(x.complete||100))+'% ≈ '+x.required.toFixed(0)+'%</span>':'';
-      return '<div class="mysub"><span><span class="nm">'+x.name+'</span>'+badge+'<span class="gr">'+x.grade+'</span><span style="color:var(--ink-soft);font-size:13px">'+x.pct.toFixed(0)+'%</span>'+req+'</span><span><select data-i="'+i+'">'+opts+'</select> <button class="x" data-x="'+i+'">×</button></span></div>';
+      var plan='';
+      if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+'：'+x.futureUnits.slice(0,4).join('； ')+'</div>';
+      if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.retake+'：'+x.lowUnits.slice(0,3).join('； ')+'</div>';
+      if(x.retakeNeed>0)plan+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%</div>';
+      return '<div class="mysub"><span><span class="nm">'+x.name+'</span>'+badge+'<span class="gr">'+x.grade+'</span><span style="color:var(--ink-soft);font-size:13px">'+x.pct.toFixed(0)+'%</span>'+req+plan+'</span><span><select data-i="'+i+'">'+opts+'</select> <button class="x" data-x="'+i+'">×</button></span></div>';
     }).join('');
     box.querySelectorAll('select').forEach(function(s){s.onchange=function(){profile[+s.getAttribute('data-i')].target=s.value;saveProfile();renderResults();};});
     box.querySelectorAll('.x').forEach(function(b){b.onclick=function(){profile.splice(+b.getAttribute('data-x'),1);saveProfile();renderMy();renderResults();};});
@@ -435,11 +522,14 @@
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
     document.getElementById('r-uni').innerHTML=uh;
     // gap
-    var gaps=profile.filter(function(x){return x.target&&(pctForGrade(x.target)-x.pct)>0;});
+    var gaps=profile.map(function(x){
+      var tp=x.targetPct||pctForGrade(x.target||'');
+      return Object.assign({},x,{gapPct:tp>0?tp-x.pct:0});
+    }).filter(function(x){return x.gapPct>0;});
     var gh='<h3>'+t.gapTitle+'</h3>';
-    if(!profile.some(function(x){return x.target;}))gh+='<div class="ucas">'+t.pickTarget+'</div>';
-    else if(!gaps.length)gh+='<div class="gap-ok" style="font-size:16px">'+t.met+'</div>';
-    else gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+'：<span class="gap-pos">'+t.needp+(pctForGrade(x.target)-x.pct).toFixed(0)+'%</span> → '+x.target+'</li>';}).join('')+'</ul>';
+    if(!profile.some(function(x){return x.target||x.targetPct>0;}))gh+='<div class="ucas">'+t.pickTarget+'</div>';
+    else if(!gaps.length)gh+='<div class="gap-ok" style="font-size:16px">'+(soft?(L()==='en'?'On track if future-unit targets are met':'按目标方案可达标，关键看未考单元'):t.met)+'</div>';
+    else gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+'：<span class="gap-pos">'+t.needp+x.gapPct.toFixed(0)+'%</span> → '+(x.target||((x.targetPct||0).toFixed(0)+'%'))+'</li>';}).join('')+'</ul>';
     if(al.length)gh+='<div class="disclaimer">'+(soft?t.partial+'。 ':'')+t.a2note+'</div>';
     document.getElementById('r-gap').innerHTML=gh;
     saveProfile();updateWhatsAppLinks();renderCourses();applyPathTabs();
@@ -462,14 +552,19 @@
   function sumG(arr){return arr.map(rank).reduce(function(a,b){return a+b;},0);}
   function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return (mode==='tgt'&&x.target)?x.target:x.grade;}).sort(function(a,b){return rank(b)-rank(a);});}
   function saveProfile(){try{localStorage.setItem('grade_calc_profile',JSON.stringify(profile));}catch(e){}}
-  function loadProfile(){try{var raw=localStorage.getItem('grade_calc_profile');if(raw){profile=JSON.parse(raw)||[];profile.forEach(function(x){x.scale=x.scale||'';x.board=x.board||'';x.status=x.status||'actual';x.complete=x.complete||100;});}}catch(e){profile=[];}}
+  function loadProfile(){try{var raw=localStorage.getItem('grade_calc_profile');if(raw){profile=JSON.parse(raw)||[];profile.forEach(function(x){x.scale=x.scale||'';x.board=x.board||'';x.status=x.status||'actual';x.complete=x.complete||100;x.futureUnits=x.futureUnits||[];x.lowUnits=x.lowUnits||[];x.retakeNeed=x.retakeNeed||0;x.targetPct=x.targetPct||pctForGrade(x.target||'');});}}catch(e){profile=[];}}
   function consultText(){
     var lang=L(),lines=[];
     if(lang==='en')lines.push('Hi DAYA, I used the grade calculator and would like a learning diagnosis.');
     else lines.push('你好，我用了成绩计算器，想咨询学情诊断。');
     if(profile.length){
       lines.push(lang==='en'?'My current results:':'当前成绩：');
-      profile.forEach(function(x){var partial=(x.status==='partial'||(x.complete&&x.complete<100))?(lang==='en'?' [unfinished units]':'【含未考单元】'):'';lines.push('- '+(x.board?x.board+' / ':'')+x.name+': '+x.grade+' ('+x.pct.toFixed(0)+'%)'+partial+(x.target?' -> target '+x.target:''));});
+      profile.forEach(function(x){
+        var partial=(x.status==='partial'||(x.complete&&x.complete<100))?(lang==='en'?' [unfinished units]':'【含未考单元】'):'';
+        lines.push('- '+(x.board?x.board+' / ':'')+x.name+': '+x.grade+' ('+x.pct.toFixed(0)+'%)'+partial+(x.target?' -> target '+x.target:'')+(x.targetPct?(' / '+x.targetPct.toFixed(0)+'%'):''));
+        if(x.futureUnits&&x.futureUnits.length)lines.push('  '+(lang==='en'?'Next units: ':'下一步单元：')+x.futureUnits.slice(0,4).join(', '));
+        if(x.lowUnits&&x.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+x.lowUnits.slice(0,3).join(', '));
+      });
     } else if(lastSubjectMeta){
       lines.push((lang==='en'?'Current estimate: ':'当前估算：')+lastSubjectMeta.board+' / '+lastSubjectMeta.subject+': '+lastSubjectMeta.grade+' ('+lastSubjectMeta.pct.toFixed(0)+'%)');
     } else {
@@ -481,8 +576,22 @@
     var href='https://wa.me/8618156122672?text='+encodeURIComponent(consultText());
     ['ctaWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
   }
-  function fillCourse(){var c=document.getElementById('course'),cv=c.value;c.innerHTML=Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');if(cv)c.value=cv;}
+  function fillCourse(){var c=document.getElementById('course'),cv=c.value;c.innerHTML=Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');if(cv)c.value=cv;fillDream();}
+  function fillDream(){
+    var d=document.getElementById('dreamUni');if(!d)return;
+    var keep=d.value,key=document.getElementById('course').value,c=COURSES[key];
+    if(!c){d.innerHTML='';return;}
+    d.innerHTML='<option value="">'+(L()==='en'?'Choose one target':'选择一个目标')+'</option>'+c.unis.map(function(u,i){return '<option value="'+i+'">'+u[0]+' · '+u[1]+'</option>';}).join('');
+    if(keep&&d.querySelector('option[value="'+keep+'"]'))d.value=keep;
+  }
   function fillMode(){var m=document.getElementById('ucMode'),t=T[L()],mv=m.value;m.innerHTML='<option value="cur">'+t.modeCur+'</option><option value="tgt">'+t.modeTgt+'</option>';if(mv)m.value=mv;}
+  function offerGap(stuTop,offer){
+    var req=parseGrades(offer).slice(0,3).sort(function(a,b){return rank(b)-rank(a);});
+    var stu=stuTop.slice(0,3);
+    var steps=0;
+    for(var i=0;i<req.length;i++)steps+=Math.max(0,rank(req[i])-rank(stu[i]||'U'));
+    return {req:req,steps:steps};
+  }
   function renderCourses(){
     var t=T[L()],wrap=document.getElementById('coursewrap');
     if(currentPath!=='uk'){wrap.style.display='none';return;}
@@ -494,11 +603,20 @@
       document.getElementById('courseTable').innerHTML='';
       return;
     }
+    fillDream();
     var mode=document.getElementById('ucMode').value||'cur';
     var stuTop=profileGrades(mode).slice(0,3),stuSum=sumG(stuTop);
     var key=document.getElementById('course').value,c=COURSES[key];if(!c)return;
     var soft=al.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
     document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+t.yourProfile+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'');
+    var dreamBox=document.getElementById('dreamGap'),di=document.getElementById('dreamUni').value;
+    if(di!==''){
+      var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
+      dreamBox.style.display='block';
+      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+t.yourProfile+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(gap.steps<=0?'<div class="gap-ok">'+t.fitMatch+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>');
+    } else {
+      dreamBox.style.display='none';
+    }
     var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+t.fit+'</th><th>'+t.official+'</th></tr>';
     c.unis.forEach(function(u){
       var d=sumG(parseGrades(u[1]).slice(0,3))-stuSum;
@@ -511,13 +629,19 @@
   // ---- US route: SAT + AP (indicative middle-50% ranges) ----
   var apList=[];
   var US_TIERS=[
-    {min:1500,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'≈1500–1570',ap:{zh:'多门 AP 5 分',en:'several AP 5s'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
-    {min:1450,zh:'美国 Top 20',en:'US Top 20',sat:'≈1450–1540',ap:{zh:'数门 4–5 分',en:'several 4–5s'},ex:'UCLA · Michigan · CMU · UC Berkeley · NYU'},
-    {min:1350,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'≈1350–1480',ap:{zh:'几门 4–5 分',en:'a few 4–5s'},ex:'Boston U · UIUC · UC San Diego · Wisconsin'},
-    {min:1250,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'≈1250–1400',ap:{zh:'2–3 门 4 分+',en:'2–3 at 4+'},ex:'Penn State · Ohio State · Pittsburgh'},
-    {min:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'<1250',ap:{zh:'—',en:'—'},ex:''}
+    {min:1500,targetSat:1500,targetAP:4,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'≈1500–1570',ap:{zh:'建议 4+ 门 AP 4–5，核心科目越强越好',en:'4+ APs at 4–5 recommended; strong core subjects help'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
+    {min:1450,targetSat:1450,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'≈1450–1540',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'UCLA · Michigan · CMU · UC Berkeley · NYU'},
+    {min:1350,targetSat:1350,targetAP:2,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'≈1350–1480',ap:{zh:'建议 2+ 门 AP 4–5',en:'2+ APs at 4–5 recommended'},ex:'Boston U · UIUC · UC San Diego · Wisconsin'},
+    {min:1250,targetSat:1250,targetAP:1,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'≈1250–1400',ap:{zh:'有 AP 4–5 会加分',en:'AP 4–5 helps'},ex:'Penn State · Ohio State · Pittsburgh'},
+    {min:0,targetSat:1150,targetAP:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'<1250',ap:{zh:'先补 SAT/GPA 基础',en:'Build SAT/GPA foundation first'},ex:''}
   ];
   function usTier(total){for(var i=0;i<US_TIERS.length;i++){if(total>=US_TIERS[i].min)return i;}return US_TIERS.length-1;}
+  function fillUSGoal(){
+    var s=document.getElementById('usGoal');if(!s)return;
+    var keep=s.value;
+    s.innerHTML=US_TIERS.map(function(x,i){return '<option value="'+i+'">'+(L()==='en'?x.en:x.zh)+' · SAT '+x.sat+'</option>';}).join('');
+    if(keep)s.value=keep;
+  }
   function renderAP(){
     var box=document.getElementById('apList');
     box.innerHTML=apList.map(function(a,i){return '<span style="display:inline-block;background:var(--bg-soft);border:1px solid var(--line);border-radius:8px;padding:4px 10px;margin:0 6px 6px 0;font-size:13px">'+a.n+': <b>'+a.s+'</b> <b data-x="'+i+'" style="cursor:pointer;color:#b9575f">×</b></span>';}).join('');
@@ -527,10 +651,24 @@
     var t=T[L()],m=parseFloat(document.getElementById('satM').value),r=parseFloat(document.getElementById('satR').value);
     var total=(!isNaN(m)&&!isNaN(r))?(Math.max(200,Math.min(800,m))+Math.max(200,Math.min(800,r))):null;
     var ap5=apList.filter(function(a){return a.s>=4;}).length;
-    var html='';
-    if(total!=null){var ti=usTier(total);html+='<div class="rcard"><h3>SAT '+total+' / 1600 · '+t.apStrong+' '+ap5+'</h3><div class="tier">🎓 '+(L()==='en'?US_TIERS[ti].en:US_TIERS[ti].zh)+'</div></div>';}
+    var goal=US_TIERS[+(document.getElementById('usGoal').value||0)]||US_TIERS[0];
+    var html='<div class="rcard"><h3>'+t.dreamGap+'</h3><div class="tier">🎓 '+(L()==='en'?goal.en:goal.zh)+'</div>';
+    html+='<div class="ucas">'+(total!=null?'SAT '+total+' / 1600':'SAT —')+' · '+t.apStrong+' '+ap5+'</div>';
+    if(total==null)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.satBlank+'</div>';
+    else if(total>=goal.targetSat)html+='<div class="gap-ok">'+t.satMet+'</div>';
+    else html+='<div class="gap-pos">'+t.satGap+' +'+(goal.targetSat-total)+'</div>';
+    if(apList.length===0)html+='<div class="mini-note">'+t.apBlank+'</div>';
+    else if(ap5>=goal.targetAP)html+='<div class="gap-ok">'+t.apMet+'</div>';
+    else html+='<div class="gap-pos">'+t.apGap+' '+(goal.targetAP-ap5)+'</div>';
+    if(total!=null&&total<goal.targetSat){
+      var weak=m<r?'Math':'Reading/Writing';
+      html+='<div class="mini-note">'+(L()==='en'?'Priority section: ':'优先补分模块：')+weak+'</div>';
+    }
+    html+='</div>';
     html+='<div style="overflow-x:auto"><table class="gt"><tr><th style="text-align:left">'+t.usTier+'</th><th>SAT</th><th>AP</th><th>'+t.usEx+'</th></tr>'+US_TIERS.map(function(x,i){var hl=(total!=null&&usTier(total)===i)?' style="background:#eaf2ff"':'';return '<tr'+hl+'><td style="text-align:left">'+(L()==='en'?x.en:x.zh)+'</td><td>'+x.sat+'</td><td>'+(L()==='en'?x.ap.en:x.ap.zh)+'</td><td style="font-size:12px">'+x.ex+'</td></tr>';}).join('')+'</table></div>';
     document.getElementById('usResult').innerHTML=html;
+    lastSubjectMeta={board:'US route',subject:L()==='en'?'Target '+(goal.en):'目标 '+goal.zh,grade:total!=null?('SAT '+total):'SAT —',pct:0};
+    updateWhatsAppLinks();
     applyPathTabs();
   }
   function applyPathTabs(){
@@ -542,14 +680,17 @@
     if(currentPath==='uk')renderCourses();else if(course)course.style.display='none';
   }
 
-  boardSel.onchange=function(){fillSubjects();renderUnits();};
-  subjSel.onchange=renderUnits;
+  boardSel.onchange=function(){resetSubjectGoal();fillSubjects();renderUnits();};
+  subjSel.onchange=function(){resetSubjectGoal();renderUnits();};
   subjectTargetSel.onchange=liveCalc;
+  subjectTargetPctEl.addEventListener('input',liveCalc);
   document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
-  document.getElementById('course').onchange=renderCourses;
+  document.getElementById('course').onchange=function(){fillDream();renderCourses();};
   document.getElementById('ucMode').onchange=renderCourses;
+  document.getElementById('dreamUni').onchange=renderCourses;
   document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();};
   document.getElementById('usCalc').onclick=renderUS;
+  document.getElementById('usGoal').onchange=renderUS;
   document.getElementById('pathTabs').onclick=function(e){
     var btn=e.target.closest&&e.target.closest('.path-tab');
     if(!btn)return;
@@ -561,11 +702,11 @@
     var en=lang==='en';document.documentElement.lang=en?'en':'zh-CN';
     document.querySelectorAll('[data-en]').forEach(function(el){var v=en?el.getAttribute('data-en'):el.getAttribute('data-zh');if(v!=null)el.innerHTML=v;});
     var b=document.getElementById('langToggle');if(b)b.textContent=en?'中文':'EN';
-    fillMode();renderUnits();renderMy();renderResults();applyPathTabs();
+    fillMode();fillDream();fillUSGoal();renderUnits();renderMy();renderResults();applyPathTabs();
     try{localStorage.setItem('site_lang',lang);}catch(e){}
   }
   window.__setLang=setLang;
-  fillBoards();fillSubjects();fillCourse();fillMode();loadProfile();
+  fillBoards();fillSubjects();fillCourse();fillMode();fillUSGoal();loadProfile();
   var saved=null;try{saved=localStorage.getItem('site_lang');}catch(e){}
   var urlLang=null;try{urlLang=new URLSearchParams(location.search).get('lang');}catch(e){}
   if(urlLang!=='zh'&&urlLang!=='en')urlLang=null;
