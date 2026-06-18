@@ -132,6 +132,32 @@
       <p class="disclaimer" data-zh="⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。" data-en="⚠️ Offers are common standard offers published by each university (for reference — check the official page for the current year). ✅Match / 🟡Reach / 🔴Stretch is estimated from grades only; real admission also depends on your personal statement, references, admissions tests/interviews, competitions & activities, English scores and that year's competition — <b>meeting the grades is not a guarantee, and a strong overall profile can offset slightly lower grades</b>.">⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。</p>
     </div>
 
+    <!-- US: AP & SAT -->
+    <div class="calc" id="uswrap">
+      <h2 data-zh="⑤ 美本方向：AP & SAT 对应学校" data-en="⑤ US route: AP & SAT → universities">⑤ 美本方向：AP & SAT 对应学校</h2>
+      <p class="hint" data-zh="申美本主要看 SAT + AP + 在校 GPA + 文书/活动。下面按你的 SAT 总分和 AP 高分（4–5 分）估算大致档次。" data-en="US admission looks at SAT + AP + GPA + essays/activities. Below estimates a tier from your SAT total and strong (4–5) AP scores.">申美本主要看 SAT + AP + 在校 GPA + 文书/活动。下面按你的 SAT 总分和 AP 高分（4–5 分）估算大致档次。</p>
+      <div class="field">
+        <label data-zh="SAT（数学 + 阅读写作，各 200–800）" data-en="SAT (Math + EBRW, each 200–800)">SAT（数学 + 阅读写作，各 200–800）</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="satM" type="number" min="200" max="800" inputmode="numeric" placeholder="Math 200–800" style="flex:1;min-width:130px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
+          <input id="satR" type="number" min="200" max="800" inputmode="numeric" placeholder="EBRW 200–800" style="flex:1;min-width:130px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
+        </div>
+      </div>
+      <div class="field">
+        <label data-zh="AP 成绩（科目 + 分数 1–5，可加多门）" data-en="AP scores (subject + 1–5, add several)">AP 成绩（科目 + 分数 1–5，可加多门）</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="apName" type="text" placeholder="Calculus BC / Physics C ..." style="flex:2;min-width:150px;padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit">
+          <select id="apScore" style="padding:10px;border:1px solid var(--line);border-radius:9px;font-family:inherit"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
+          <button id="apAdd" class="btn-add" style="margin-top:0;width:auto;padding:10px 16px" data-zh="加" data-en="Add">加</button>
+        </div>
+        <div id="apList" style="margin-top:8px"></div>
+      </div>
+      <button class="btn-calc" id="usCalc" data-zh="看美本对应学校 →" data-en="See matching US universities →">看美本对应学校 →</button>
+      <div id="usResult" style="margin-top:14px"></div>
+      <a class="rules-link" href="https://satsuite.collegeboard.org/sat/scores" target="_blank" rel="noopener" data-zh="📖 SAT / AP 官方（College Board）" data-en="📖 Official SAT / AP (College Board)">📖 SAT / AP 官方（College Board）</a>
+      <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。" data-en="⚠️ US admission is holistic: SAT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT ranges are published middle-50% figures (approximate; in 2026 most top schools again require SAT/ACT), for reference only — check each university's official page.">⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。</p>
+    </div>
+
     <!-- CTA -->
     <div class="cta-band" id="cta">
       <h2 data-zh="离目标还差几分？先把情况发给客服" data-en="A few marks short? Send the details to our advisor first">A few marks short? Send the details to our advisor first</h2>
@@ -164,18 +190,24 @@
   var CAIE_RULES='https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-grade-threshold-tables/';
   var EDX_RULES='https://qualifications.pearson.com/en/support/support-topics/results-certification/grade-boundaries.html';
   // CAIE science papers (full A Level): official component weightings
-  var SCI=[{n:'Paper 1 (MCQ)',max:40,w:15.5},{n:'Paper 2 (AS Structured)',max:60,w:23},{n:'Paper 3 (AS Practical)',max:40,w:11.5},{n:'Paper 4 (A2 Structured)',max:100,w:38.5},{n:'Paper 5 (A2 Planning/Analysis)',max:30,w:11.5}];
+  var SCI=[{n:'Paper 1 (MCQ)',w:15.5},{n:'Paper 2 (AS Structured)',w:23},{n:'Paper 3 (AS Practical)',w:11.5},{n:'Paper 4 (A2 Structured)',w:38.5},{n:'Paper 5 (A2 Planning/Analysis)',w:11.5}];
+  var EDX_SCI=[{n:'Unit 1 (theory)',w:20},{n:'Unit 2 (theory)',w:20},{n:'Unit 3 (practical)',w:10},{n:'Unit 4 (theory)',w:20},{n:'Unit 5 (theory)',w:20},{n:'Unit 6 (practical)',w:10}];
+  var ECON4=[{n:'Unit 1',w:25},{n:'Unit 2',w:25},{n:'Unit 3',w:25},{n:'Unit 4',w:25}];
   var DATA={
     caie:{label:'CAIE (Cambridge International)',exam:'al',rules:CAIE_RULES,subjects:{
       'Mathematics 9709 — 勾选你考的卷':{pick:true,pool:[{n:'P1 Pure Mathematics 1',max:75},{n:'P3 Pure Mathematics 3',max:75},{n:'P4 Mechanics',max:50},{n:'P5 Probability & Statistics 1',max:50},{n:'P6 Probability & Statistics 2',max:50}],rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-mathematics-9709/'},
       'Physics 9702':{units:SCI,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-physics-9702/'},
       'Chemistry 9701':{units:SCI,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-chemistry-9701/'},
       'Biology 9700':{units:SCI,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-biology-9700/'},
-      'Economics 9708 (overall %)':{overall:true,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-economics-9708/'},
+      'Economics 9708':{units:[{n:'Paper 1 MCQ (AS)',w:15},{n:'Paper 2 Data & Essays (AS)',w:35},{n:'Paper 3 MCQ (A2)',w:15},{n:'Paper 4 Data & Essays (A2)',w:35}],rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-economics-9708/'},
       'Other CAIE subject (overall %)':{overall:true,rules:CAIE_RULES}
     }},
     edexcel:{label:'Edexcel / Pearson (IAL)',exam:'al',rules:EDX_RULES,subjects:{
       'Mathematics (IAL) — 勾选你考的单元':{pick:true,pool:[{n:'P1 Pure 1',max:75},{n:'P2 Pure 2',max:75},{n:'P3 Pure 3',max:75},{n:'P4 Pure 4',max:75},{n:'M1 Mechanics 1',max:75},{n:'M2 Mechanics 2',max:75},{n:'S1 Statistics 1',max:75},{n:'S2 Statistics 2',max:75},{n:'D1 Decision 1',max:75},{n:'FP1 Further Pure 1',max:75},{n:'FP2 Further Pure 2',max:75},{n:'FP3 Further Pure 3',max:75}],rules:EDX_RULES},
+      'Physics (IAL)':{units:EDX_SCI,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/physics-2018.html'},
+      'Chemistry (IAL)':{units:EDX_SCI,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/chemistry-2018.html'},
+      'Biology (IAL)':{units:EDX_SCI,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/biology-2018.html'},
+      'Economics (IAL)':{units:ECON4,rules:'https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/economics-2018.html'},
       'Any Edexcel IAL subject (overall %)':{overall:true,rules:EDX_RULES}
     }},
     oaqa:{label:'Oxford AQA (OxfordAQA Intl)',exam:'al',rules:'https://www.oxfordaqa.com/results/grade-boundaries/',subjects:{
@@ -195,14 +227,14 @@
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 ≥90%，本表按总分估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level——大学申请通常看 3 门，再加满就给你准的方向。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
-      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',
+      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick the papers you actually take, then enter your marks (max on the right). Everyone picks different units — it scores what you tick.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Enter your % on each paper (the figure after each name is its weight in the subject). Estimate if unsure.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'This subject',grade:'Grade',need:'Enter marks to see',
       overall:'Overall profile',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: an A-level A* also needs A2 ≥90%; estimated from your total.',
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s) — universities usually look at 3; add the rest for an accurate match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
-      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',
+      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
@@ -340,11 +372,38 @@
     document.getElementById('courseTable').innerHTML=h;
   }
 
+  // ---- US route: SAT + AP (indicative middle-50% ranges) ----
+  var apList=[];
+  var US_TIERS=[
+    {min:1500,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'≈1500–1570',ap:{zh:'多门 AP 5 分',en:'several AP 5s'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
+    {min:1450,zh:'美国 Top 20',en:'US Top 20',sat:'≈1450–1540',ap:{zh:'数门 4–5 分',en:'several 4–5s'},ex:'UCLA · Michigan · CMU · UC Berkeley · NYU'},
+    {min:1350,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'≈1350–1480',ap:{zh:'几门 4–5 分',en:'a few 4–5s'},ex:'Boston U · UIUC · UC San Diego · Wisconsin'},
+    {min:1250,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'≈1250–1400',ap:{zh:'2–3 门 4 分+',en:'2–3 at 4+'},ex:'Penn State · Ohio State · Pittsburgh'},
+    {min:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'<1250',ap:{zh:'—',en:'—'},ex:''}
+  ];
+  function usTier(total){for(var i=0;i<US_TIERS.length;i++){if(total>=US_TIERS[i].min)return i;}return US_TIERS.length-1;}
+  function renderAP(){
+    var box=document.getElementById('apList');
+    box.innerHTML=apList.map(function(a,i){return '<span style="display:inline-block;background:var(--bg-soft);border:1px solid var(--line);border-radius:8px;padding:4px 10px;margin:0 6px 6px 0;font-size:13px">'+a.n+': <b>'+a.s+'</b> <b data-x="'+i+'" style="cursor:pointer;color:#b9575f">×</b></span>';}).join('');
+    box.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){apList.splice(+b.getAttribute('data-x'),1);renderAP();};});
+  }
+  function renderUS(){
+    var t=T[L()],m=parseFloat(document.getElementById('satM').value),r=parseFloat(document.getElementById('satR').value);
+    var total=(!isNaN(m)&&!isNaN(r))?(Math.max(200,Math.min(800,m))+Math.max(200,Math.min(800,r))):null;
+    var ap5=apList.filter(function(a){return a.s>=4;}).length;
+    var html='';
+    if(total!=null){var ti=usTier(total);html+='<div class="rcard"><h3>SAT '+total+' / 1600 · '+t.apStrong+' '+ap5+'</h3><div class="tier">🎓 '+(L()==='en'?US_TIERS[ti].en:US_TIERS[ti].zh)+'</div></div>';}
+    html+='<div style="overflow-x:auto"><table class="gt"><tr><th style="text-align:left">'+t.usTier+'</th><th>SAT</th><th>AP</th><th>'+t.usEx+'</th></tr>'+US_TIERS.map(function(x,i){var hl=(total!=null&&usTier(total)===i)?' style="background:#eaf2ff"':'';return '<tr'+hl+'><td style="text-align:left">'+(L()==='en'?x.en:x.zh)+'</td><td>'+x.sat+'</td><td>'+(L()==='en'?x.ap.en:x.ap.zh)+'</td><td style="font-size:12px">'+x.ex+'</td></tr>';}).join('')+'</table></div>';
+    document.getElementById('usResult').innerHTML=html;
+  }
+
   boardSel.onchange=function(){fillSubjects();renderUnits();};
   subjSel.onchange=renderUnits;
   document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
   document.getElementById('course').onchange=renderCourses;
   document.getElementById('ucMode').onchange=renderCourses;
+  document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();};
+  document.getElementById('usCalc').onclick=renderUS;
 
   function setLang(lang){
     var en=lang==='en';document.documentElement.lang=en?'en':'zh-CN';
