@@ -406,7 +406,6 @@
   var boardSel=document.getElementById('board'),subjSel=document.getElementById('subject'),unitsEl=document.getElementById('units'),liveEl=document.getElementById('live'),rulesEl=document.getElementById('rules'),subjectTargetSel=document.getElementById('subjectTarget'),subjectTargetPctEl=document.getElementById('subjectTargetPct');
   var targetOnlyNameEl=document.getElementById('targetOnlyName'),targetOnlyGradeEl=document.getElementById('targetOnlyGrade'),targetOnlyMsgEl=document.getElementById('targetOnlyMsg');
   var profile=[]; // {name,exam,pct,grade,target,scale,board,complete,required,status}
-  var lastSubjectMeta=null;
   var usPlanMeta=null;
   var currentPath='uk';
 
@@ -659,7 +658,6 @@
     if(prog.invalid){liveCalc();return;}
     var p=prog.pct,s=cur(),nm=subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim(),ex=curExam(),g=gradeFromPct(p,ex,s.scale),target=subjectTargetSel.value||'';
     var idx=-1;profile.forEach(function(x,i){if(sameSubjectEntry(x,nm,ex))idx=i;});
-    lastSubjectMeta={board:DATA[boardSel.value].label,subject:nm,grade:g,pct:p};
     if(!target&&idx>=0&&profile[idx].target)target=profile[idx].target;
     if(!prog.targetPct&&target)prog=finishProgress({completedPct:prog.completedPct,coverage:prog.coverage,totalWeight:prog.totalWeight,missingUnits:prog.missingUnits,doneUnits:prog.doneUnits},pctForGrade(target),target);
     var item={name:nm,exam:ex,target:target,targetPct:prog.targetPct,scale:s.scale||'',board:DATA[boardSel.value].label,targetOnly:false,planBase:{completedPct:prog.completedPct,coverage:prog.coverage,totalWeight:prog.totalWeight,missingUnits:prog.missingUnits,doneUnits:prog.doneUnits}};
@@ -731,6 +729,7 @@
     var t=T[L()],res=document.getElementById('result');
     if(!profile.length){
       res.style.display='none';
+      res.innerHTML='';
       var cw=document.getElementById('coursewrap');
       if(cw)cw.style.display='none';
       renderCourseSources(null);
@@ -954,8 +953,6 @@
         if(x.retakeNeed>0)lines.push('  '+(lang==='en'?'Future units alone are not enough; recover about ':'只靠未考单元不够，还需从已考单元补回约 ')+x.retakeNeed.toFixed(1)+'%');
       });
       if(currentPath==='uk')ukConsultContextLines(lang).forEach(function(line){lines.push(line);});
-    } else if(lastSubjectMeta){
-      lines.push((lang==='en'?'Current estimate: ':'当前估算：')+lastSubjectMeta.board+' / '+lastSubjectMeta.subject+': '+lastSubjectMeta.grade+' ('+lastSubjectMeta.pct.toFixed(0)+'%)');
     } else {
       lines.push(lang==='en'?'Student year / exam board / subject / current problem:':'学生年级 / 考试局 / 科目 / 当前问题：');
     }
@@ -967,7 +964,7 @@
     document.querySelectorAll('.context-wa').forEach(function(a){a.href=href;});
     var float=document.getElementById('floatWa');
     if(float){
-      var hasDetails=profile.length>0||lastSubjectMeta||(currentPath==='us'&&usPlanMeta);
+      var hasDetails=profile.length>0||(currentPath==='us'&&usPlanMeta);
       float.textContent=hasDetails?(L()==='en'?'💬 Send details':'💬 发结果咨询'):(L()==='en'?'💬 Quick chat':'💬 直接咨询');
     }
   }
@@ -1110,7 +1107,6 @@
     html+='<div style="overflow-x:auto"><table class="gt"><tr><th style="text-align:left">'+t.usTier+'</th><th>SAT / ACT</th><th>AP</th><th>'+t.usEx+'</th></tr>'+US_TIERS.map(function(x,i){var hl=(standard!=null&&usTier(standard)===i)?' style="background:#eaf2ff"':'';return '<tr'+hl+'><td style="text-align:left">'+(L()==='en'?x.en:x.zh)+'</td><td>'+x.sat+'</td><td>'+(L()==='en'?x.ap.en:x.ap.zh)+'</td><td style="font-size:12px">'+x.ex+'</td></tr>';}).join('')+'</table></div>';
     document.getElementById('usResult').innerHTML=html;
     usPlanMeta={goal:L()==='en'?goal.en:goal.zh,targetSat:goal.targetSat,targetACT:goal.targetACT,targetAP:goal.targetAP,total:total,act:actScore,math:satMath,ebrw:satRead,testLabel:standard!=null?testLabel:'',testGap:testGap,testGapLabel:testGapLabel,weak:(!useAct&&total!=null&&total<goal.targetSat)?(satMath<satRead?'Math':'Reading/Writing'):'',apStrong:ap5,apGap:Math.max(0,goal.targetAP-ap5),apScores:apList.map(function(a){return a.n+' '+a.s;})};
-    lastSubjectMeta={board:'US route',subject:L()==='en'?'Target '+(goal.en):'目标 '+goal.zh,grade:standard!=null?testLabel:'SAT/ACT —',pct:0};
     updateWhatsAppLinks();
   }
   function applyPathTabs(){
@@ -1127,7 +1123,7 @@
   subjSel.onchange=function(){resetSubjectGoal();renderUnits();};
   subjectTargetSel.onchange=liveCalc;
   subjectTargetPctEl.addEventListener('input',liveCalc);
-  document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
+  document.getElementById('clearBtn').onclick=function(){profile=[];if(currentPath==='us')usPlanMeta=null;renderMy();renderResults();};
   document.getElementById('course').onchange=function(){fillDream();renderCourses();updateWhatsAppLinks();};
   document.getElementById('ucMode').onchange=function(){renderResults();};
   document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
