@@ -691,6 +691,31 @@
   }
   function saveProfile(){try{localStorage.setItem('grade_calc_profile',JSON.stringify(profile));}catch(e){}}
   function loadProfile(){try{var raw=localStorage.getItem('grade_calc_profile');if(raw){profile=JSON.parse(raw)||[];profile.forEach(function(x){x.targetOnly=!!x.targetOnly;x.scale=x.scale||'';x.board=x.board||'';x.status=x.targetOnly?'target-only':(x.status||'actual');x.complete=(x.complete==null?100:x.complete);x.futureUnits=x.futureUnits||[];x.lowUnits=x.lowUnits||[];x.retakePlan=x.retakePlan||[];x.retakeNeed=x.retakeNeed||0;x.targetPct=x.targetPct||pctForGrade(x.target||'');if(x.targetOnly){x.target=x.target||x.grade;x.grade=x.target;x.pct=x.targetPct||pctForGrade(x.target||'');}});}}catch(e){profile=[];}}
+  function ukConsultContextLines(lang){
+    var lines=[],al=profile.filter(function(x){return x.exam==='al';});
+    if(!al.length)return lines;
+    if(al.length<3){
+      lines.push(lang==='en'?'University match: add 3 A-level subjects for a reliable check.':'大学匹配：还没满 3 门 A-level，建议先确认科目组合。');
+      return lines;
+    }
+    var key=document.getElementById('course').value,c=COURSES[key];if(!c)return lines;
+    var targetOnlyAll=al.every(function(x){return x.targetOnly;});
+    var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
+    var stuTop=profileGrades(mode).slice(0,3),missing=requiredSubjectGaps(key,al.map(function(x){return x.name;}));
+    lines.push(lang==='en'?'Course target: '+key:'目标专业/方向：'+key);
+    lines.push((lang==='en'?(targetOnlyAll?'Target profile: ':'Grade profile: '):(targetOnlyAll?'目标成绩档：':'成绩档：'))+(stuTop.join('')||'—'));
+    lines.push((lang==='en'?'Typical subject requirement: ':'常见科目要求：')+(lang==='en'?c.req.en:c.req.zh));
+    if(missing.length)lines.push((lang==='en'?'Missing required subject(s): ':'缺少必需科目：')+missing.join(' / '));
+    var di=document.getElementById('dreamUni').value;
+    if(di!==''){
+      var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
+      lines.push((lang==='en'?'Dream university: ':'目标院校：')+du[0]+' · '+du[1]);
+      if(missing.length)lines.push(lang==='en'?'Main gap: required subject combination.':'主要差距：科目组合不满足要求。');
+      else if(gap.steps>0)lines.push((lang==='en'?'Grade gap: about ':'成绩差距：约差 ')+gap.steps+(lang==='en'?' grade step(s).':' 个等级档。'));
+      else lines.push(lang==='en'?'Grade fit: appears to meet the standard offer by grades.':'分数匹配：按成绩看已达到常见 offer。');
+    }
+    return lines;
+  }
   function consultText(){
     var lang=L(),lines=[];
     if(lang==='en')lines.push('Hi DAYA, I used the grade calculator and would like a learning diagnosis.');
@@ -715,6 +740,7 @@
         if(x.retakePlan&&x.retakePlan.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+x.retakePlan.slice(0,3).join(', '));
         else if(x.lowUnits&&x.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+x.lowUnits.slice(0,3).join(', '));
       });
+      if(currentPath==='uk')ukConsultContextLines(lang).forEach(function(line){lines.push(line);});
     } else if(lastSubjectMeta){
       lines.push((lang==='en'?'Current estimate: ':'当前估算：')+lastSubjectMeta.board+' / '+lastSubjectMeta.subject+': '+lastSubjectMeta.grade+' ('+lastSubjectMeta.pct.toFixed(0)+'%)');
     } else {
@@ -847,7 +873,7 @@
     var us=document.getElementById('uswrap'),uk=document.getElementById('ukwrap'),course=document.getElementById('coursewrap');
     if(uk)uk.style.display=currentPath==='uk'?'block':'none';
     if(us)us.style.display=currentPath==='us'?'block':'none';
-    if(currentPath==='uk')renderCourses();else{if(course)course.style.display='none';renderCourseSources(null);renderUS();}
+    if(currentPath==='uk'){renderCourses();updateWhatsAppLinks();}else{if(course)course.style.display='none';renderCourseSources(null);renderUS();}
   }
 
   boardSel.onchange=function(){resetSubjectGoal();fillSubjects();renderUnits();};
@@ -855,9 +881,9 @@
   subjectTargetSel.onchange=liveCalc;
   subjectTargetPctEl.addEventListener('input',liveCalc);
   document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
-  document.getElementById('course').onchange=function(){fillDream();renderCourses();};
-  document.getElementById('ucMode').onchange=renderCourses;
-  document.getElementById('dreamUni').onchange=renderCourses;
+  document.getElementById('course').onchange=function(){fillDream();renderCourses();updateWhatsAppLinks();};
+  document.getElementById('ucMode').onchange=function(){renderCourses();updateWhatsAppLinks();};
+  document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
   document.getElementById('targetOnlyAdd').onclick=addTargetOnly;
   targetOnlyNameEl.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addTargetOnly();}});
   document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();};
