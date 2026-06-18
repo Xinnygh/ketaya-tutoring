@@ -31,7 +31,6 @@
   .urow .umax{font-size:12px;color:var(--ink-soft);text-align:center}
   .unit-check{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--bg-soft);font-size:12px;font-weight:800;color:var(--ink-soft);cursor:pointer}
   .unit-check input{width:auto;min-height:0;margin:0}
-  .rules-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;background:#fff6e8;border:1px solid var(--gold);color:#8a5a12;padding:8px 12px;border-radius:9px;margin-top:6px;text-decoration:none!important}
   .live{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);font-size:15px}
   .live b{color:var(--brand)}
   .btn-add,.btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;min-height:48px;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px;width:100%}
@@ -52,6 +51,12 @@
   .tier{font-size:17px;font-weight:800}
   .gap-pos{color:#b9575f;font-weight:800}.gap-ok{color:#0f8f8c;font-weight:800}
   .disclaimer{font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.55}
+  .source-footnotes{font-size:11.5px;color:var(--ink-soft);line-height:1.55;border-top:1px solid var(--line);margin-top:18px;padding-top:12px}
+  .source-footnotes p{margin:5px 0}
+  .source-footnotes a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px}
+  .source-footnotes a:hover{color:var(--brand)}
+  .source-title{font-weight:800;color:var(--ink);font-size:12px;margin-bottom:6px}
+  .source-links{display:inline-flex;flex-wrap:wrap;gap:4px 8px}
   .path-tabs{display:flex;gap:8px;margin:18px 0 0;position:sticky;top:8px;z-index:3;background:#fff;padding:8px;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
   .path-tab{flex:1;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);border-radius:9px;padding:10px 8px;font-weight:800;font-family:inherit;cursor:pointer}
   .path-tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -96,8 +101,8 @@
     <div class="kx" data-zh="免费工具" data-en="Free Tool">Free Tool</div>
     <h1 data-zh="成绩计算器：按考试局 + 单元算成绩，看能申哪些大学、离目标差多少"
         data-en="Grade Calculator: by Exam Board & Unit — Grades, University Match & Gap to Target">Grade Calculator: by Exam Board &amp; Unit — Grades, University Match &amp; Gap to Target</h1>
-    <p class="lead" data-zh="选考试局 → 选科目 → 填每个 paper / 单元的分数 → 估算该科等级，逐科加入成绩单，自动算综合成绩档、UCAS 分、能匹配的大学，以及离目标还差多少。每科都附官方评分规则链接，可自己点进去核对。"
-       data-en="Pick your exam board → choose a subject → enter your marks per paper/unit → get that subject's grade. Add each subject to build your profile, then see your overall grades, UCAS points, matching universities and the gap to your target. Each subject links to the official grading rules.">选考试局 → 选科目 → 填每个 paper / 单元的分数 → 估算该科等级，逐科加入成绩单，自动算综合成绩档、UCAS 分、能匹配的大学，以及离目标还差多少。每科都附官方评分规则链接，可自己点进去核对。</p>
+    <p class="lead" data-zh="选考试局 → 选科目 → 勾已考单元并填分 → 设置目标 → 看还差多少、下一步该考什么、是否需要重刷。逐科加入成绩单后，再汇总看目标大学差距。官方来源统一放在页面下方小字，可点击打开核对。"
+       data-en="Pick your exam board → choose a subject → tick completed units and enter marks → set a target → see the gap, next units and whether retakes may be needed. Add subjects one by one, then compare against target universities. Official sources are listed in small text at the bottom and can be opened for checking.">选考试局 → 选科目 → 勾已考单元并填分 → 设置目标 → 看还差多少、下一步该考什么、是否需要重刷。逐科加入成绩单后，再汇总看目标大学差距。官方来源统一放在页面下方小字，可点击打开核对。</p>
 
     <div class="path-tabs" id="pathTabs" aria-label="application route">
       <button class="path-tab active" type="button" data-path="uk" data-zh="英国方向 · A-level / IGCSE" data-en="UK route · A-level / IGCSE">英国方向 · A-level / IGCSE</button>
@@ -116,8 +121,6 @@
         <label data-zh="科目" data-en="Subject">Subject</label>
         <select id="subject"></select>
       </div>
-      <a class="rules-link" id="rules" href="#" target="_blank" rel="noopener" data-zh="📖 看该科官方评分规则 & 历年分数线" data-en="📖 Official grading rules & past grade boundaries">📖 Official grading rules &amp; past grade boundaries</a>
-
       <h2 style="margin-top:18px" data-zh="② 勾已考单元，填现实分数和目标" data-en="② Tick completed units, enter current marks and target">② Tick completed units, enter current marks and target</h2>
       <p class="hint" id="unitHint" data-zh="勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。" data-en="Tick completed papers/units and enter marks; leave future units blank. The tool reverse-calculates what to take next, approximate marks needed, and whether low-score units may need retaking.">勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。</p>
       <div id="units"></div>
@@ -196,7 +199,6 @@
       </div>
       <button class="btn-calc" id="usCalc" data-zh="计算离目标院校还差多少 →" data-en="Calculate gap to target →">计算离目标院校还差多少 →</button>
       <div id="usResult" style="margin-top:14px"></div>
-      <a class="rules-link" href="https://satsuite.collegeboard.org/sat/scores" target="_blank" rel="noopener" data-zh="📖 SAT / AP 官方（College Board）" data-en="📖 Official SAT / AP (College Board)">📖 SAT / AP 官方（College Board）</a>
       <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。" data-en="⚠️ US admission is holistic: SAT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT ranges are published middle-50% figures (approximate; in 2026 most top schools again require SAT/ACT), for reference only — check each university's official page.">⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。</p>
     </div>
 
@@ -211,7 +213,28 @@
       </div>
     </div>
 
-    <p class="disclaimer" data-zh="⚠️ 重要：① 真实等级分数线每次考试按难度浮动，本工具按常见门槛（A*≈90、A≈80、B≈70、C≈60、D≈50、E≈40）和官方单元权重估算，仅供参考，请点上方「官方评分规则」核对当次分数线。② A-level 的 A* 还要求 A2（第二年）部分 ≥90%，不只是总分高——A2 最关键。③ 大学方向仅为大致参考，真实录取看科目组合、考试局、笔试/面试、文书及当年竞争。" data-en="⚠️ Important: (1) Real grade boundaries vary every session; this tool estimates using common thresholds (A*≈90, A≈80, B≈70, C≈60, D≈50, E≈40) and official unit weightings — check the 'official grading rules' link for the actual session boundaries. (2) An A-level A* also needs ≥90% in the A2 (second) year, not just a high total — A2 is decisive. (3) University matches are indicative; real offers depend on subject combination, board, admissions tests/interviews, essays and that year's competition.">⚠️ 重要：① 真实等级分数线每次考试按难度浮动，本工具按常见门槛（A*≈90、A≈80、B≈70、C≈60、D≈50、E≈40）和官方单元权重估算，仅供参考，请点上方「官方评分规则」核对当次分数线。② A-level 的 A* 还要求 A2（第二年）部分 ≥90%，不只是总分高——A2 最关键。③ 大学方向仅为大致参考，真实录取看科目组合、考试局、笔试/面试、文书及当年竞争。</p>
+    <p class="disclaimer" data-zh="⚠️ 重要：① 真实等级分数线每次考试按难度浮动，本工具按常见门槛（A*≈90、A≈80、B≈70、C≈60、D≈50、E≈40）和官方单元权重估算，仅供参考，请以下方官方来源为准。② A-level 的 A* 还要求 A2（第二年）部分 ≥90%，不只是总分高——A2 最关键。③ 大学方向仅为大致参考，真实录取看科目组合、考试局、笔试/面试、文书及当年竞争。" data-en="⚠️ Important: (1) Real grade boundaries vary every session; this tool estimates using common thresholds (A*≈90, A≈80, B≈70, C≈60, D≈50, E≈40) and official unit weightings — use the official sources below as the final reference. (2) An A-level A* also needs ≥90% in the A2 (second) year, not just a high total — A2 is decisive. (3) University matches are indicative; real offers depend on subject combination, board, admissions tests/interviews, essays and that year's competition.">⚠️ 重要：① 真实等级分数线每次考试按难度浮动，本工具按常见门槛（A*≈90、A≈80、B≈70、C≈60、D≈50、E≈40）和官方单元权重估算，仅供参考，请以下方官方来源为准。② A-level 的 A* 还要求 A2（第二年）部分 ≥90%，不只是总分高——A2 最关键。③ 大学方向仅为大致参考，真实录取看科目组合、考试局、笔试/面试、文书及当年竞争。</p>
+
+    <div class="source-footnotes" id="sourceFootnotes">
+      <div class="source-title"><span data-zh="参考来源（点击可打开）" data-en="Reference sources (click to open)">参考来源（点击可打开）</span></div>
+      <p><span data-zh="当前所选科目：" data-en="Current selected subject:">当前所选科目：</span><a id="rules" href="#" target="_blank" rel="noopener" data-zh="官方评分规则 / 分数线" data-en="Official grading rules / grade boundaries">官方评分规则 / 分数线</a></p>
+      <p><span data-zh="考试局与分数线：" data-en="Exam boards and grade boundaries:">考试局与分数线：</span>
+        <span class="source-links">
+          <a href="https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-grade-threshold-tables/" target="_blank" rel="noopener">Cambridge grade thresholds</a>
+          <a href="https://qualifications.pearson.com/en/support/support-topics/results-certification/grade-boundaries.html" target="_blank" rel="noopener">Pearson grade boundaries</a>
+          <a href="https://www.oxfordaqa.com/results/grade-boundaries/" target="_blank" rel="noopener">OxfordAQA grade boundaries</a>
+          <a href="https://qualifications.pearson.com/en/qualifications/edexcel-international-advanced-levels/mathematics-2018/international-a-level-maths-eligibility-calculator.html" target="_blank" rel="noopener">Pearson IAL Maths eligibility</a>
+        </span>
+      </p>
+      <p><span data-zh="美本 / SAT / AP：" data-en="US route / SAT / AP:">美本 / SAT / AP：</span>
+        <span class="source-links">
+          <a href="https://satsuite.collegeboard.org/sat/scores" target="_blank" rel="noopener">College Board SAT scores</a>
+          <a href="https://apstudents.collegeboard.org/what-is-ap" target="_blank" rel="noopener">College Board AP</a>
+          <a href="https://mitadmissions.org/apply/firstyear/tests-scores/" target="_blank" rel="noopener">MIT tests & scores</a>
+        </span>
+      </p>
+      <p id="courseSourcesWrap" style="display:none"><span data-zh="当前专业 offer 来源：" data-en="Current course offer sources:">当前专业 offer 来源：</span><span class="source-links" id="courseSources"></span></p>
+    </div>
 
     <p style="margin-top:20px"><a href="index.html" data-zh="← 返回升学指南" data-en="← Back to all guides">← Back to all guides</a></p>
   </article>
@@ -585,6 +608,14 @@
     if(keep&&d.querySelector('option[value="'+keep+'"]'))d.value=keep;
   }
   function fillMode(){var m=document.getElementById('ucMode'),t=T[L()],mv=m.value;m.innerHTML='<option value="cur">'+t.modeCur+'</option><option value="tgt">'+t.modeTgt+'</option>';if(mv)m.value=mv;}
+  function renderCourseSources(c){
+    var wrap=document.getElementById('courseSourcesWrap'),box=document.getElementById('courseSources');
+    if(!wrap||!box||!c){if(wrap)wrap.style.display='none';return;}
+    var links=c.unis.filter(function(u){return u[2];}).map(function(u){return '<a href="'+u[2]+'" target="_blank" rel="noopener">'+u[0]+'</a>';});
+    if(!links.length){wrap.style.display='none';box.innerHTML='';return;}
+    box.innerHTML=links.join('');
+    wrap.style.display='block';
+  }
   function offerGap(stuTop,offer){
     var req=parseGrades(offer).slice(0,3).sort(function(a,b){return rank(b)-rank(a);});
     var stu=stuTop.slice(0,3);
@@ -594,19 +625,21 @@
   }
   function renderCourses(){
     var t=T[L()],wrap=document.getElementById('coursewrap');
-    if(currentPath!=='uk'){wrap.style.display='none';return;}
+    if(currentPath!=='uk'){wrap.style.display='none';renderCourseSources(null);return;}
     var al=profile.filter(function(x){return x.exam==='al';});
-    if(!al.length){wrap.style.display='none';return;}
+    if(!al.length){wrap.style.display='none';renderCourseSources(null);return;}
     wrap.style.display='block';
     if(al.length<3){
       document.getElementById('courseReq').innerHTML='<b>'+t.addMore.replace('{n}',al.length)+'</b>';
       document.getElementById('courseTable').innerHTML='';
+      renderCourseSources(null);
       return;
     }
     fillDream();
     var mode=document.getElementById('ucMode').value||'cur';
     var stuTop=profileGrades(mode).slice(0,3),stuSum=sumG(stuTop);
     var key=document.getElementById('course').value,c=COURSES[key];if(!c)return;
+    renderCourseSources(c);
     var soft=al.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
     document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+t.yourProfile+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'');
     var dreamBox=document.getElementById('dreamGap'),di=document.getElementById('dreamUni').value;
@@ -617,11 +650,11 @@
     } else {
       dreamBox.style.display='none';
     }
-    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+t.fit+'</th><th>'+t.official+'</th></tr>';
+    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+t.fit+'</th></tr>';
     c.unis.forEach(function(u){
       var d=sumG(parseGrades(u[1]).slice(0,3))-stuSum;
       var st=d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>');
-      h+='<tr><td style="text-align:left">'+u[0]+'</td><td><b>'+u[1]+'</b></td><td>'+st+'</td><td>'+(u[2]?'<a href="'+u[2]+'" target="_blank" rel="noopener">'+t.official+'</a>':'—')+'</td></tr>';
+      h+='<tr><td style="text-align:left">'+u[0]+'</td><td><b>'+u[1]+'</b></td><td>'+st+'</td></tr>';
     });
     document.getElementById('courseTable').innerHTML=h;
   }
@@ -677,7 +710,7 @@
     var us=document.getElementById('uswrap'),uk=document.getElementById('ukwrap'),course=document.getElementById('coursewrap');
     if(uk)uk.style.display=currentPath==='uk'?'block':'none';
     if(us)us.style.display=currentPath==='us'?'block':'none';
-    if(currentPath==='uk')renderCourses();else if(course)course.style.display='none';
+    if(currentPath==='uk')renderCourses();else{if(course)course.style.display='none';renderCourseSources(null);}
   }
 
   boardSel.onchange=function(){resetSubjectGoal();fillSubjects();renderUnits();};
