@@ -365,6 +365,7 @@
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level。大学申请通常看 3 门；请先加满 3 门，再看具体大学匹配。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
       modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',yourTargetProfile:'你的目标成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitTarget:'目标匹配',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',fitMissing:'🔴 需补必需科目',fitSubjectGrade:'🟡 必需科目需提分',missingSubject:'缺少必需科目',subjectGradeGap:'必需科目目标偏低',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',apGap:'AP 4–5 分还差',satMet:'SAT 已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT；顶尖美本通常不能只靠 AP 替代 SAT/ACT；UC 系等学校不参考 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',usTargetReq:'目标建议',usTargetOnly:'只选目标也可以先咨询：客服会帮你拆 SAT/AP/GPA/活动差距。',
+      sendGap:'把这个差距发给客服 →',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick “done” for completed units and enter marks; tick “counts” for future units that will count toward the final grade.',routeHint:'Choose the official route; tick completed papers and enter raw marks, leave future papers unticked.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Tick completed papers and enter %; leave future papers unticked. The figure after each name is the weighting.',umsHint:'Enter UMS or UMS percentage; tick completed units and tick future units that will count.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'Current projection',grade:'Grade',need:'Tick completed units and enter marks',
       done:'Done',planned:'Counts',remaining:'Future / blank',needRemain:'To reach {g}, future units need on average',unitNeed:'Next units need',retake:'Retake target',weak:'Weak units',retakeNeed:'Future units alone are not enough; recover about',impossible:'Target {g} needs over 100% on future units, so retake or adjust target',alreadyTarget:'With completed units, target {g} is already on track',targetNow:'Choose a target grade or target percentage to reverse-calculate future units',estimated:'projected from current average',partial:'includes future-unit projection',actual:'all entered',overMax:'over full marks',
@@ -375,6 +376,7 @@
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s). Universities usually look at 3; add the rest before using the university match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
       modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',yourTargetProfile:'Your target grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitTarget:'Target fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',fitMissing:'🔴 Missing required subject',fitSubjectGrade:'🟡 Required subject needs a higher grade',missingSubject:'Missing required subject',subjectGradeGap:'Required subject target is low',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',apGap:'AP 4–5 gap',satMet:'SAT is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT entered yet; for top US colleges, AP usually does not replace SAT/ACT; UC campuses do not consider SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',usTargetReq:'Target recommendation',usTargetOnly:'You can message us with only a target: we will break down SAT/AP/GPA/activity gaps.',
+      sendGap:'Send this gap to an advisor →',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
@@ -833,6 +835,7 @@
   function updateWhatsAppLinks(){
     var href='https://wa.me/8618156122672?text='+encodeURIComponent(consultText());
     ['ctaWa','floatWa','targetOnlyWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
+    document.querySelectorAll('.context-wa').forEach(function(a){a.href=href;});
     var float=document.getElementById('floatWa');
     if(float){
       var hasDetails=profile.length>0||lastSubjectMeta||(currentPath==='us'&&usPlanMeta);
@@ -890,7 +893,7 @@
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
       dreamBox.style.display='block';
-      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(targetOnlyAll?t.yourTargetProfile:t.yourProfile)+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+'：'+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'：'+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+t.fitMatch+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')));
+      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(targetOnlyAll?t.yourTargetProfile:t.yourProfile)+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+'：'+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'：'+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+t.fitMatch+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
     } else {
       dreamBox.style.display='none';
     }
