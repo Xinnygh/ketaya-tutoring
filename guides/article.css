@@ -18,8 +18,8 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{font-weight:800;font-size:20px;letter-spacing:.5px;color:var(--ink)}
 .logo span{color:var(--brand)}
 .nav-right{display:flex;align-items:center;gap:12px}
-.lang-btn{border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
-.nav-cta{background:var(--brand);color:#fff!important;border-radius:9px;padding:8px 14px;font-size:14px;font-weight:700;text-decoration:none!important}
+.lang-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:9px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.nav-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;background:var(--brand);color:#fff!important;border-radius:9px;padding:8px 14px;font-size:14px;font-weight:700;text-decoration:none!important}
 
 /* article */
 .breadcrumb{font-size:13px;color:var(--ink-soft);margin:26px 0 10px}
