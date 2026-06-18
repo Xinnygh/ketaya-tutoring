@@ -723,42 +723,48 @@
   function parseGrades(s){return (s.match(/A\*|[A-E]/g)||[]);}
   function sumG(arr){return arr.map(rank).reduce(function(a,b){return a+b;},0);}
   function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return x.targetOnly?(x.target||x.grade):((mode==='tgt'&&x.target)?x.target:x.grade);}).sort(function(a,b){return rank(b)-rank(a);});}
-  function subjectHas(subjects,patterns){return subjects.some(function(s){var x=(s||'').toLowerCase();return patterns.some(function(re){return re.test(x);});});}
-  function subjectItems(items,patterns){return items.filter(function(it){var x=(it.name||'').toLowerCase();return patterns.some(function(re){return re.test(x);});});}
-  function bestSubjectRank(items,patterns){
-    return subjectItems(items,patterns).reduce(function(best,it){return Math.max(best,rank(it.target||it.grade));},0);
+  function subjectHas(subjects,test){return subjects.some(function(s){return test(s||'');});}
+  function subjectItems(items,test){return items.filter(function(it){return test(it.name||'');});}
+  function subjectText(s){return (s||'').toLowerCase();}
+  function isFurtherMath(s){var x=subjectText(s);return /further|进阶|高数|进一步/.test(x);}
+  function isPlainMath(s){var x=subjectText(s);return !isFurtherMath(x)&&(/mathematics|maths|math|数学/.test(x));}
+  function subjectMatches(patterns){return function(s){var x=subjectText(s);return patterns.some(function(re){return re.test(x);});};}
+  function bestSubjectRank(items,test){
+    return subjectItems(items,test).reduce(function(best,it){return Math.max(best,rank(it.target||it.grade));},0);
   }
   function requiredSubjectGradeGaps(courseKey,items){
-    var gaps=[],math=[/math|mathematics|maths|数学|进阶数学|高数|further/],phys=[/physics|物理/],chem=[/chemistry|化学/],bio=[/biology|生物/];
-    function need(label,patterns,grade){var best=bestSubjectRank(items,patterns);if(best&&best<rank(grade))gaps.push(label+' ≥ '+grade);}
+    var gaps=[],phys=subjectMatches([/physics|物理/]),chem=subjectMatches([/chemistry|化学/]),bio=subjectMatches([/biology|生物/]);
+    function need(label,test,grade){var best=bestSubjectRank(items,test);if(best&&best<rank(grade))gaps.push(label+' ≥ '+grade);}
     if(courseKey.indexOf('Medicine')===0){
       need('Chemistry',chem,'A');
-      var secondBest=Math.max(bestSubjectRank(items,bio),bestSubjectRank(items,math),bestSubjectRank(items,phys));
+      var secondBest=Math.max(bestSubjectRank(items,bio),bestSubjectRank(items,isPlainMath),bestSubjectRank(items,phys));
       if(secondBest&&secondBest<rank('A'))gaps.push('Biology / Mathematics / Physics ≥ A');
     } else if(courseKey.indexOf('Engineering')===0) {
-      need('Mathematics',math,'A');
+      need('Mathematics',isPlainMath,'A');
       need('Physics',phys,'A');
     } else if(courseKey.indexOf('Computer Science')===0||courseKey.indexOf('Economics')===0) {
-      need('Mathematics',math,'A');
+      need('Mathematics',isPlainMath,'A');
     } else if(courseKey.indexOf('Mathematics')===0) {
-      need('Mathematics',math,'A*');
+      need('Mathematics',isPlainMath,'A*');
     }
     return gaps;
   }
   function requiredSubjectGaps(courseKey,subjects){
     var missing=[],
-      hasMath=subjectHas(subjects,[/math|mathematics|maths|数学|进阶数学|高数|further/]),
-      hasPhys=subjectHas(subjects,[/physics|物理/]),
-      hasChem=subjectHas(subjects,[/chemistry|化学/]),
-      hasBio=subjectHas(subjects,[/biology|生物/]);
+      hasMath=subjectHas(subjects,isPlainMath),
+      hasFurther=subjectHas(subjects,isFurtherMath),
+      mathMissingLabel=hasFurther?'Mathematics (not Further Maths alone)':'Mathematics',
+      hasPhys=subjectHas(subjects,subjectMatches([/physics|物理/])),
+      hasChem=subjectHas(subjects,subjectMatches([/chemistry|化学/])),
+      hasBio=subjectHas(subjects,subjectMatches([/biology|生物/]));
     if(courseKey.indexOf('Medicine')===0){
       if(!hasChem)missing.push('Chemistry');
       if(!(hasBio||hasMath||hasPhys))missing.push('Biology / Mathematics / Physics');
     } else if(courseKey.indexOf('Engineering')===0) {
-      if(!hasMath)missing.push('Mathematics');
+      if(!hasMath)missing.push(mathMissingLabel);
       if(!hasPhys)missing.push('Physics');
     } else if(courseKey.indexOf('Computer Science')===0||courseKey.indexOf('Mathematics')===0||courseKey.indexOf('Economics')===0) {
-      if(!hasMath)missing.push('Mathematics');
+      if(!hasMath)missing.push(mathMissingLabel);
     } else if(courseKey.indexOf('Natural')===0) {
       if(!(hasPhys||hasChem||hasBio||hasMath))missing.push('relevant science');
     }
