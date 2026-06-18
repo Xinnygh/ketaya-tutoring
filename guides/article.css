@@ -73,7 +73,11 @@ footer strong{color:#fff}
 @media(max-width:760px){
   article h1{font-size:27px}
   article h1,article p{overflow-wrap:anywhere}
-  .nav-right{display:none}
+  /* keep language switch + consultation CTA reachable on mobile (most parents are on phones) */
+  .nav-right{display:flex;gap:8px}
+  .logo{font-size:16px}
+  .nav-right .lang-btn{min-height:40px;padding:7px 9px;font-size:12px}
+  .nav-right .nav-cta{min-height:40px;padding:7px 11px;font-size:12px;white-space:nowrap}
   .wrap,.wrap-wide{padding-left:16px;padding-right:16px}
   .guide-grid{grid-template-columns:1fr}
   .wa-float{right:12px;bottom:12px;font-size:14px;padding:12px 16px}
