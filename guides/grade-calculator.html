@@ -95,7 +95,10 @@
 
     <!-- MY SUBJECTS -->
     <div class="calc" id="mywrap" style="display:none">
-      <h2 data-zh="③ 我的成绩单（可设目标等级）" data-en="③ My results (set a target grade)">③ My results (set a target grade)</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <h2 style="margin:0" data-zh="③ 我的成绩单（可设目标等级）" data-en="③ My results (set a target grade)">③ 我的成绩单（可设目标等级）</h2>
+        <button id="clearBtn" class="lang-btn" data-zh="清空" data-en="Clear">清空</button>
+      </div>
       <div id="mysubs"></div>
     </div>
 
@@ -167,13 +170,13 @@
     zh:{none:'—',pickHint:'勾选你这一科考的卷，再填分数（右边是满分）。不同人选的卷不一样，按你勾的算。',overallHint:'这一科按整体得分率估算，填你的 % 即可。',fixedHint:'填各卷得分（不知道确切分就估），右边是满分。',overallU:'整体得分率',pick:'先选科目',liveGrade:'本科估算',grade:'等级',need:'输入分数后显示',
       overall:'综合成绩档',ucas:'UCAS 分（A-level 计）',uniTitle:'你的成绩大致能冲的大学方向',gapTitle:'离目标还差多少',
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 ≥90%，本表按总分估算。',
-      lt3:'（A-level 建议加满 3 门，荐校才准）',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
+      lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level——大学申请通常看 3 门，再加满就给你准的方向。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick the papers you actually take, then enter your marks (max on the right). Everyone picks different units — it scores what you tick.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Enter your mark per paper (estimate if unsure); max on the right.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'This subject',grade:'Grade',need:'Enter marks to see',
       overall:'Overall profile',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: an A-level A* also needs A2 ≥90%; estimated from your total.',
-      lt3:'(Add 3 A-levels for a meaningful university match)',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
+      lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s) — universities usually look at 3; add the rest for an accurate match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
@@ -231,7 +234,9 @@
 
   document.getElementById('addBtn').onclick=function(){
     var p=subjectPct();if(p===null)return;
-    profile.push({name:subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim(),exam:curExam(),pct:p,grade:gradeFromPct(p,curExam()),target:''});
+    var nm=subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim(),ex=curExam(),g=gradeFromPct(p,ex);
+    var idx=-1;profile.forEach(function(x,i){if(x.name===nm&&x.exam===ex)idx=i;});
+    if(idx>=0){profile[idx].pct=p;profile[idx].grade=g;} else {profile.push({name:nm,exam:ex,pct:p,grade:g,target:''});}
     renderMy();renderResults();
     document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
   };
@@ -259,7 +264,8 @@
     document.getElementById('r-overall').innerHTML=oh;
     // uni
     var uh='<h3>'+t.uniTitle+'</h3>';
-    if(al.length){var top3=al.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3)]+'</div>';if(al.length<3)uh+='<div class="ucas">'+t.lt3+'</div>';}
+    if(al.length>=3){var top3=al.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3)]+'</div>';}
+    else if(al.length>=1){uh+='<div class="ucas">'+t.addMore.replace('{n}',al.length)+'</div>';}
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
     document.getElementById('r-uni').innerHTML=uh;
     // gap
@@ -274,6 +280,7 @@
 
   boardSel.onchange=function(){fillSubjects();renderUnits();};
   subjSel.onchange=renderUnits;
+  document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
 
   function setLang(lang){
     var en=lang==='en';document.documentElement.lang=en?'en':'zh-CN';
