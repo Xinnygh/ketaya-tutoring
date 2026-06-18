@@ -123,17 +123,26 @@
       <div class="target-grid">
         <div class="field">
           <label data-zh="目标科目" data-en="Target subject">目标科目</label>
-          <input id="targetOnlyName" list="targetSubjectList" type="text" placeholder="Mathematics / Physics / Economics">
+          <input id="targetOnlyName" list="targetSubjectList" type="text" placeholder="Mathematics / 数学 / Physics / 物理">
           <datalist id="targetSubjectList">
             <option value="Mathematics">
+            <option value="数学">
             <option value="Further Mathematics">
+            <option value="进阶数学">
             <option value="Physics">
+            <option value="物理">
             <option value="Chemistry">
+            <option value="化学">
             <option value="Biology">
+            <option value="生物">
             <option value="Economics">
+            <option value="经济">
             <option value="Business">
+            <option value="商科">
             <option value="Computer Science">
+            <option value="计算机">
             <option value="Psychology">
+            <option value="心理">
           </datalist>
         </div>
         <div class="field">
@@ -673,9 +682,13 @@
   function parseGrades(s){return (s.match(/A\*|[A-E]/g)||[]);}
   function sumG(arr){return arr.map(rank).reduce(function(a,b){return a+b;},0);}
   function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return x.targetOnly?(x.target||x.grade):((mode==='tgt'&&x.target)?x.target:x.grade);}).sort(function(a,b){return rank(b)-rank(a);});}
-  function subjectHas(subjects,re){return subjects.some(function(s){return re.test((s||'').toLowerCase());});}
+  function subjectHas(subjects,patterns){return subjects.some(function(s){var x=(s||'').toLowerCase();return patterns.some(function(re){return re.test(x);});});}
   function requiredSubjectGaps(courseKey,subjects){
-    var missing=[],hasMath=subjectHas(subjects,/math|mathematics|maths/),hasPhys=subjectHas(subjects,/physics/),hasChem=subjectHas(subjects,/chemistry/),hasBio=subjectHas(subjects,/biology/);
+    var missing=[],
+      hasMath=subjectHas(subjects,[/math|mathematics|maths|数学|进阶数学|高数|further/]),
+      hasPhys=subjectHas(subjects,[/physics|物理/]),
+      hasChem=subjectHas(subjects,[/chemistry|化学/]),
+      hasBio=subjectHas(subjects,[/biology|生物/]);
     if(courseKey.indexOf('Medicine')===0){
       if(!hasChem)missing.push('Chemistry');
       if(!(hasBio||hasMath||hasPhys))missing.push('Biology / Mathematics / Physics');
