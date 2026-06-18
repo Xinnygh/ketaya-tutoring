@@ -76,6 +76,7 @@
   .action-summary ul{margin:6px 0 0 18px;padding:0}
   .action-summary li{margin:4px 0}
   @media(max-width:600px){
+    body{padding-bottom:82px}
     .urow{grid-template-columns:62px minmax(0,1fr) 78px 48px;gap:6px;align-items:center;margin-bottom:9px}
     .urow.pickrow{grid-template-columns:52px 52px minmax(0,1fr) 72px 44px}
     .urow .un{font-size:13px;line-height:1.25}
@@ -95,6 +96,8 @@
     .target-grid .btn-add{width:100%;min-height:48px}
     .next-actions{flex-direction:column}
     .mini-action{width:100%}
+    .wa-float{right:10px;bottom:10px;min-height:44px;box-sizing:border-box;font-size:13px;padding:10px 12px}
+    body.is-editing .wa-float{display:none}
   }
 </style>
 </head>
@@ -546,7 +549,8 @@
     var forced=arguments.length>1,
       target=forced?(forcedTargetGrade||''):subjectTargetSel.value,
       targetPct=forced?Math.max(0,Math.min(100,forcedTargetPct||0)):targetPctValue(),
-      missing=Math.max(0,100-data.coverage),req=null,pct=data.completedPct,status=missing>0?'partial':'actual';
+      missing=Math.max(0,100-data.coverage),req=null,pct=data.completedPct,status=missing>0?'partial':'actual',
+      currentPct=data.completedPct;
     var doneAvg=data.coverage>0?data.completedPct/(data.coverage/100):0;
     if(missing>0&&targetPct>0){
       req=(targetPct-data.completedPct)/(missing/100);
@@ -554,6 +558,7 @@
     } else if(missing>0) {
       pct=data.completedPct+(doneAvg*(missing/100));
     }
+    if(missing>0)currentPct=data.completedPct+(doneAvg*(missing/100));
     var retakeNeed=(targetPct>0&&missing>0)?Math.max(0,targetPct-(data.completedPct+missing)):0,totalWeight=data.totalWeight||100;
     var low=data.doneUnits.slice().filter(function(u){return targetPct>0&&u.pct<Math.max(40,targetPct-10);}).sort(function(a,b){return a.pct-b.pct;}).slice(0,3);
     var retakeTargets=[];
@@ -565,11 +570,13 @@
         return Object.assign({},u,{targetPct:targetUnitPct});
       });
     }
-    return {pct:Math.max(0,Math.min(100,pct)),completedPct:data.completedPct,doneAvg:doneAvg,coverage:data.coverage,missing:missing,missingUnits:data.missingUnits||[],doneUnits:data.doneUnits||[],totalWeight:totalWeight,required:req,targetPct:targetPct,targetGrade:target,status:status,retakeNeed:retakeNeed,lowUnits:low,retakeTargets:retakeTargets};
+    return {pct:Math.max(0,Math.min(100,pct)),currentPct:Math.max(0,Math.min(100,currentPct)),completedPct:data.completedPct,doneAvg:doneAvg,coverage:data.coverage,missing:missing,missingUnits:data.missingUnits||[],doneUnits:data.doneUnits||[],totalWeight:totalWeight,required:req,targetPct:targetPct,targetGrade:target,status:status,retakeNeed:retakeNeed,lowUnits:low,retakeTargets:retakeTargets};
   }
   function applySubjectPlan(item,prog){
     item.pct=prog.pct;
     item.grade=gradeFromPct(prog.pct,item.exam,item.scale);
+    item.currentPct=prog.currentPct;
+    item.currentGrade=gradeFromPct(prog.currentPct,item.exam,item.scale);
     item.complete=Math.round(prog.coverage);
     item.required=prog.required;
     item.status=prog.status;
@@ -692,16 +699,17 @@
     box.innerHTML=profile.map(function(x,i){
       var opts=targetList(x).map(function(o){return '<option value="'+o+'"'+(o===x.target?' selected':'')+'>'+(o===''?t.target+'?':o)+'</option>';}).join('');
       var isPartial=x.status==='partial'||(x.complete&&x.complete<100);
-      var badge=x.targetOnly?'<span class="badge badge-warn">'+t.targetOnlyBadge+'</span>':(isPartial?'<span class="badge badge-warn">'+t.partial+'</span>':'<span class="badge">'+t.actual+'</span>');
+      var badge=x.targetOnly?' <span class="badge badge-warn">'+t.targetOnlyBadge+'</span>':(isPartial?' <span class="badge badge-warn">'+t.partial+'</span>':' <span class="badge">'+t.actual+'</span>');
       var req=(!x.targetOnly&&isPartial&&x.required!=null&&x.required>0&&x.required<=100)?'<span style="color:var(--ink-soft);font-size:12px"> · '+t.remaining+' '+(100-(x.complete||100))+'% ≈ '+x.required.toFixed(0)+'%</span>':'';
       var plan='';
       if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+'：'+x.futureUnits.slice(0,4).join('； ')+'</div>';
       if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+t.retake+'：'+x.retakePlan.slice(0,3).join('； ')+'</div>';
       else if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.weak+'：'+x.lowUnits.slice(0,3).join('； ')+'</div>';
       if(x.retakeNeed>0)plan+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%</div>';
-      var pctLabel=x.targetOnly?'':'<span style="color:var(--ink-soft);font-size:13px">'+x.pct.toFixed(0)+'%</span>';
-      var gradeLabel=x.targetOnly?(t.target+' '+x.target):x.grade;
-      return '<div class="mysub"><span><span class="nm">'+x.name+'</span>'+badge+'<span class="gr">'+gradeLabel+'</span>'+pctLabel+req+plan+'</span><span><select data-i="'+i+'">'+opts+'</select> <button class="x" data-x="'+i+'">×</button></span></div>';
+      var currentDiff=!x.targetOnly&&x.target&&(x.currentGrade||x.currentPct!=null)&&((x.currentGrade||x.grade)!==x.grade||Math.round(itemPct(x,'cur'))!==Math.round(x.pct));
+      var pctLabel=x.targetOnly?'':' <span style="color:var(--ink-soft);font-size:13px">'+(currentDiff?(itemPct(x,'cur').toFixed(0)+'% → '+x.pct.toFixed(0)+'%'):x.pct.toFixed(0)+'%')+'</span>';
+      var gradeLabel=x.targetOnly?(t.target+' '+x.target):(currentDiff?((L()==='en'?'Now ':'当前预测 ')+(x.currentGrade||x.grade)+' → '+(L()==='en'?'target ':'目标 ')+(x.target||x.grade)):x.grade);
+      return '<div class="mysub"><span><span class="nm">'+x.name+'</span>'+badge+' <span class="gr">'+gradeLabel+'</span>'+pctLabel+req+plan+'</span><span><select data-i="'+i+'">'+opts+'</select> <button class="x" data-x="'+i+'">×</button></span></div>';
     }).join('');
     box.querySelectorAll('select').forEach(function(s){s.onchange=function(){
       var x=profile[+s.getAttribute('data-i')];
@@ -735,29 +743,41 @@
     // overall
     var oh='<h3>'+(allTargetOnly?t.targetOnly+' · '+t.overall:t.overall)+'</h3>';
     if(al.length){
-      var sorted=al.slice().sort(function(a,b){return rank(b.grade)-rank(a.grade);});
-      var g=sorted.map(function(x){return x.grade;});
-      var top3=sorted.slice(0,3).map(function(x){return x.grade;});
-      var allUcas=al.reduce(function(a,x){return a+ucas(x.grade);},0),top3Ucas=sorted.slice(0,3).reduce(function(a,x){return a+ucas(x.grade);},0);
+      var summaryMode=allTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
+      var sorted=al.slice().sort(function(a,b){return rank(itemGrade(b,summaryMode))-rank(itemGrade(a,summaryMode));});
+      var g=sorted.map(function(x){return itemGrade(x,summaryMode);});
+      var top3=sorted.slice(0,3).map(function(x){return itemGrade(x,summaryMode);});
+      var allUcas=al.reduce(function(a,x){return a+ucas(itemGrade(x,summaryMode));},0),top3Ucas=sorted.slice(0,3).reduce(function(a,x){return a+ucas(itemGrade(x,summaryMode));},0);
       oh+='<div class="profile">'+g.join(' ')+'</div>';
       if(al.length>3)oh+='<div class="ucas">'+t.top3+'：<b>'+top3.join(' ')+'</b> · '+t.allAL+'：'+g.join(' ')+'</div>';
       oh+='<div class="ucas">'+(al.length>3?(t.top3Ucas+': <b>'+top3Ucas+'</b> · '+t.allUcas+': <b>'+allUcas+'</b>'):(t.ucas+': <b>'+allUcas+'</b>'))+'</div>';
+      var targetLine=al.some(function(x){return !x.targetOnly&&(x.target||x.targetPct);});
+      if(targetLine){
+        var tg=profileGrades('tgt'),ttop=tg.slice(0,3);
+        var cg=profileGrades('cur'),ctop=cg.slice(0,3);
+        oh+='<div class="mini-note">'+(summaryMode==='tgt'?(L()==='en'?'Current projection':'当前预测'):(L()==='en'?'Target plan':'目标方案'))+'：<b>'+(summaryMode==='tgt'?(al.length>3?ctop.join(' '):cg.join(' ')):(al.length>3?ttop.join(' '):tg.join(' ')))+'</b>'+(al.length>3?' · '+t.allAL+'：'+(summaryMode==='tgt'?cg.join(' '):tg.join(' ')):'')+'</div>';
+      }
       if(al.length>3)oh+='<div class="mini-note">'+t.extraALNote+'</div>';
-      if(soft)oh+='<div class="mini-note badge-warn" style="display:inline-block">'+t.partial+'</div>';
-      if(hasTargetOnly)oh+='<div class="mini-note badge-warn" style="display:inline-block">'+t.targetOnlyBadge+'</div>';
+      if(soft||hasTargetOnly){
+        oh+='<div class="mini-note">';
+        if(soft)oh+='<span class="badge badge-warn" style="margin-left:0">'+t.partial+'</span>';
+        if(hasTargetOnly)oh+=(soft?' ':'')+'<span class="badge badge-warn">'+t.targetOnlyBadge+'</span>';
+        oh+='</div>';
+      }
     }
     if(ig.length){var avg=Math.round(ig.reduce(function(a,x){return a+x.pct;},0)/ig.length);oh+='<div class="ucas" style="margin-top:6px">IGCSE: '+ig.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).join(' ')+' · '+t.igAvg+avg+'%</div>';}
     document.getElementById('r-overall').innerHTML=oh;
     // uni
-    var uh='<h3>'+(allTargetOnly?t.uniTitleTarget:t.uniTitle)+'</h3>';
-    if(al.length>=3){var top3u=al.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+'：<b>'+top3u.join(' ')+'</b></div>';}
+    var uniMode=allTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
+    var uh='<h3>'+((allTargetOnly||uniMode==='tgt')?t.uniTitleTarget:t.uniTitle)+'</h3>';
+    if(al.length>=3){var top3u=profileGrades(uniMode).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+'：<b>'+top3u.join(' ')+'</b></div>';}
     else if(al.length>=1){uh+='<div class="ucas">'+t.addMore.replace('{n}',al.length)+'</div>';}
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
     document.getElementById('r-uni').innerHTML=uh;
     // gap
     var gaps=profile.map(function(x){
       var tp=x.targetPct||pctForGrade(x.target||'');
-      return Object.assign({},x,{gapPct:tp>0?tp-x.pct:0});
+      return Object.assign({},x,{gapPct:tp>0?tp-itemPct(x,'cur'):0});
     }).filter(function(x){return x.gapPct>0;});
     var gh='<h3>'+t.gapTitle+'</h3>';
     if(!profile.some(function(x){return x.target||x.targetPct>0;}))gh+='<div class="ucas">'+t.pickTarget+'</div>';
@@ -800,22 +820,32 @@
     }).filter(function(x){return x.length;});
     return opts.length?opts:[parseGrades(offer).slice(0,3).sort(function(a,b){return rank(b)-rank(a);})];
   }
-  function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return x.targetOnly?(x.target||x.grade):((mode==='tgt'&&x.target)?x.target:x.grade);}).sort(function(a,b){return rank(b)-rank(a);});}
+  function itemGrade(x,mode){
+    if(x.targetOnly)return x.target||x.grade;
+    if(mode==='tgt'&&(x.target||x.targetPct))return x.target||gradeFromPct(x.targetPct,x.exam,x.scale);
+    return x.currentGrade||x.grade;
+  }
+  function itemPct(x,mode){
+    if(x.targetOnly)return x.pct;
+    if(mode==='tgt'&&(x.target||x.targetPct))return x.targetPct||x.pct;
+    return x.currentPct!=null?x.currentPct:x.pct;
+  }
+  function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return itemGrade(x,mode||'cur');}).sort(function(a,b){return rank(b)-rank(a);});}
   function subjectHas(subjects,test){return subjects.some(function(s){return test(s||'');});}
   function subjectItems(items,test){return items.filter(function(it){return test(it.name||'');});}
   function subjectText(s){return (s||'').toLowerCase();}
   function isFurtherMath(s){var x=subjectText(s);return /further|进阶|高数|进一步/.test(x);}
   function isPlainMath(s){var x=subjectText(s);return !isFurtherMath(x)&&(/mathematics|maths|math|数学/.test(x));}
   function subjectMatches(patterns){return function(s){var x=subjectText(s);return patterns.some(function(re){return re.test(x);});};}
-  function bestSubjectRank(items,test){
-    return subjectItems(items,test).reduce(function(best,it){return Math.max(best,rank(it.target||it.grade));},0);
+  function bestSubjectRank(items,test,mode){
+    return subjectItems(items,test).reduce(function(best,it){return Math.max(best,rank(itemGrade(it,mode||'cur')));},0);
   }
-  function requiredSubjectGradeGaps(courseKey,items){
+  function requiredSubjectGradeGaps(courseKey,items,mode){
     var gaps=[],phys=subjectMatches([/physics|物理/]),chem=subjectMatches([/chemistry|化学/]),bio=subjectMatches([/biology|生物/]);
-    function need(label,test,grade){var best=bestSubjectRank(items,test);if(best&&best<rank(grade))gaps.push(label+' ≥ '+grade);}
+    function need(label,test,grade){var best=bestSubjectRank(items,test,mode);if(best&&best<rank(grade))gaps.push(label+' ≥ '+grade);}
     if(courseKey.indexOf('Medicine')===0){
       need('Chemistry',chem,'A');
-      var secondBest=Math.max(bestSubjectRank(items,bio),bestSubjectRank(items,isPlainMath),bestSubjectRank(items,phys));
+      var secondBest=Math.max(bestSubjectRank(items,bio,mode),bestSubjectRank(items,isPlainMath,mode),bestSubjectRank(items,phys,mode));
       if(secondBest&&secondBest<rank('A'))gaps.push('Biology / Mathematics / Physics ≥ A');
     } else if(courseKey.indexOf('Engineering')===0) {
       need('Mathematics',isPlainMath,'A');
@@ -860,14 +890,14 @@
     var key=document.getElementById('course').value,c=COURSES[key];if(!c)return lines;
     var targetOnlyAll=al.every(function(x){return x.targetOnly;});
     var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
-    var stuTop=profileGrades(mode).slice(0,3),missing=requiredSubjectGaps(key,al.map(function(x){return x.name;})),subjectGradeGaps=requiredSubjectGradeGaps(key,al);
+    var stuTop=profileGrades(mode).slice(0,3),missing=requiredSubjectGaps(key,al.map(function(x){return x.name;})),subjectGradeGaps=requiredSubjectGradeGaps(key,al,mode);
     lines.push(lang==='en'?'Course target: '+key:'目标专业/方向：'+key);
-    lines.push((lang==='en'?(targetOnlyAll?'Target profile: ':'Grade profile: '):(targetOnlyAll?'目标成绩档：':'成绩档：'))+(stuTop.join('')||'—'));
+    lines.push((lang==='en'?(mode==='tgt'?'Target profile: ':'Grade profile: '):(mode==='tgt'?'目标成绩档：':'成绩档：'))+(stuTop.join('')||'—'));
     if(al.length>3)lines.push(lang==='en'?'Note: checking top 3 plus required subjects; extra subjects do not replace required subjects.':'说明：按最高 3 门 + 必需科目判断；额外科目不能替代专业必修科目。');
     lines.push((lang==='en'?'Typical subject requirement: ':'常见科目要求：')+(lang==='en'?c.req.en:c.req.zh));
     if(c.check)lines.push((lang==='en'?'Non-grade checkpoints: ':'非成绩门槛：')+(lang==='en'?c.check.en:c.check.zh));
     if(missing.length)lines.push((lang==='en'?'Missing required subject(s): ':'缺少必需科目：')+missing.join(' / '));
-    if(subjectGradeGaps.length)lines.push((lang==='en'?'Required subject grade gap: ':'必需科目目标偏低：')+subjectGradeGaps.join(' / '));
+    if(subjectGradeGaps.length)lines.push((lang==='en'?(mode==='tgt'?'Required subject target gap: ':'Required subject grade gap: '):(mode==='tgt'?'必需科目目标偏低：':'必需科目需提分：'))+subjectGradeGaps.join(' / '));
     var di=document.getElementById('dreamUni').value;
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
@@ -906,7 +936,10 @@
           return;
         }
         var partial=(x.status==='partial'||(x.complete&&x.complete<100))?(lang==='en'?' [unfinished units]':'【含未考单元】'):'';
-        lines.push('- '+(x.board?x.board+' / ':'')+x.name+': '+x.grade+' ('+x.pct.toFixed(0)+'%)'+partial+(x.target?' -> target '+x.target:'')+(x.targetPct?(' / '+x.targetPct.toFixed(0)+'%'):''));
+        var curG=itemGrade(x,'cur'),curP=itemPct(x,'cur');
+        var line='- '+(x.board?x.board+' / ':'')+x.name+': '+(lang==='en'?'current ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+partial;
+        if(x.target||x.targetPct)line+=' -> '+(lang==='en'?'target plan ':'目标方案 ')+itemGrade(x,'tgt')+' ('+itemPct(x,'tgt').toFixed(0)+'%)';
+        lines.push(line);
         if(x.futureUnits&&x.futureUnits.length)lines.push('  '+(lang==='en'?'Next unit targets: ':'下一步单元目标：')+x.futureUnits.slice(0,4).join(', '));
         if(x.retakePlan&&x.retakePlan.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+x.retakePlan.slice(0,3).join(', '));
         else if(x.lowUnits&&x.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+x.lowUnits.slice(0,3).join(', '));
@@ -987,22 +1020,23 @@
     fillDream();
     var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
     var stuTop=profileGrades(mode).slice(0,3);
+    var modeIsTarget=mode==='tgt';
     renderCourseSources(c);
     var soft=al.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
     var missingSubjects=requiredSubjectGaps(key,al.map(function(x){return x.name;}));
-    var subjectGradeGaps=requiredSubjectGradeGaps(key,al);
+    var subjectGradeGaps=requiredSubjectGradeGaps(key,al,mode);
     var checkHtml=c.check?'<div class="mini-note check-note">'+t.nonGrade+'：'+(L()==='en'?c.check.en:c.check.zh)+'</div>':'';
-    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+(targetOnlyAll?t.yourTargetProfile:t.yourProfile)+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'')+(missingSubjects.length?' · <span class="gap-pos">'+t.missingSubject+'：'+missingSubjects.join(' / ')+'</span>':'')+(subjectGradeGaps.length?' · <span style="color:#cf8a1e;font-weight:800">'+t.subjectGradeGap+'：'+subjectGradeGaps.join(' / ')+'</span>':'')+checkHtml;
+    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'')+(missingSubjects.length?' · <span class="gap-pos">'+t.missingSubject+'：'+missingSubjects.join(' / ')+'</span>':'')+(subjectGradeGaps.length?' · <span style="color:#cf8a1e;font-weight:800">'+(modeIsTarget?t.subjectGradeGap:t.fitSubjectGrade)+'：'+subjectGradeGaps.join(' / ')+'</span>':'')+checkHtml;
     var dreamBox=document.getElementById('dreamGap'),di=document.getElementById('dreamUni').value;
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
       dreamBox.style.display='block';
-      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(targetOnlyAll?t.yourTargetProfile:t.yourProfile)+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+'：'+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'：'+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+(c.check?t.gradeMetBut:t.fitMatch)+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+(c.check?'<div class="mini-note check-note">'+t.nonGrade+'：'+(L()==='en'?c.check.en:c.check.zh)+'</div>':'')+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
+      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+'：'+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'：'+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+(c.check?t.gradeMetBut:t.fitMatch)+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+(c.check?'<div class="mini-note check-note">'+t.nonGrade+'：'+(L()==='en'?c.check.en:c.check.zh)+'</div>':'')+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
     } else {
       dreamBox.style.display='none';
     }
     if(courseActions)courseActions.style.display=di===''?'flex':'none';
-    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+(targetOnlyAll?t.fitTarget:t.fit)+'</th></tr>';
+    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+(modeIsTarget?t.fitTarget:t.fit)+'</th></tr>';
     c.unis.forEach(function(u){
       var d=offerGap(stuTop,u[1]).steps;
       var st=missingSubjects.length?'<span class="gap-pos">'+t.fitMissing+'</span>':(subjectGradeGaps.length?'<span style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'</span>':(d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>')));
@@ -1014,8 +1048,8 @@
   // ---- US route: SAT / ACT + AP (indicative middle-50% ranges) ----
   var apList=[];
   var US_TIERS=[
-    {min:1500,targetSat:1500,targetACT:34,targetAP:4,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'SAT ≈1500–1570 / ACT ≈34–36',ap:{zh:'建议 4+ 门 AP 4–5，核心科目越强越好',en:'4+ APs at 4–5 recommended; strong core subjects help'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
-    {min:1450,targetSat:1450,targetACT:33,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'SAT ≈1450–1540 / ACT ≈33–35',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'Johns Hopkins · Duke · Northwestern · Vanderbilt · Rice'},
+    {min:1500,targetSat:1550,targetACT:35,targetAP:4,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'SAT ≈1500–1570 / ACT ≈34–36',ap:{zh:'建议 4+ 门 AP 4–5，核心科目越强越好',en:'4+ APs at 4–5 recommended; strong core subjects help'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
+    {min:1450,targetSat:1500,targetACT:34,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'SAT ≈1450–1540 / ACT ≈33–35',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'Johns Hopkins · Duke · Northwestern · Vanderbilt · Rice'},
     {min:1350,targetSat:1350,targetACT:29,targetAP:2,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'SAT ≈1350–1480 / ACT ≈29–33',ap:{zh:'建议 2+ 门 AP 4–5',en:'2+ APs at 4–5 recommended'},ex:'NYU · Boston U · UIUC · Wisconsin · Case Western'},
     {min:1250,targetSat:1250,targetACT:26,targetAP:1,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'SAT ≈1250–1400 / ACT ≈26–31',ap:{zh:'有 AP 4–5 会加分',en:'AP 4–5 helps'},ex:'Penn State · Ohio State · Pittsburgh'},
     {min:0,targetSat:1150,targetACT:23,targetAP:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'SAT <1250 / ACT <26',ap:{zh:'先补标化/GPA 基础',en:'Build test/GPA foundation first'},ex:''}
@@ -1086,7 +1120,7 @@
   subjectTargetPctEl.addEventListener('input',liveCalc);
   document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
   document.getElementById('course').onchange=function(){fillDream();renderCourses();updateWhatsAppLinks();};
-  document.getElementById('ucMode').onchange=function(){renderCourses();updateWhatsAppLinks();};
+  document.getElementById('ucMode').onchange=function(){renderResults();};
   document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
   document.getElementById('targetOnlyAdd').onclick=addTargetOnly;
   document.getElementById('targetViewMatch').onclick=scrollToUniversityMatch;
@@ -1101,6 +1135,15 @@
     currentPath=btn.getAttribute('data-path')||'uk';
     applyPathTabs();
   };
+  document.addEventListener('focusin',function(e){
+    if(e.target&&e.target.matches&&e.target.matches('input,select,textarea'))document.body.classList.add('is-editing');
+  });
+  document.addEventListener('focusout',function(){
+    setTimeout(function(){
+      var a=document.activeElement;
+      if(!a||!a.matches||!a.matches('input,select,textarea'))document.body.classList.remove('is-editing');
+    },80);
+  });
 
   function setLang(lang){
     var en=lang==='en';document.documentElement.lang=en?'en':'zh-CN';
