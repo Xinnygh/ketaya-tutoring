@@ -63,6 +63,9 @@
   .target-grid{display:grid;grid-template-columns:minmax(0,1.4fr) 120px auto;gap:10px;align-items:end}
   .target-grid .field{margin-bottom:0}
   .target-grid .btn-add{margin-top:0;width:auto;min-width:150px}
+  .next-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .mini-action{flex:1;min-height:44px;box-sizing:border-box;border:1px solid var(--brand);border-radius:9px;padding:10px 12px;background:#fff;color:var(--brand);font-size:13px;font-weight:850;font-family:inherit;text-align:center;text-decoration:none;cursor:pointer}
+  .mini-action-primary{background:var(--brand);color:#fff}
   @media(max-width:600px){
     .urow{grid-template-columns:62px minmax(0,1fr) 78px 48px;gap:6px;align-items:center;margin-bottom:9px}
     .urow.pickrow{grid-template-columns:52px 52px minmax(0,1fr) 72px 44px}
@@ -80,6 +83,8 @@
     #clearBtn{min-width:54px;min-height:44px}
     .target-grid{grid-template-columns:1fr}
     .target-grid .btn-add{width:100%;min-height:48px}
+    .next-actions{flex-direction:column}
+    .mini-action{width:100%}
   }
 </style>
 </head>
@@ -152,6 +157,10 @@
         <button class="btn-add" id="targetOnlyAdd" data-zh="加入目标成绩单 ↓" data-en="Add target grade ↓">加入目标成绩单 ↓</button>
       </div>
       <div class="mini-note" id="targetOnlyMsg" data-zh="建议至少加入 3 门 A-level 目标成绩，再看大学匹配。" data-en="Add at least 3 A-level target grades for university matching.">建议至少加入 3 门 A-level 目标成绩，再看大学匹配。</div>
+      <div class="next-actions" id="targetOnlyActions" style="display:none">
+        <button type="button" class="mini-action" id="targetViewMatch" data-zh="查看大学差距 ↓" data-en="See university gap ↓">查看大学差距 ↓</button>
+        <a class="mini-action mini-action-primary" id="targetOnlyWa" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E4%B8%80%E4%B8%8B" target="_blank" rel="noopener" data-zh="把目标发给客服 →" data-en="Send target to advisor →">把目标发给客服 →</a>
+      </div>
     </div>
 
     <!-- BUILDER -->
@@ -564,6 +573,26 @@
     document.getElementById('addBtn').disabled=false;
   }
 
+  function targetALCount(){
+    return profile.filter(function(x){return x.exam==='al';}).length;
+  }
+  function renderTargetOnlyActions(){
+    var box=document.getElementById('targetOnlyActions');
+    if(!box)return;
+    box.style.display=(currentPath==='uk'&&targetALCount()>=3)?'flex':'none';
+  }
+  function scrollToUniversityMatch(){
+    if(currentPath!=='uk'){
+      currentPath='uk';
+      applyPathTabs();
+    } else {
+      renderCourses();
+    }
+    var dest=document.getElementById('coursewrap');
+    if(!dest||dest.style.display==='none')dest=document.getElementById('result')||document.getElementById('mywrap');
+    if(dest)dest.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
   document.getElementById('addBtn').onclick=function(){
     var prog=subjectProgress();if(prog===null)return;
     if(prog.invalid){liveCalc();return;}
@@ -591,12 +620,13 @@
     var alCount=profile.filter(function(x){return x.exam==='al';}).length;
     targetOnlyMsgEl.innerHTML=alCount>=3?t.targetOnlyComplete:t.targetOnlyProgress.replace('{s}',nm).replace('{g}',g).replace('{n}',3-alCount);
     renderMy();renderResults();
-    if(alCount>=3)document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
+    if(alCount>=3)scrollToUniversityMatch();
     else targetOnlyNameEl.focus();
   }
 
   function renderMy(){
     var t=T[L()],wrap=document.getElementById('mywrap'),box=document.getElementById('mysubs');
+    renderTargetOnlyActions();
     wrap.style.display=profile.length?'block':'none';
     box.innerHTML=profile.map(function(x,i){
       var opts=targetList(x).map(function(o){return '<option value="'+o+'"'+(o===x.target?' selected':'')+'>'+(o===''?t.target+'?':o)+'</option>';}).join('');
@@ -621,11 +651,20 @@
     };});
     box.querySelectorAll('.x').forEach(function(b){b.onclick=function(){profile.splice(+b.getAttribute('data-x'),1);saveProfile();renderMy();renderResults();};});
     saveProfile();updateWhatsAppLinks();
+    renderTargetOnlyActions();
   }
 
   function renderResults(){
     var t=T[L()],res=document.getElementById('result');
-    if(!profile.length){res.style.display='none';return;}
+    if(!profile.length){
+      res.style.display='none';
+      var cw=document.getElementById('coursewrap');
+      if(cw)cw.style.display='none';
+      renderCourseSources(null);
+      renderTargetOnlyActions();
+      updateWhatsAppLinks();
+      return;
+    }
     res.style.display='block';
     var al=profile.filter(function(x){return x.exam==='al';}),ig=profile.filter(function(x){return x.exam==='ig';});
     var soft=profile.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
@@ -793,7 +832,7 @@
   }
   function updateWhatsAppLinks(){
     var href='https://wa.me/8618156122672?text='+encodeURIComponent(consultText());
-    ['ctaWa','floatWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
+    ['ctaWa','floatWa','targetOnlyWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
     var float=document.getElementById('floatWa');
     if(float){
       var hasDetails=profile.length>0||lastSubjectMeta||(currentPath==='us'&&usPlanMeta);
@@ -919,6 +958,7 @@
     if(uk)uk.style.display=currentPath==='uk'?'block':'none';
     if(us)us.style.display=currentPath==='us'?'block':'none';
     if(currentPath==='uk'){renderCourses();updateWhatsAppLinks();}else{if(course)course.style.display='none';renderCourseSources(null);renderUS();}
+    renderTargetOnlyActions();
   }
 
   boardSel.onchange=function(){resetSubjectGoal();fillSubjects();renderUnits();};
@@ -930,6 +970,7 @@
   document.getElementById('ucMode').onchange=function(){renderCourses();updateWhatsAppLinks();};
   document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
   document.getElementById('targetOnlyAdd').onclick=addTargetOnly;
+  document.getElementById('targetViewMatch').onclick=scrollToUniversityMatch;
   targetOnlyNameEl.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addTargetOnly();}});
   document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();if(currentPath==='us')renderUS();};
   ['satM','satR'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){if(currentPath==='us')renderUS();});});
