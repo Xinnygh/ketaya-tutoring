@@ -22,25 +22,25 @@
   .calc .hint{font-size:13px;color:var(--ink-soft);margin:0 0 12px}
   .field{margin-bottom:12px}
   .field label{display:block;font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:5px}
-  .field select,.field input{width:100%;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:inherit;background:#fff}
+  .field select,.field input{width:100%;min-height:46px;box-sizing:border-box;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:inherit;background:#fff}
   .urow{display:grid;grid-template-columns:1fr 78px 70px;gap:8px;align-items:center;margin-bottom:7px}
   .urow .un{font-size:13.5px}
-  .urow input{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit}
+  .urow input{width:100%;min-height:42px;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:15px;font-family:inherit}
   .urow .umax{font-size:12px;color:var(--ink-soft);text-align:center}
   .rules-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;background:#fff6e8;border:1px solid var(--gold);color:#8a5a12;padding:8px 12px;border-radius:9px;margin-top:6px;text-decoration:none!important}
   .live{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);font-size:15px}
   .live b{color:var(--brand)}
-  .btn-add,.btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px;width:100%}
+  .btn-add,.btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;min-height:48px;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px;width:100%}
   .btn-add:disabled,.btn-calc:disabled{opacity:.45;cursor:not-allowed}
   .mini-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:8px 0 0}
-  .route-select{margin-bottom:10px}
+  .route-select{width:100%;max-width:100%;min-height:46px;box-sizing:border-box;margin-bottom:10px;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit;background:#fff}
   .mysub{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
   .mysub .nm{font-weight:700;font-size:14px}
   .mysub .gr{font-weight:850;color:var(--brand);font-size:17px;margin:0 6px}
   .badge{display:inline-block;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink-soft);border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800;margin-left:6px}
   .badge-warn{background:#fff6e8;border-color:var(--gold);color:#8a5a12}
-  .mysub select{padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit}
-  .mysub .x{background:none;border:none;color:#b9575f;font-weight:800;cursor:pointer;font-size:16px}
+  .mysub select{min-height:40px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;background:#fff}
+  .mysub .x{width:40px;height:40px;border:1px solid #f0c7cb;border-radius:9px;background:#fff7f8;color:#b9575f;font-weight:800;cursor:pointer;font-size:18px;line-height:1}
   .rcard{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
   .rcard h3{font-size:15px;margin:0 0 8px;color:var(--brand-dark)}
   .profile{font-size:30px;font-weight:850;color:var(--brand);letter-spacing:2px}
@@ -52,13 +52,18 @@
   .path-tab{flex:1;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);border-radius:9px;padding:10px 8px;font-weight:800;font-family:inherit;cursor:pointer}
   .path-tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
   @media(max-width:600px){
-    .urow{grid-template-columns:1fr 58px 52px;gap:6px}
-    .urow input,.urow select{padding:8px 6px;font-size:13px}
+    .urow{grid-template-columns:minmax(0,1fr) 78px 48px;gap:6px;align-items:center;margin-bottom:9px}
+    .urow .un{font-size:13px;line-height:1.25}
+    .urow input,.urow select{min-height:44px;padding:9px 8px;font-size:16px}
+    .urow .umax{font-size:12px}
+    .route-select{min-height:48px;font-size:14px}
     .calc{padding:15px}
     table.gt th,table.gt td{padding:6px 7px;font-size:12.5px}
     .profile{font-size:26px}
     article h1{font-size:23px}
-    .mysub{font-size:13px}
+    .mysub{font-size:13px;align-items:flex-start}
+    .mysub>span:last-child{display:flex;gap:8px;align-items:center;margin-left:auto}
+    #clearBtn{min-width:54px;min-height:44px}
   }
 </style>
 </head>
@@ -180,8 +185,8 @@
       <p data-zh="计算器告诉你「差多少」；客服先记录你的考试局、科目、当前分和目标分，再安排合适老师沟通或试课。中英双语、单节购买、绝不捆绑。"
          data-en="The calculator shows the size of the gap. Our customer service team first records your exam board, subject, current mark and target mark, then arranges a suitable tutor or trial lesson if needed. Bilingual, pay per lesson, no bundles.">计算器告诉你「差多少」；客服先记录你的考试局、科目、当前分和目标分，再安排合适老师沟通或试课。中英双语、单节购买、绝不捆绑。</p>
       <div class="cta-row">
-        <a class="btn btn-primary" id="ctaWa" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BE%85%E5%AF%BC%E3%80%82%E5%AD%A6%E7%94%9F%E5%B9%B4%E7%BA%A7%2F%E8%AF%BE%E7%A8%8B%E4%BD%93%E7%B3%BB%2F%E7%A7%91%E7%9B%AE%2F%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E6%98%AF%EF%BC%9A" target="_blank" rel="noopener" data-zh="💬 WhatsApp 发给客服" data-en="💬 Send details on WhatsApp">💬 WhatsApp 发给客服</a>
-        <a class="btn btn-ghost" href="free-learning-diagnosis.html" data-zh="了解学情咨询 →" data-en="About consultation →">About consultation →</a>
+        <a class="btn btn-primary" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E4%B8%80%E4%B8%8B" target="_blank" rel="noopener" data-zh="💬 直接咨询（不用填信息）" data-en="💬 Just message us (no info)">💬 直接咨询（不用填信息）</a>
+        <a class="btn btn-ghost" id="ctaWa" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BE%85%E5%AF%BC%E3%80%82%E5%AD%A6%E7%94%9F%E5%B9%B4%E7%BA%A7%2F%E8%AF%BE%E7%A8%8B%E4%BD%93%E7%B3%BB%2F%E7%A7%91%E7%9B%AE%2F%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E6%98%AF%EF%BC%9A" target="_blank" rel="noopener" data-zh="把成绩情况一起发 →" data-en="Send my details →">把成绩情况一起发 →</a>
       </div>
     </div>
 
@@ -199,7 +204,7 @@
   </div>
 </footer>
 
-<a class="wa-float" id="floatWa" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BE%85%E5%AF%BC%E3%80%82%E5%AD%A6%E7%94%9F%E5%B9%B4%E7%BA%A7%2F%E8%AF%BE%E7%A8%8B%E4%BD%93%E7%B3%BB%2F%E7%A7%91%E7%9B%AE%2F%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E6%98%AF%EF%BC%9A" target="_blank" rel="noopener" data-zh="💬 学情咨询" data-en="💬 Consultation">💬 学情咨询</a>
+<a class="wa-float" id="floatWa" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E4%B8%80%E4%B8%8B" target="_blank" rel="noopener" data-zh="💬 直接咨询" data-en="💬 Quick chat">💬 直接咨询</a>
 
 <script>
 (function(){
@@ -472,7 +477,7 @@
   }
   function updateWhatsAppLinks(){
     var href='https://wa.me/8618156122672?text='+encodeURIComponent(consultText());
-    ['ctaWa','floatWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
+    ['ctaWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
   }
   function fillCourse(){var c=document.getElementById('course'),cv=c.value;c.innerHTML=Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');if(cv)c.value=cv;}
   function fillMode(){var m=document.getElementById('ucMode'),t=T[L()],mv=m.value;m.innerHTML='<option value="cur">'+t.modeCur+'</option><option value="tgt">'+t.modeTgt+'</option>';if(mv)m.value=mv;}
