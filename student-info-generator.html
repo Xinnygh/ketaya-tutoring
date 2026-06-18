@@ -16,10 +16,26 @@
 <link rel="stylesheet" href="guides/article.css?v=20260618-mobile">
 <style>
   .tool-hero{background:linear-gradient(145deg,#f6faff 0%,#edf4ff 62%,#fff 100%);border:1px solid var(--line);border-radius:20px;padding:28px;margin:24px 0 28px}
-  .tool-hero h1{font-size:34px;line-height:1.2;margin:10px 0}
+  .tool-hero h1{font-size:34px;line-height:1.2;margin:10px 0;overflow-wrap:anywhere}
   .tool-hero p{color:var(--ink-soft);max-width:680px}
   .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
   .pill-row span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:750;color:var(--ink)}
+  .quick-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin:0 0 22px;box-shadow:var(--shadow)}
+  .quick-panel h2{font-size:22px;margin:0 0 6px}
+  .quick-panel p{color:var(--ink-soft);margin:0 0 14px}
+  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .quick-card{border:1px solid var(--line);background:#fffdf7;border-radius:12px;padding:12px;text-align:left;cursor:pointer;color:var(--ink);font:inherit;min-height:104px}
+  .quick-card:hover,.quick-card.active{border-color:#e8a33d;background:#fff6e4}
+  .quick-card b{display:block;font-size:14px;line-height:1.35}
+  .quick-card span{display:block;color:var(--ink-soft);font-size:12px;line-height:1.45;margin-top:6px}
+  .scenario-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin:0 0 22px;box-shadow:var(--shadow)}
+  .scenario-panel h2{font-size:22px;margin:0 0 6px}
+  .scenario-panel p{color:var(--ink-soft);margin:0 0 14px}
+  .scenario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .scenario-card{border:1px solid var(--line);background:var(--bg-soft);border-radius:12px;padding:12px;text-align:left;cursor:pointer;color:var(--ink);font:inherit;min-height:116px}
+  .scenario-card:hover,.scenario-card.active{border-color:var(--brand);background:#eef5ff}
+  .scenario-card b{display:block;font-size:14px;line-height:1.35}
+  .scenario-card span{display:block;color:var(--ink-soft);font-size:12px;line-height:1.45;margin-top:6px}
   .tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start;margin:20px 0 34px}
   .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
   .panel h2{font-size:22px;margin:0 0 12px}
@@ -40,9 +56,10 @@
   .copy-state{font-size:13px;color:var(--brand-dark);min-height:20px;text-align:center}
   header .nav-cta{min-height:46px;display:inline-flex;align-items:center;justify-content:center}
   @media(max-width:840px){
-    .tool-grid,.form-grid{grid-template-columns:1fr}
+    .tool-grid,.form-grid,.scenario-grid,.quick-grid{grid-template-columns:1fr}
     .tool-hero{padding:22px}
     .tool-hero h1{font-size:28px}
+    .scenario-card{min-height:auto}
   }
 </style>
 <script type="application/ld+json">
@@ -84,6 +101,68 @@
       <span>再匹配老师</span>
       <span>适合东南亚华人家庭</span>
       <span>中英双语国际课程</span>
+    </div>
+  </section>
+
+  <section class="quick-panel" aria-label="极简咨询入口">
+    <h2>不想填表？直接发一句也可以</h2>
+    <p>怕麻烦、看不懂、只想先问价格，都可以先用下面的短消息。客服会继续问你需要补充的信息。</p>
+    <div class="quick-grid">
+      <button class="quick-card" type="button" data-quick="lazy">
+        <b>太麻烦，客服问我</b>
+        <span>适合没耐心填表的家长。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="price">
+        <b>我只想先问价格</b>
+        <span>先了解单节试课预算。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="trust">
+        <b>我想先确认靠不靠谱</b>
+        <span>适合信任度不够的家长。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="urgent">
+        <b>快考试了，想尽快排</b>
+        <span>适合 mock / 大考临近。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="low-literacy">
+        <b>网页看不太明白</b>
+        <span>客服用中文慢慢问。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="student">
+        <b>我是学生本人</b>
+        <span>先自己问能不能安排。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="unknown">
+        <b>课程体系不确定</b>
+        <span>只知道孩子数学/科学卡住。</span>
+      </button>
+      <button class="quick-card" type="button" data-quick="screenshots">
+        <b>我先发截图给你看</b>
+        <span>用成绩/错题判断是否适合。</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="scenario-panel" aria-label="常见咨询场景">
+    <h2>选择最像你的情况，再改细节</h2>
+    <p>不确定怎么描述也没关系。先选一个模板，页面会自动帮你生成更像真实咨询的 WhatsApp 消息。</p>
+    <div class="scenario-grid">
+      <button class="scenario-card" type="button" data-scenario="my-igcse">
+        <b>马来西亚 IGCSE 家长</b>
+        <span>Mock 后掉分，想先试一节数学/物理。</span>
+      </button>
+      <button class="scenario-card" type="button" data-scenario="sg-alevel">
+        <b>新加坡 A-Level 家长</b>
+        <span>AS/A2 难度上来，想确认老师是否匹配。</span>
+      </button>
+      <button class="scenario-card" type="button" data-scenario="student-self">
+        <b>学生自己咨询</b>
+        <span>AP / SAT / AMC 备考，想快速问能不能安排。</span>
+      </button>
+      <button class="scenario-card" type="button" data-scenario="not-sure">
+        <b>还不确定该补什么</b>
+        <span>家长只知道孩子卡住了，先让客服判断。</span>
+      </button>
     </div>
   </section>
 
@@ -207,6 +286,62 @@
   var copyBtn = document.getElementById('copy-btn');
   var copyState = document.getElementById('copy-state');
   document.getElementById('source-label').textContent = source;
+  var quickMessages = {
+    lazy: '你好，我想咨询国际课程线上一对一，但不确定怎么说情况。学生在东南亚，请客服先问我几个问题登记。\\n\\n我知道第一步是客服登记，再安排合适老师沟通或试课。\\n来源：' + source,
+    price: '你好，我想先了解单节试课价格和流程。学生大概在东南亚，想补国际课程科目。请客服先帮我登记，再告诉我适合怎么安排。\\n\\n来源：' + source,
+    trust: '你好，我想先确认老师是否靠谱、是否匹配孩子的课程体系。请客服先说明怎么登记、怎么匹配老师、什么时候才需要付款。\\n\\n来源：' + source,
+    urgent: '你好，孩子近期要考试，想尽快安排一节国际课程试课。请客服先登记：国家/年级/科目/考试时间/可上课时间，我可以马上补充。\\n\\n来源：' + source,
+    'low-literacy': '你好，我看网页有点看不明白，想咨询孩子国际课程补课。请客服用中文慢慢问我需要哪些信息，先帮我登记。\\n\\n来源：' + source,
+    student: '你好，我是学生本人，想咨询国际课程一对一。请客服先帮我登记情况，看看是否适合安排老师试课。\\n\\n来源：' + source,
+    unknown: '你好，我不确定孩子的课程体系/考试局，只知道数学或科学最近卡住了。请客服先帮我判断应该补什么、是否适合试课。\\n\\n来源：' + source,
+    screenshots: '你好，我可以先发孩子最近成绩、错题或教材截图。请客服先看情况，判断是否适合安排老师单节试课。\\n\\n来源：' + source
+  };
+  var scenarios = {
+    'my-igcse': {
+      countryCity: '马来西亚吉隆坡',
+      grade: 'Year 11 / IGCSE',
+      curriculum: 'IGCSE / CAIE',
+      subject: '数学和物理',
+      scoreTarget: 'Mock 数学 C，目标 A；物理 B，想稳到 A',
+      examDate: '2026 年 10 月考试',
+      problem: '平时作业能做，但 past paper 一换题型就丢分；英文题目能看懂，步骤分和解释分拿不满。想先试一节，看老师能不能抓到具体卡点。',
+      times: '马来西亚时间周二/周四晚上 8 点后，或周六上午',
+      materials: '有 mock 成绩和几张错题截图，可以 WhatsApp 发'
+    },
+    'sg-alevel': {
+      countryCity: '新加坡',
+      grade: 'AS / A-Level',
+      curriculum: 'A-Level / CAIE',
+      subject: '数学 Pure Maths / Mechanics',
+      scoreTarget: '目前 B/C 边缘，目标 A',
+      examDate: '下次 mock 在 6 周后',
+      problem: '从 IGCSE 升 A-Level 后函数、微积分和力学衔接不顺。孩子听课能懂，但自己做题慢，换问法容易卡住。',
+      times: '新加坡时间周一/周三晚上 7:30 后，周日晚上也可以',
+      materials: '可以发学校作业、近期 test 和错题'
+    },
+    'student-self': {
+      countryCity: '印尼雅加达',
+      grade: 'Grade 11',
+      curriculum: 'AP',
+      subject: 'AP Calculus / SAT Math',
+      scoreTarget: 'AP 目标 5，SAT Math 目标 780+',
+      examDate: 'AP 明年 5 月，SAT 预计 8 月',
+      problem: '我是学生本人，想找一对一老师帮我按题型训练。主要问题是做题速度和难题思路，不想上大班课。',
+      times: '雅加达时间周末下午，平日晚上 8 点后',
+      materials: '有 Khan Academy 错题和几套练习卷'
+    },
+    'not-sure': {
+      countryCity: '马来西亚槟城',
+      grade: 'Year 9 / 国际学校',
+      curriculum: '还不确定',
+      subject: '数学和科学',
+      scoreTarget: '最近成绩下滑，目标先稳定到班级中上',
+      examDate: '学校暂时没有大考时间',
+      problem: '家长不确定是基础断层、英文理解，还是学习习惯问题。想先让客服看情况，判断是否适合安排一节试课。',
+      times: '马来西亚时间周末上午或平日晚上',
+      materials: '可以发最近作业和老师反馈'
+    }
+  };
 
   function valueOf(id){
     var value = document.getElementById(id).value.trim();
@@ -227,8 +362,8 @@
     return lines.join('\n');
   }
 
-  function updateMessage(){
-    var message = buildMessage();
+  function updateMessage(customMessage){
+    var message = customMessage || buildMessage();
     var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
     preview.value = message;
     whatsapp.href = url;
@@ -238,6 +373,36 @@
 
   form.addEventListener('input', updateMessage);
   form.addEventListener('change', updateMessage);
+  document.querySelectorAll('[data-quick]').forEach(function(button){
+    button.addEventListener('click', function(){
+      var message = quickMessages[button.getAttribute('data-quick')];
+      if (!message) return;
+      document.querySelectorAll('[data-quick]').forEach(function(item){
+        item.classList.remove('active');
+      });
+      document.querySelectorAll('[data-scenario]').forEach(function(item){
+        item.classList.remove('active');
+      });
+      button.classList.add('active');
+      updateMessage(message);
+      document.getElementById('generator').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  document.querySelectorAll('[data-scenario]').forEach(function(button){
+    button.addEventListener('click', function(){
+      var data = scenarios[button.getAttribute('data-scenario')];
+      if (!data) return;
+      fieldIds.forEach(function(id){
+        document.getElementById(id).value = data[id] || '';
+      });
+      document.querySelectorAll('[data-scenario]').forEach(function(item){
+        item.classList.remove('active');
+      });
+      button.classList.add('active');
+      updateMessage();
+      document.getElementById('generator').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
   copyBtn.addEventListener('click', function(){
     var text = preview.value;
     if (navigator.clipboard && navigator.clipboard.writeText) {

@@ -46,9 +46,9 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 22px}
   header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   nav{height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px}
   .logo{font-weight:850;font-size:20px;color:var(--ink)}
@@ -58,6 +58,7 @@
   .nav-cta{min-height:44px;display:inline-flex;align-items:center;justify-content:center;background:var(--brand);color:#fff;padding:9px 16px;border-radius:999px;font-size:14px;font-weight:750}
   .hero{padding:58px 0 48px;background:linear-gradient(145deg,#f6faff 0%,#edf4ff 58%,#ffffff 100%)}
   .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:34px;align-items:center}
+  .hero-grid>*{min-width:0}
   .eyebrow{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);color:var(--brand);font-weight:800;font-size:13px;padding:6px 12px;border-radius:999px;box-shadow:var(--shadow)}
   h1{font-size:42px;line-height:1.2;letter-spacing:-.2px;margin-top:18px}
   h1 b{color:var(--brand)}
@@ -69,6 +70,12 @@
   .btn-primary{background:var(--brand);color:#fff;box-shadow:0 8px 20px rgba(31,111,235,.24)}
   .btn-primary:hover{background:var(--brand-dark)}
   .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .fast-intake{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;max-width:760px}
+  .fast-box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+  .fast-box b{display:block;font-size:14px;margin-bottom:6px}
+  .fast-box p,.fast-box li{font-size:13px;color:var(--ink-soft)}
+  .fast-box ul{margin-left:17px}
+  .lazy-wa{display:inline-flex;margin-top:12px;color:var(--brand);font-size:13px;font-weight:900}
   .visual{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 45px rgba(19,35,58,.12);padding:18px}
   .visual-top{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
   .dot{width:9px;height:9px;border-radius:50%;background:#ff6b6b}
@@ -100,6 +107,10 @@
   .price{font-size:34px;color:var(--brand);font-weight:900;margin-top:8px}
   .price span{font-size:14px;color:var(--ink-soft);font-weight:700}
   .note{display:inline-flex;background:#edf7ff;color:#185b9d;border:1px solid #cfe8ff;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:800}
+  .story-card{display:grid;gap:10px}
+  .story-card .who{font-size:13px;font-weight:850;color:var(--brand)}
+  .story-card .question{font-size:16px;color:var(--ink);font-weight:850}
+  .story-card .next{font-size:14px;color:var(--ink-soft)}
   .cta-band{background:linear-gradient(135deg,var(--bg-deep),#143a63);color:#fff;border-radius:20px;padding:34px 26px;text-align:center}
   .cta-band h2{font-size:30px}
   .cta-band p{color:rgba(255,255,255,.88);margin:10px auto 0;max-width:720px}
@@ -113,16 +124,22 @@
   footer strong{color:#fff}
   .wa-float{position:fixed;right:18px;bottom:18px;z-index:200;background:#25D366;color:#fff;font-weight:900;font-size:15px;padding:13px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
   @media(max-width:880px){
-    .hero-grid,.g3,.g2{grid-template-columns:1fr}
+    .hero-grid,.g3,.g2,.fast-intake{grid-template-columns:1fr}
     h1{font-size:32px}
-    .visual{order:-1}
+    .visual{display:none}
     .nav-link{display:none}
   }
   @media(max-width:560px){
     .hero{padding-top:34px}
     h1{font-size:29px}
+    h1,.sub{overflow-wrap:anywhere;word-break:break-word}
+    .wrap{padding-left:16px;padding-right:16px}
+    .hero-points span{max-width:100%}
+    .logo{font-size:18px}
+    .nav-actions{display:none}
     .btn,.contact-methods a{width:100%}
     .wa-float{left:12px;right:12px;text-align:center;justify-content:center}
+    body{padding-bottom:76px}
   }
 </style>
 </head>
@@ -155,6 +172,23 @@
           <a class="btn btn-primary" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%98%AF%E4%BB%8E%E4%B8%9C%E5%8D%97%E4%BA%9A%E8%AF%95%E8%AF%BE%E9%A1%B5%E7%9C%8B%E5%88%B0%E7%9A%84%E3%80%82%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BE%85%E5%AF%BC%E3%80%82%E5%AD%A6%E7%94%9F%E5%B9%B4%E7%BA%A7%2F%E8%AF%BE%E7%A8%8B%E4%BD%93%E7%B3%BB%2F%E7%A7%91%E7%9B%AE%2F%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E6%98%AF%EF%BC%9A" target="_blank" rel="noopener">把情况发给客服</a>
           <a class="btn btn-ghost" href="student-info-generator.html?source=sea">先整理学情再发</a>
           <a class="btn btn-ghost" href="#process">先看怎么安排</a>
+        </div>
+        <div class="fast-intake" aria-label="咨询前关键信息">
+          <div class="fast-box">
+            <b>第一次只要发 5 项</b>
+            <ul>
+              <li>国家/城市、年级</li>
+              <li>课程体系/考试局和科目</li>
+              <li>当前分数或最近卡点</li>
+              <li>目标考试/目标分数</li>
+              <li>两个方便试课时间</li>
+            </ul>
+          </div>
+          <div class="fast-box">
+            <b>什么时候才付款</b>
+            <p>客服先登记，确认老师和时间后，再发单节试课付款说明。没有匹配到老师前，不会让家长先付款。</p>
+            <a class="lazy-wa" target="_blank" rel="noopener" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%EF%BC%8C%E4%BD%86%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%8E%E4%B9%88%E8%AF%B4%E6%83%85%E5%86%B5%E3%80%82%E8%AF%B7%E5%AE%A2%E6%9C%8D%E5%85%88%E9%97%AE%E6%88%91%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98%E7%99%BB%E8%AE%B0%EF%BC%8C%E5%86%8D%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E9%80%82%E5%90%88%E5%AE%89%E6%8E%92%E8%80%81%E5%B8%88%E5%8D%95%E8%8A%82%E8%AF%95%E8%AF%BE%E3%80%82">太麻烦？直接让客服问我 →</a>
+          </div>
         </div>
       </div>
       <aside class="visual" aria-label="online lesson preview">
@@ -195,6 +229,36 @@
         <span style="color:var(--ink-soft);padding:0 8px">·</span>
         <a href="singapore-igcse-a-level-tutor.html">新加坡 IGCSE / A-Level / AP 补习页</a>
       </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <div class="kx">Common Stories</div>
+        <h2>你可能正在遇到的情况</h2>
+        <p>这些都是适合先发学情、再安排单节试课的高意向场景。</p>
+      </div>
+      <div class="grid g3">
+        <div class="card story-card">
+          <div class="who">马来西亚 IGCSE 家长</div>
+          <div class="question">“Mock 后数学掉到 C，孩子说都会，但 past paper 一换题就不会。”</div>
+          <div class="next">适合先发错题和 mock 成绩，让客服匹配熟悉 CAIE / Edexcel 的数学老师试一节。</div>
+        </div>
+        <div class="card story-card">
+          <div class="who">新加坡 A-Level 家长</div>
+          <div class="question">“AS 到 A2 难度突然上来，力学/微积分跟不上，又不想一上来买课包。”</div>
+          <div class="next">适合先给两个可上课时间，确认老师后单节试课，看孩子是否听得懂。</div>
+        </div>
+        <div class="card story-card">
+          <div class="who">学生本人</div>
+          <div class="question">“我想冲 AP / SAT / AMC，但本地老师不一定懂我的考试目标。”</div>
+          <div class="next">适合直接用学情生成器说明目标分数、考试时间和最近错题类型。</div>
+        </div>
+      </div>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn btn-primary" href="student-info-generator.html?source=sea">选择你的情况，生成 WhatsApp 消息</a>
+      </div>
     </div>
   </section>
 
@@ -261,7 +325,7 @@
       <div class="head">
         <div class="kx">Pricing</div>
         <h2>先单节购买，不用先买大课包</h2>
-        <p>价格按官网现行标准展示；不同科目和老师会有差异，客服会先确认情况。</p>
+        <p>下面是单节试课预算参考；不同科目和老师会有差异。客服会先确认学生情况、老师和时间，再单独发送付款说明。</p>
       </div>
       <div class="grid g3">
         <div class="card"><span class="note">常见入口</span><h3>A-Level 数学</h3><div class="price">$55<span> / 60 分钟</span></div><p>适合 Pure Maths、Mechanics、Statistics 基础和提分。</p></div>
@@ -295,7 +359,7 @@
         <details open><summary>一开始对接的是老师吗？</summary><p>不是。第一步由客服登记情况，确认年级、考试局、科目和问题，再安排合适老师。这样可以避免随便匹配老师。</p></details>
         <details><summary>能不能只上一节试试？</summary><p>可以。我们建议先单节购买，看老师是否匹配、孩子是否听得懂，再决定是否继续。</p></details>
         <details><summary>孩子在海外，能用中文上课吗？</summary><p>可以。难点可以用中文讲透，但考试术语、答题步骤和 mark scheme 表达会用英文训练。</p></details>
-        <details><summary>付款方式有哪些？</summary><p>可支持 PayPal / Wise / 微信支付。具体付款信息由客服在确认时间和老师后单独发送。</p></details>
+        <details><summary>什么时候付款？</summary><p>先不付款。客服先登记学生情况，确认合适老师和可试课时间后，再发送单节试课付款说明。</p></details>
       </div>
     </div>
   </section>
