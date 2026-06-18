@@ -923,8 +923,11 @@
         lines.push('- '+(lang==='en'?'Standardized score: ':'标化成绩：')+usPlanMeta.testLabel);
         if(usPlanMeta.testGap>0)lines.push('- '+(lang==='en'?'Standardized gap: ':'标化还差：')+usPlanMeta.testGapLabel);
         if(usPlanMeta.weak)lines.push('- '+(lang==='en'?'Priority section: ':'优先补分模块：')+usPlanMeta.weak);
+      } else {
+        lines.push('- '+(lang==='en'?'Standardized score: not entered yet':'标化成绩：暂未填写'));
       }
       if(usPlanMeta.apScores&&usPlanMeta.apScores.length)lines.push('- '+(lang==='en'?'AP scores: ':'AP 成绩：')+usPlanMeta.apScores.join(', '));
+      else lines.push('- '+(lang==='en'?'AP scores: not entered yet':'AP 成绩：暂未填写'));
       lines.push('- '+(lang==='en'?'AP 4-5 count: ':'AP 4-5 分数量：')+usPlanMeta.apStrong+'/'+usPlanMeta.targetAP);
       if(usPlanMeta.apGap>0)lines.push('- '+(lang==='en'?'AP 4-5 gap: ':'AP 4-5 还差：')+usPlanMeta.apGap);
     } else if(profile.length){
