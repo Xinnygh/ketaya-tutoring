@@ -115,35 +115,9 @@
     </div>
 
     <div id="ukwrap" data-path-panel="uk">
-    <!-- BUILDER -->
-    <div class="calc">
-      <h2 data-zh="① 选考试局和科目" data-en="① Pick exam board & subject">① Pick exam board &amp; subject</h2>
-      <div class="field">
-        <label data-zh="考试局" data-en="Exam board">Exam board</label>
-        <select id="board"></select>
-      </div>
-      <div class="field">
-        <label data-zh="科目" data-en="Subject">Subject</label>
-        <select id="subject"></select>
-      </div>
-      <h2 style="margin-top:18px" data-zh="② 勾已考单元，填现实分数和目标" data-en="② Tick completed units, enter current marks and target">② Tick completed units, enter current marks and target</h2>
-      <p class="hint" id="unitHint" data-zh="勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。" data-en="Tick completed papers/units and enter marks; leave future units blank. The tool reverse-calculates what to take next, approximate marks needed, and whether low-score units may need retaking.">勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。</p>
-      <div id="units"></div>
-      <div class="field">
-        <label data-zh="本科目标等级（用于反推未考单元）" data-en="Target grade for this subject (for unfinished units)">本科目标等级（用于反推未考单元）</label>
-        <select id="subjectTarget"></select>
-      </div>
-      <div class="field">
-        <label data-zh="目标分数 %（可选；比等级更精确）" data-en="Target percentage (optional; more precise than grade)">目标分数 %（可选；比等级更精确）</label>
-        <input id="subjectTargetPct" type="number" min="0" max="100" inputmode="decimal" placeholder="例如 85">
-      </div>
-      <div class="live" id="live"></div>
-      <button class="btn-add" id="addBtn" data-zh="加入我的成绩单 ↓" data-en="Add to my results ↓">加入我的成绩单 ↓</button>
-    </div>
-
     <!-- TARGET-ONLY BUILDER -->
     <div class="calc" id="targetOnlyWrap">
-      <h2 data-zh="②B 还没出分？只填目标成绩也能先看大学" data-en="②B No scores yet? Use target grades first">②B 还没出分？只填目标成绩也能先看大学</h2>
+      <h2 data-zh="快速路径：只填目标成绩，看能申哪些大学" data-en="Fast path: enter target grades and see university matches">快速路径：只填目标成绩，看能申哪些大学</h2>
       <p class="hint" data-zh="如果还没考完、还没出分，或只是想先看“目标成绩能申哪里”，可以直接建立目标 A-level 成绩单。之后再逐科补当前单元分，系统会继续算差距。"
          data-en="If exams are unfinished, scores are not released yet, or you only want to see where a target profile can apply, build a target A-level profile first. Add current unit marks later to calculate the real gap.">如果还没考完、还没出分，或只是想先看“目标成绩能申哪里”，可以直接建立目标 A-level 成绩单。之后再逐科补当前单元分，系统会继续算差距。</p>
       <div class="target-grid">
@@ -171,10 +145,36 @@
       <div class="mini-note" id="targetOnlyMsg" data-zh="建议至少加入 3 门 A-level 目标成绩，再看大学匹配。" data-en="Add at least 3 A-level target grades for university matching.">建议至少加入 3 门 A-level 目标成绩，再看大学匹配。</div>
     </div>
 
+    <!-- BUILDER -->
+    <div class="calc">
+      <h2 data-zh="详细路径：选考试局和科目" data-en="Detailed path: pick exam board & subject">详细路径：选考试局和科目</h2>
+      <div class="field">
+        <label data-zh="考试局" data-en="Exam board">Exam board</label>
+        <select id="board"></select>
+      </div>
+      <div class="field">
+        <label data-zh="科目" data-en="Subject">Subject</label>
+        <select id="subject"></select>
+      </div>
+      <h2 style="margin-top:18px" data-zh="勾已考单元，填现实分数和目标" data-en="Tick completed units, enter current marks and target">勾已考单元，填现实分数和目标</h2>
+      <p class="hint" id="unitHint" data-zh="勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。" data-en="Tick completed papers/units and enter marks; leave future units blank. The tool reverse-calculates what to take next, approximate marks needed, and whether low-score units may need retaking.">勾选已经考过的 paper / 单元并填分；没考的留空，系统会反推下一步要考哪些、每个大约要多少分，必要时提示是否要重刷低分单元。</p>
+      <div id="units"></div>
+      <div class="field">
+        <label data-zh="本科目标等级（用于反推未考单元）" data-en="Target grade for this subject (for unfinished units)">本科目标等级（用于反推未考单元）</label>
+        <select id="subjectTarget"></select>
+      </div>
+      <div class="field">
+        <label data-zh="目标分数 %（可选；比等级更精确）" data-en="Target percentage (optional; more precise than grade)">目标分数 %（可选；比等级更精确）</label>
+        <input id="subjectTargetPct" type="number" min="0" max="100" inputmode="decimal" placeholder="例如 85">
+      </div>
+      <div class="live" id="live"></div>
+      <button class="btn-add" id="addBtn" data-zh="加入我的成绩单 ↓" data-en="Add to my results ↓">加入我的成绩单 ↓</button>
+    </div>
+
     <!-- MY SUBJECTS -->
     <div class="calc" id="mywrap" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-        <h2 style="margin:0" data-zh="③ 我的成绩单（可设目标等级）" data-en="③ My results (set a target grade)">③ 我的成绩单（可设目标等级）</h2>
+        <h2 style="margin:0" data-zh="我的成绩单（目标 / 当前都可保存）" data-en="My results (target or current)">我的成绩单（目标 / 当前都可保存）</h2>
         <button id="clearBtn" class="lang-btn" data-zh="清空" data-en="Clear">清空</button>
       </div>
       <div id="mysubs"></div>
@@ -190,8 +190,8 @@
     <!-- COURSE EXPLORER -->
     <div class="calc" id="coursewrap" data-path-panel="uk" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-        <h2 style="margin:0" data-zh="④ 能上什么大学 & 专业" data-en="④ Which universities & courses">④ 能上什么大学 & 专业</h2>
-        <div><span style="font-size:12px;color:var(--ink-soft)" data-zh="按：" data-en="Using:">按：</span> <select id="ucMode" style="padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit"></select></div>
+        <h2 style="margin:0" data-zh="大学 & 专业匹配" data-en="University & course match">大学 & 专业匹配</h2>
+        <div id="modeBox"><span style="font-size:12px;color:var(--ink-soft)" data-zh="按：" data-en="Using:">按：</span> <select id="ucMode" style="padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit"></select></div>
       </div>
       <div class="field" style="margin-top:10px">
         <label data-zh="选专业方向（看各校录取要求 & 你够不够 / 反查要多少分）" data-en="Pick a course (see each uni's requirement & your fit / what you'd need)">选专业方向（看各校录取要求 & 你够不够 / 反查要多少分）</label>
@@ -234,7 +234,8 @@
       </div>
       <button class="btn-calc" id="usCalc" data-zh="计算离目标院校还差多少 →" data-en="Calculate gap to target →">计算离目标院校还差多少 →</button>
       <div id="usResult" style="margin-top:14px"></div>
-      <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。" data-en="⚠️ US admission is holistic: SAT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT ranges are published middle-50% figures (approximate; in 2026 most top schools again require SAT/ACT), for reference only — check each university's official page.">⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为各校公布的 middle-50%（约数，2026 多数顶尖校已重新要求 SAT/ACT），仅供参考，以各校官网为准。</p>
+      <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为公开 middle-50% 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。"
+         data-en="⚠️ US admission is holistic: SAT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT ranges are rough public middle-50% references; some schools have reinstated SAT/ACT, while UC campuses do not consider SAT/ACT. Policies change quickly, so always check official pages.">⚠️ 美本是 holistic（综合）录取：SAT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT 区间为公开 middle-50% 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。</p>
     </div>
 
     <!-- CTA -->
@@ -266,6 +267,7 @@
           <a href="https://satsuite.collegeboard.org/sat/scores" target="_blank" rel="noopener">College Board SAT scores</a>
           <a href="https://apstudents.collegeboard.org/what-is-ap" target="_blank" rel="noopener">College Board AP</a>
           <a href="https://mitadmissions.org/apply/firstyear/tests-scores/" target="_blank" rel="noopener">MIT tests & scores</a>
+          <a href="https://admission.universityofcalifornia.edu/counselors/preparing-freshman-students/freshman-requirements.html" target="_blank" rel="noopener">UC testing policy</a>
         </span>
       </p>
       <p id="courseSourcesWrap" style="display:none"><span data-zh="当前专业 offer 来源：" data-en="Current course offer sources:">当前专业 offer 来源：</span><span class="source-links" id="courseSources"></span></p>
@@ -339,22 +341,22 @@
     zh:{none:'—',pickHint:'先勾“已考”并填分；还会计入最终成绩但没考的单元勾“计入”。系统会按目标反推未来单元要求。',routeHint:'先选官方考试组合；已考卷勾“已考”并填 raw mark，未考卷不要勾。',overallHint:'这一科按整体得分率估算，填你的 % 即可。',fixedHint:'已考卷勾“已考”并填得分率 %；没考卷不要勾，卷名后是该卷占比。',umsHint:'请填 UMS 或 UMS 得分率；已出分单元勾“已考”，未考但会计入的单元勾“计入”。',overallU:'整体得分率',pick:'先选科目',liveGrade:'当前预测',grade:'等级',need:'先勾已考单元并填分',
       done:'已考',planned:'计入',remaining:'未考/未填',needRemain:'若目标 {g}，未考单元平均需要',unitNeed:'建议下一步考到',retake:'建议重刷到',weak:'低分环节',retakeNeed:'只靠未考单元不够，还需从已考单元补回约',impossible:'目标 {g} 需要未考单元超过 100%，需要重刷或调整目标',alreadyTarget:'按已考单元，目标 {g} 已经够线',targetNow:'先选择目标等级或目标分数，可反推未考单元要求',estimated:'按目前均分预测',partial:'含未考单元预测',actual:'已填完整',overMax:'超过满分',
       targetPct:'目标分数',currentDone:'已考贡献',projected:'按当前表现预测最终',highRisk:'要求偏高，建议尽快做学情诊断',addPlan:'先勾未来会计入最终成绩的单元，才能准确反推',invalidDone:'已勾“已考”的单元需要填分',
-      targetOnly:'目标成绩',targetOnlyBadge:'目标方案',targetOnlyNeedName:'请先填写目标科目',targetOnlyAdded:'已加入目标成绩单。加满 3 门后即可看大学匹配；也可以直接咨询客服确认科目组合。',targetOnlyGap:'这是目标成绩单，可先看目标院校；如果要算真实提分差距，再补当前单元分。',
-      overall:'综合成绩档',top3:'最高 3 门',allAL:'全部 A-level',ucas:'UCAS 分（A-level 计）',uniTitle:'你的成绩大致能冲的大学方向',gapTitle:'离目标还差多少',
+      targetOnly:'目标成绩',targetOnlyBadge:'目标方案',targetOnlyNeedName:'请先填写目标科目',targetOnlyAdded:'已加入目标成绩单。加满 3 门后即可看大学匹配；也可以直接咨询客服确认科目组合。',targetOnlyProgress:'已加入 {s} {g}。还差 {n} 门即可看大学匹配。',targetOnlyComplete:'目标成绩单已够 3 门，可以看大学匹配；也可以直接咨询客服确认科目组合。',targetOnlyGap:'这是目标成绩单，可先看目标院校；如果要算真实提分差距，再补当前单元分。',
+      overall:'综合成绩档',top3:'最高 3 门',allAL:'全部 A-level',ucas:'UCAS 分（A-level 计）',uniTitle:'你的成绩大致能冲的大学方向',uniTitleTarget:'目标成绩大致能冲的大学方向',gapTitle:'离目标还差多少',
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 / UMS 规则，本表按可输入数据估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level。大学申请通常看 3 门；请先加满 3 门，再看具体大学匹配。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
-      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',apGap:'AP 4–5 分还差',satMet:'SAT 已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT；顶尖美本通常不能只靠 AP 替代 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',usTargetReq:'目标建议',usTargetOnly:'只选目标也可以先咨询：客服会帮你拆 SAT/AP/GPA/活动差距。',
+      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',yourTargetProfile:'你的目标成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitTarget:'目标匹配',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',fitMissing:'🔴 需补必需科目',missingSubject:'缺少必需科目',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',apGap:'AP 4–5 分还差',satMet:'SAT 已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT；顶尖美本通常不能只靠 AP 替代 SAT/ACT；UC 系等学校不参考 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',usTargetReq:'目标建议',usTargetOnly:'只选目标也可以先咨询：客服会帮你拆 SAT/AP/GPA/活动差距。',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick “done” for completed units and enter marks; tick “counts” for future units that will count toward the final grade.',routeHint:'Choose the official route; tick completed papers and enter raw marks, leave future papers unticked.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Tick completed papers and enter %; leave future papers unticked. The figure after each name is the weighting.',umsHint:'Enter UMS or UMS percentage; tick completed units and tick future units that will count.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'Current projection',grade:'Grade',need:'Tick completed units and enter marks',
       done:'Done',planned:'Counts',remaining:'Future / blank',needRemain:'To reach {g}, future units need on average',unitNeed:'Next units need',retake:'Retake target',weak:'Weak units',retakeNeed:'Future units alone are not enough; recover about',impossible:'Target {g} needs over 100% on future units, so retake or adjust target',alreadyTarget:'With completed units, target {g} is already on track',targetNow:'Choose a target grade or target percentage to reverse-calculate future units',estimated:'projected from current average',partial:'includes future-unit projection',actual:'all entered',overMax:'over full marks',
       targetPct:'Target %',currentDone:'Completed contribution',projected:'Projected final at current pace',highRisk:'High requirement; book a diagnosis soon',addPlan:'Tick future units that will count for an accurate reverse calculation',invalidDone:'Completed units need a mark',
-      targetOnly:'Target grade',targetOnlyBadge:'Target plan',targetOnlyNeedName:'Enter a target subject first',targetOnlyAdded:'Added to target profile. Add 3 A-levels to see university matching, or message us to check the subject combination.',targetOnlyGap:'This is a target profile. Use it to check target universities now; add current unit marks later for the real improvement gap.',
-      overall:'Overall profile',top3:'Top 3',allAL:'All A-levels',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',gapTitle:'How far from your target',
+      targetOnly:'Target grade',targetOnlyBadge:'Target plan',targetOnlyNeedName:'Enter a target subject first',targetOnlyAdded:'Added to target profile. Add 3 A-levels to see university matching, or message us to check the subject combination.',targetOnlyProgress:'Added {s} {g}. Add {n} more subject(s) for university matching.',targetOnlyComplete:'Target profile has 3 subjects. You can now check university matches or message us to review the subject combination.',targetOnlyGap:'This is a target profile. Use it to check target universities now; add current unit marks later for the real improvement gap.',
+      overall:'Overall profile',top3:'Top 3',allAL:'All A-levels',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',uniTitleTarget:'Universities your target grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: A-level A* also depends on A2 / UMS rules; this is estimated from the data entered.',
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s). Universities usually look at 3; add the rest before using the university match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
-      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',apGap:'AP 4–5 gap',satMet:'SAT is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT entered yet; for top US colleges, AP usually does not replace SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',usTargetReq:'Target recommendation',usTargetOnly:'You can message us with only a target: we will break down SAT/AP/GPA/activity gaps.',
+      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',yourTargetProfile:'Your target grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitTarget:'Target fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',fitMissing:'🔴 Missing required subject',missingSubject:'Missing required subject',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',apGap:'AP 4–5 gap',satMet:'SAT is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT entered yet; for top US colleges, AP usually does not replace SAT/ACT; UC campuses do not consider SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',usTargetReq:'Target recommendation',usTargetOnly:'You can message us with only a target: we will break down SAT/AP/GPA/activity gaps.',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
@@ -577,9 +579,11 @@
     var item={name:nm,exam:'al',pct:pct,grade:g,target:g,targetPct:pct,scale:'',board:t.targetOnly,complete:0,required:null,status:'target-only',targetOnly:true,futureUnits:[],lowUnits:[],retakePlan:[],retakeNeed:0};
     if(idx>=0){profile[idx]=Object.assign(profile[idx],item);} else {profile.push(item);}
     targetOnlyNameEl.value='';
-    targetOnlyMsgEl.innerHTML=t.targetOnlyAdded;
+    var alCount=profile.filter(function(x){return x.exam==='al';}).length;
+    targetOnlyMsgEl.innerHTML=alCount>=3?t.targetOnlyComplete:t.targetOnlyProgress.replace('{s}',nm).replace('{g}',g).replace('{n}',3-alCount);
     renderMy();renderResults();
-    document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
+    if(alCount>=3)document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
+    else targetOnlyNameEl.focus();
   }
 
   function renderMy(){
@@ -633,7 +637,7 @@
     if(ig.length){var avg=Math.round(ig.reduce(function(a,x){return a+x.pct;},0)/ig.length);oh+='<div class="ucas" style="margin-top:6px">IGCSE: '+ig.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).join(' ')+' · '+t.igAvg+avg+'%</div>';}
     document.getElementById('r-overall').innerHTML=oh;
     // uni
-    var uh='<h3>'+t.uniTitle+'</h3>';
+    var uh='<h3>'+(allTargetOnly?t.uniTitleTarget:t.uniTitle)+'</h3>';
     if(al.length>=3){var top3u=al.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+'：<b>'+top3u.join(' ')+'</b></div>';}
     else if(al.length>=1){uh+='<div class="ucas">'+t.addMore.replace('{n}',al.length)+'</div>';}
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
@@ -669,6 +673,22 @@
   function parseGrades(s){return (s.match(/A\*|[A-E]/g)||[]);}
   function sumG(arr){return arr.map(rank).reduce(function(a,b){return a+b;},0);}
   function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return x.targetOnly?(x.target||x.grade):((mode==='tgt'&&x.target)?x.target:x.grade);}).sort(function(a,b){return rank(b)-rank(a);});}
+  function subjectHas(subjects,re){return subjects.some(function(s){return re.test((s||'').toLowerCase());});}
+  function requiredSubjectGaps(courseKey,subjects){
+    var missing=[],hasMath=subjectHas(subjects,/math|mathematics|maths/),hasPhys=subjectHas(subjects,/physics/),hasChem=subjectHas(subjects,/chemistry/),hasBio=subjectHas(subjects,/biology/);
+    if(courseKey.indexOf('Medicine')===0){
+      if(!hasChem)missing.push('Chemistry');
+      if(!(hasBio||hasMath||hasPhys))missing.push('Biology / Mathematics / Physics');
+    } else if(courseKey.indexOf('Engineering')===0) {
+      if(!hasMath)missing.push('Mathematics');
+      if(!hasPhys)missing.push('Physics');
+    } else if(courseKey.indexOf('Computer Science')===0||courseKey.indexOf('Mathematics')===0||courseKey.indexOf('Economics')===0) {
+      if(!hasMath)missing.push('Mathematics');
+    } else if(courseKey.indexOf('Natural')===0) {
+      if(!(hasPhys||hasChem||hasBio||hasMath))missing.push('relevant science');
+    }
+    return missing;
+  }
   function saveProfile(){try{localStorage.setItem('grade_calc_profile',JSON.stringify(profile));}catch(e){}}
   function loadProfile(){try{var raw=localStorage.getItem('grade_calc_profile');if(raw){profile=JSON.parse(raw)||[];profile.forEach(function(x){x.targetOnly=!!x.targetOnly;x.scale=x.scale||'';x.board=x.board||'';x.status=x.targetOnly?'target-only':(x.status||'actual');x.complete=(x.complete==null?100:x.complete);x.futureUnits=x.futureUnits||[];x.lowUnits=x.lowUnits||[];x.retakePlan=x.retakePlan||[];x.retakeNeed=x.retakeNeed||0;x.targetPct=x.targetPct||pctForGrade(x.target||'');if(x.targetOnly){x.target=x.target||x.grade;x.grade=x.target;x.pct=x.targetPct||pctForGrade(x.target||'');}});}}catch(e){profile=[];}}
   function consultText(){
@@ -734,6 +754,8 @@
     var t=T[L()],wrap=document.getElementById('coursewrap');
     if(currentPath!=='uk'){wrap.style.display='none';renderCourseSources(null);return;}
     var al=profile.filter(function(x){return x.exam==='al';});
+    var targetOnlyAll=al.length>0&&al.every(function(x){return x.targetOnly;});
+    var modeBox=document.getElementById('modeBox');if(modeBox)modeBox.style.display=targetOnlyAll?'none':'block';
     if(!al.length){wrap.style.display='none';renderCourseSources(null);return;}
     wrap.style.display='block';
     if(al.length<3){
@@ -743,24 +765,25 @@
       return;
     }
     fillDream();
-    var mode=document.getElementById('ucMode').value||'cur';
+    var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
     var stuTop=profileGrades(mode).slice(0,3),stuSum=sumG(stuTop);
     var key=document.getElementById('course').value,c=COURSES[key];if(!c)return;
     renderCourseSources(c);
     var soft=al.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
-    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+t.yourProfile+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'');
+    var missingSubjects=requiredSubjectGaps(key,al.map(function(x){return x.name;}));
+    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+(targetOnlyAll?t.yourTargetProfile:t.yourProfile)+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'')+(missingSubjects.length?' · <span class="gap-pos">'+t.missingSubject+'：'+missingSubjects.join(' / ')+'</span>':'');
     var dreamBox=document.getElementById('dreamGap'),di=document.getElementById('dreamUni').value;
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
       dreamBox.style.display='block';
-      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+t.yourProfile+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(gap.steps<=0?'<div class="gap-ok">'+t.fitMatch+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>');
+      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(targetOnlyAll?t.yourTargetProfile:t.yourProfile)+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+'：'+missingSubjects.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+t.fitMatch+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>'));
     } else {
       dreamBox.style.display='none';
     }
-    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+t.fit+'</th></tr>';
+    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+(targetOnlyAll?t.fitTarget:t.fit)+'</th></tr>';
     c.unis.forEach(function(u){
       var d=sumG(parseGrades(u[1]).slice(0,3))-stuSum;
-      var st=d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>');
+      var st=missingSubjects.length?'<span class="gap-pos">'+t.fitMissing+'</span>':(d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>'));
       h+='<tr><td style="text-align:left">'+u[0]+'</td><td><b>'+u[1]+'</b></td><td>'+st+'</td></tr>';
     });
     document.getElementById('courseTable').innerHTML=h;
@@ -770,8 +793,8 @@
   var apList=[];
   var US_TIERS=[
     {min:1500,targetSat:1500,targetAP:4,zh:'顶尖名校（藤校 / MIT / Stanford / UChicago）',en:'Top (Ivy / MIT / Stanford / UChicago)',sat:'≈1500–1570',ap:{zh:'建议 4+ 门 AP 4–5，核心科目越强越好',en:'4+ APs at 4–5 recommended; strong core subjects help'},ex:'Harvard · Yale · Princeton · MIT · Stanford'},
-    {min:1450,targetSat:1450,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'≈1450–1540',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'UCLA · Michigan · CMU · UC Berkeley · NYU'},
-    {min:1350,targetSat:1350,targetAP:2,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'≈1350–1480',ap:{zh:'建议 2+ 门 AP 4–5',en:'2+ APs at 4–5 recommended'},ex:'Boston U · UIUC · UC San Diego · Wisconsin'},
+    {min:1450,targetSat:1450,targetAP:3,zh:'美国 Top 20',en:'US Top 20',sat:'≈1450–1540',ap:{zh:'建议 3+ 门 AP 4–5',en:'3+ APs at 4–5 recommended'},ex:'Johns Hopkins · Duke · Northwestern · Vanderbilt · Rice'},
+    {min:1350,targetSat:1350,targetAP:2,zh:'美国 Top 30–50',en:'US Top 30–50',sat:'≈1350–1480',ap:{zh:'建议 2+ 门 AP 4–5',en:'2+ APs at 4–5 recommended'},ex:'NYU · Boston U · UIUC · Wisconsin · Case Western'},
     {min:1250,targetSat:1250,targetAP:1,zh:'好的州立 / Top 60–100',en:'Good state / Top 60–100',sat:'≈1250–1400',ap:{zh:'有 AP 4–5 会加分',en:'AP 4–5 helps'},ex:'Penn State · Ohio State · Pittsburgh'},
     {min:0,targetSat:1150,targetAP:0,zh:'更多选择 / 建议提分',en:'More options / raise scores',sat:'<1250',ap:{zh:'先补 SAT/GPA 基础',en:'Build SAT/GPA foundation first'},ex:''}
   ];
