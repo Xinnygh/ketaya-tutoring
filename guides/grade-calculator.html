@@ -943,6 +943,8 @@
         var line='- '+(x.board?x.board+' / ':'')+x.name+': '+(lang==='en'?'current ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+partial;
         if(x.target||x.targetPct)line+=' -> '+(lang==='en'?'target plan ':'目标方案 ')+itemGrade(x,'tgt')+' ('+itemPct(x,'tgt').toFixed(0)+'%)';
         lines.push(line);
+        var gapPct=(x.targetPct||pctForGrade(x.target||''))-curP;
+        if(gapPct>0)lines.push('  '+(lang==='en'?'Gap to target: about +':'距离目标：约还差 +')+gapPct.toFixed(0)+'%');
         if(x.futureUnits&&x.futureUnits.length)lines.push('  '+(lang==='en'?'Next unit targets: ':'下一步单元目标：')+x.futureUnits.slice(0,4).join(', '));
         if(x.retakePlan&&x.retakePlan.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+x.retakePlan.slice(0,3).join(', '));
         else if(x.lowUnits&&x.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+x.lowUnits.slice(0,3).join(', '));
