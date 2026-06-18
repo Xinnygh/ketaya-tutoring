@@ -400,6 +400,9 @@
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & top UK universities (A*AA–AAA; UCL·LSE·Imperial — very competitive)','UK Russell Group / strong UK courses (AAB–ABB)','Solid UK universities (BBB)','Mainstream UK universities; raise grades for top UK courses (BBC–CCC)','Build the foundation, improve step by step']}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
+  function C(){return L()==='en'?': ':'：';}
+  function P(s){return L()==='en'?' ('+s+')':'（'+s+'）';}
+  function J(){return L()==='en'?'; ':'； ';}
   var boardSel=document.getElementById('board'),subjSel=document.getElementById('subject'),unitsEl=document.getElementById('units'),liveEl=document.getElementById('live'),rulesEl=document.getElementById('rules'),subjectTargetSel=document.getElementById('subjectTarget'),subjectTargetPctEl=document.getElementById('subjectTargetPct');
   var targetOnlyNameEl=document.getElementById('targetOnlyName'),targetOnlyGradeEl=document.getElementById('targetOnlyGrade'),targetOnlyMsgEl=document.getElementById('targetOnlyMsg');
   var profile=[]; // {name,exam,pct,grade,target,scale,board,complete,required,status}
@@ -593,14 +596,14 @@
   function liveCalc(){
     var t=T[L()],prog=subjectProgress();
     if(prog&&prog.invalid){liveEl.innerHTML='<span class="gap-pos">'+t.invalidDone+'</span>';document.getElementById('addBtn').disabled=true;return;}
-    if(prog===null){liveEl.innerHTML=t.liveGrade+'：<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;return;}
-    var g=gradeFromPct(prog.pct,curExam(),cur().scale),label=prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade,html=label+'：<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
-    html+='<div class="mini-note">'+t.currentDone+'：'+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'%';
+    if(prog===null){liveEl.innerHTML=t.liveGrade+C()+'<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;return;}
+    var g=gradeFromPct(prog.pct,curExam(),cur().scale),label=prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade,html=label+C()+'<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
+    html+='<div class="mini-note">'+t.currentDone+C()+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'%';
     if(prog.missing>0)html+=' · '+t.remaining+' '+prog.missing.toFixed(0)+'%';
     html+='</div>';
-    if(prog.missing>0&&!prog.targetPct)html+='<div class="mini-note">'+t.projected+'：'+prog.pct.toFixed(1)+'%（'+t.estimated+'）</div>';
+    if(prog.missing>0&&!prog.targetPct)html+='<div class="mini-note">'+t.projected+C()+prog.pct.toFixed(1)+'%'+P(t.estimated)+'</div>';
     if(prog.missing>0&&!prog.targetPct&&prog.missingUnits&&prog.missingUnits.length){
-      html+='<div class="mini-note">'+t.unitNeed+'：'+prog.missingUnits.slice(0,6).map(function(u){return u.name;}).join('； ')+'</div>';
+      html+='<div class="mini-note">'+t.unitNeed+C()+prog.missingUnits.slice(0,6).map(function(u){return u.name;}).join(J())+'</div>';
     } else if(prog.missing>0&&!prog.targetPct){
       html+='<div class="mini-note">'+t.addPlan+'</div>';
     }
@@ -610,22 +613,22 @@
       else if(prog.required<=0)html+='<div class="mini-note gap-ok">'+t.alreadyTarget.replace('{g}',target)+'</div>';
       else if(prog.required>100){
         html+='<div class="mini-note gap-pos">'+t.impossible.replace('{g}',target)+'</div>';
-        if(prog.missingUnits&&prog.missingUnits.length)html+='<div class="mini-note">'+t.unitNeed+'：'+prog.missingUnits.slice(0,6).map(function(u){return unitTargetText(u,prog.required);}).join('； ')+'</div>';
+        if(prog.missingUnits&&prog.missingUnits.length)html+='<div class="mini-note">'+t.unitNeed+C()+prog.missingUnits.slice(0,6).map(function(u){return unitTargetText(u,prog.required);}).join(J())+'</div>';
       }
       else {
         html+='<div class="mini-note"><b>'+t.needRemain.replace('{g}',target)+' '+prog.required.toFixed(1)+'%</b></div>';
         if(prog.missingUnits&&prog.missingUnits.length){
-          html+='<div class="mini-note">'+t.unitNeed+'：'+prog.missingUnits.slice(0,6).map(function(u){return unitTargetText(u,prog.required);}).join('； ')+'</div>';
+          html+='<div class="mini-note">'+t.unitNeed+C()+prog.missingUnits.slice(0,6).map(function(u){return unitTargetText(u,prog.required);}).join(J())+'</div>';
         }
         if(prog.required>=88)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.highRisk+'</div>';
       }
       if(prog.lowUnits&&prog.lowUnits.length&&(prog.required>85||prog.retakeNeed>0)){
-        html+='<div class="mini-note">'+t.retake+'：'+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join('； ')+'</div>';
+        html+='<div class="mini-note">'+t.retake+C()+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join(J())+'</div>';
       }
       if(prog.retakeNeed>0)html+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+prog.retakeNeed.toFixed(1)+'%</div>';
     } else if(prog.targetPct&&prog.pct<prog.targetPct){
       html+='<div class="mini-note gap-pos">'+t.needp+(prog.targetPct-prog.pct).toFixed(1)+'%</div>';
-      if(prog.retakeTargets&&prog.retakeTargets.length)html+='<div class="mini-note">'+t.retake+'：'+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join('； ')+'</div>';
+      if(prog.retakeTargets&&prog.retakeTargets.length)html+='<div class="mini-note">'+t.retake+C()+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join(J())+'</div>';
     }
     liveEl.innerHTML=html;
     document.getElementById('addBtn').disabled=false;
@@ -702,9 +705,9 @@
       var badge=x.targetOnly?' <span class="badge badge-warn">'+t.targetOnlyBadge+'</span>':(isPartial?' <span class="badge badge-warn">'+t.partial+'</span>':' <span class="badge">'+t.actual+'</span>');
       var req=(!x.targetOnly&&isPartial&&x.required!=null&&x.required>0&&x.required<=100)?'<span style="color:var(--ink-soft);font-size:12px"> · '+t.remaining+' '+(100-(x.complete||100))+'% ≈ '+x.required.toFixed(0)+'%</span>':'';
       var plan='';
-      if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+'：'+x.futureUnits.slice(0,4).join('； ')+'</div>';
-      if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+t.retake+'：'+x.retakePlan.slice(0,3).join('； ')+'</div>';
-      else if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.weak+'：'+x.lowUnits.slice(0,3).join('； ')+'</div>';
+      if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+C()+x.futureUnits.slice(0,4).join(J())+'</div>';
+      if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+t.retake+C()+x.retakePlan.slice(0,3).join(J())+'</div>';
+      else if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.weak+C()+x.lowUnits.slice(0,3).join(J())+'</div>';
       if(x.retakeNeed>0)plan+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%</div>';
       var currentDiff=!x.targetOnly&&x.target&&(x.currentGrade||x.currentPct!=null)&&((x.currentGrade||x.grade)!==x.grade||Math.round(itemPct(x,'cur'))!==Math.round(x.pct));
       var pctLabel=x.targetOnly?'':' <span style="color:var(--ink-soft);font-size:13px">'+(currentDiff?(itemPct(x,'cur').toFixed(0)+'% → '+x.pct.toFixed(0)+'%'):x.pct.toFixed(0)+'%')+'</span>';
@@ -749,13 +752,13 @@
       var top3=sorted.slice(0,3).map(function(x){return itemGrade(x,summaryMode);});
       var allUcas=al.reduce(function(a,x){return a+ucas(itemGrade(x,summaryMode));},0),top3Ucas=sorted.slice(0,3).reduce(function(a,x){return a+ucas(itemGrade(x,summaryMode));},0);
       oh+='<div class="profile">'+g.join(' ')+'</div>';
-      if(al.length>3)oh+='<div class="ucas">'+t.top3+'：<b>'+top3.join(' ')+'</b> · '+t.allAL+'：'+g.join(' ')+'</div>';
+      if(al.length>3)oh+='<div class="ucas">'+t.top3+C()+'<b>'+top3.join(' ')+'</b> · '+t.allAL+C()+g.join(' ')+'</div>';
       oh+='<div class="ucas">'+(al.length>3?(t.top3Ucas+': <b>'+top3Ucas+'</b> · '+t.allUcas+': <b>'+allUcas+'</b>'):(t.ucas+': <b>'+allUcas+'</b>'))+'</div>';
       var targetLine=al.some(function(x){return !x.targetOnly&&(x.target||x.targetPct);});
       if(targetLine){
         var tg=profileGrades('tgt'),ttop=tg.slice(0,3);
         var cg=profileGrades('cur'),ctop=cg.slice(0,3);
-        oh+='<div class="mini-note">'+(summaryMode==='tgt'?(L()==='en'?'Current projection':'当前预测'):(L()==='en'?'Target plan':'目标方案'))+'：<b>'+(summaryMode==='tgt'?(al.length>3?ctop.join(' '):cg.join(' ')):(al.length>3?ttop.join(' '):tg.join(' ')))+'</b>'+(al.length>3?' · '+t.allAL+'：'+(summaryMode==='tgt'?cg.join(' '):tg.join(' ')):'')+'</div>';
+        oh+='<div class="mini-note">'+(summaryMode==='tgt'?(L()==='en'?'Current projection':'当前预测'):(L()==='en'?'Target plan':'目标方案'))+C()+'<b>'+(summaryMode==='tgt'?(al.length>3?ctop.join(' '):cg.join(' ')):(al.length>3?ttop.join(' '):tg.join(' ')))+'</b>'+(al.length>3?' · '+t.allAL+C()+(summaryMode==='tgt'?cg.join(' '):tg.join(' ')):'')+'</div>';
       }
       if(al.length>3)oh+='<div class="mini-note">'+t.extraALNote+'</div>';
       if(soft||hasTargetOnly){
@@ -770,7 +773,7 @@
     // uni
     var uniMode=allTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
     var uh='<h3>'+((allTargetOnly||uniMode==='tgt')?t.uniTitleTarget:t.uniTitle)+'</h3>';
-    if(al.length>=3){var top3u=profileGrades(uniMode).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+'：<b>'+top3u.join(' ')+'</b></div>';}
+    if(al.length>=3){var top3u=profileGrades(uniMode).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+C()+'<b>'+top3u.join(' ')+'</b></div>';}
     else if(al.length>=1){uh+='<div class="ucas">'+t.addMore.replace('{n}',al.length)+'</div>';}
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
     document.getElementById('r-uni').innerHTML=uh;
@@ -783,17 +786,17 @@
     if(!profile.some(function(x){return x.target||x.targetPct>0;}))gh+='<div class="ucas">'+t.pickTarget+'</div>';
     else if(allTargetOnly)gh+='<div class="ucas">'+t.targetOnlyGap+'</div>';
     else if(!gaps.length)gh+='<div class="gap-ok" style="font-size:16px">'+(soft?(L()==='en'?'On track if future-unit targets are met':'按目标方案可达标，关键看未考单元'):t.met)+'</div>';
-    else gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+'：<span class="gap-pos">'+t.needp+x.gapPct.toFixed(0)+'%</span> → '+(x.target||((x.targetPct||0).toFixed(0)+'%'))+'</li>';}).join('')+'</ul>';
+    else gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+C()+'<span class="gap-pos">'+t.needp+x.gapPct.toFixed(0)+'%</span> → '+(x.target||((x.targetPct||0).toFixed(0)+'%'))+'</li>';}).join('')+'</ul>';
     var planLines=profile.map(function(x){
       var parts=[];
-      if(x.futureUnits&&x.futureUnits.length)parts.push(t.unitNeed+'：'+x.futureUnits.slice(0,3).join('； '));
-      if(x.retakePlan&&x.retakePlan.length)parts.push(t.retake+'：'+x.retakePlan.slice(0,2).join('； '));
-      else if(x.lowUnits&&x.lowUnits.length)parts.push(t.weak+'：'+x.lowUnits.slice(0,2).join('； '));
+      if(x.futureUnits&&x.futureUnits.length)parts.push(t.unitNeed+C()+x.futureUnits.slice(0,3).join(J()));
+      if(x.retakePlan&&x.retakePlan.length)parts.push(t.retake+C()+x.retakePlan.slice(0,2).join(J()));
+      else if(x.lowUnits&&x.lowUnits.length)parts.push(t.weak+C()+x.lowUnits.slice(0,2).join(J()));
       if(x.retakeNeed>0)parts.push(t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%');
-      return parts.length?'<li><b>'+x.name+'</b>：'+parts.join('； ')+'</li>':'';
+      return parts.length?'<li><b>'+x.name+'</b>'+C()+parts.join(J())+'</li>':'';
     }).filter(Boolean);
     if(planLines.length)gh+='<div class="mini-note action-summary"><b>'+t.nextPlan+'</b><ul>'+planLines.join('')+'</ul></div>';
-    if(al.length)gh+='<div class="disclaimer">'+(soft?t.partial+'。 ':'')+t.a2note+'</div>';
+    if(al.length)gh+='<div class="disclaimer">'+(soft?t.partial+(L()==='en'?'. ':'。 '):'')+t.a2note+'</div>';
     document.getElementById('r-gap').innerHTML=gh;
     saveProfile();updateWhatsAppLinks();renderCourses();applyPathTabs();
   }
@@ -1031,13 +1034,13 @@
     var soft=al.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
     var missingSubjects=requiredSubjectGaps(key,al.map(function(x){return x.name;}));
     var subjectGradeGaps=requiredSubjectGradeGaps(key,al,mode);
-    var checkHtml=c.check?'<div class="mini-note check-note">'+t.nonGrade+'：'+(L()==='en'?c.check.en:c.check.zh)+'</div>':'';
-    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+'（'+t.top3+'）：<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'')+(missingSubjects.length?' · <span class="gap-pos">'+t.missingSubject+'：'+missingSubjects.join(' / ')+'</span>':'')+(subjectGradeGaps.length?' · <span style="color:#cf8a1e;font-weight:800">'+(modeIsTarget?t.subjectGradeGap:t.fitSubjectGrade)+'：'+subjectGradeGaps.join(' / ')+'</span>':'')+checkHtml;
+    var checkHtml=c.check?'<div class="mini-note check-note">'+t.nonGrade+C()+(L()==='en'?c.check.en:c.check.zh)+'</div>':'';
+    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+P(t.top3)+C()+'<b>'+(stuTop.join('')||'—')+'</b>'+(soft?' · '+t.partial:'')+(missingSubjects.length?' · <span class="gap-pos">'+t.missingSubject+C()+missingSubjects.join(' / ')+'</span>':'')+(subjectGradeGaps.length?' · <span style="color:#cf8a1e;font-weight:800">'+(modeIsTarget?t.subjectGradeGap:t.fitSubjectGrade)+C()+subjectGradeGaps.join(' / ')+'</span>':'')+checkHtml;
     var dreamBox=document.getElementById('dreamGap'),di=document.getElementById('dreamUni').value;
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
       dreamBox.style.display='block';
-      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+'：<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+'：<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+'：'+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'：'+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+(c.check?t.gradeMetBut:t.fitMatch)+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+(c.check?'<div class="mini-note check-note">'+t.nonGrade+'：'+(L()==='en'?c.check.en:c.check.zh)+'</div>':'')+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
+      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+C()+'<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+C()+'<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+C()+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+C()+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+(c.check?t.gradeMetBut:t.fitMatch)+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+(c.check?'<div class="mini-note check-note">'+t.nonGrade+C()+(L()==='en'?c.check.en:c.check.zh)+'</div>':'')+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
     } else {
       dreamBox.style.display='none';
     }
@@ -1087,7 +1090,7 @@
     var goal=US_TIERS[+(document.getElementById('usGoal').value||0)]||US_TIERS[0];
     var html='<div class="rcard"><h3>'+t.dreamGap+'</h3><div class="tier">🎓 '+(L()==='en'?goal.en:goal.zh)+'</div>';
     html+='<div class="ucas">'+testLabel+' · '+t.apStrong+' '+ap5+'</div>';
-    html+='<div class="mini-note"><b>'+t.usTargetReq+'：</b>SAT '+goal.targetSat+'+ / ACT '+goal.targetACT+'+ · '+goal.targetAP+' '+(L()==='en'?'APs at 4-5':'门 AP 4-5 分')+'</div>';
+    html+='<div class="mini-note"><b>'+t.usTargetReq+C()+'</b>SAT '+goal.targetSat+'+ / ACT '+goal.targetACT+'+ · '+goal.targetAP+' '+(L()==='en'?'APs at 4-5':'门 AP 4-5 分')+'</div>';
     html+='<div class="mini-note check-note">'+t.usNonScore+'</div>';
     if(standard==null&&apList.length===0)html+='<div class="mini-note">'+t.usTargetOnly+'</div>';
     var testGap=standard==null?null:(useAct?Math.max(0,goal.targetACT-actScore):Math.max(0,goal.targetSat-total));
