@@ -724,7 +724,12 @@
   }
   function updateWhatsAppLinks(){
     var href='https://wa.me/8618156122672?text='+encodeURIComponent(consultText());
-    ['ctaWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
+    ['ctaWa','floatWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
+    var float=document.getElementById('floatWa');
+    if(float){
+      var hasDetails=profile.length>0||lastSubjectMeta||(currentPath==='us'&&usPlanMeta);
+      float.textContent=hasDetails?(L()==='en'?'💬 Send details':'💬 发结果咨询'):(L()==='en'?'💬 Quick chat':'💬 直接咨询');
+    }
   }
   function fillCourse(){var c=document.getElementById('course'),cv=c.value;c.innerHTML=Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');if(cv)c.value=cv;fillDream();}
   function fillDream(){
