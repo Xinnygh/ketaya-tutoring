@@ -93,6 +93,12 @@
     <p class="lead" data-zh="选考试局 → 选科目 → 填每个 paper / 单元的分数 → 估算该科等级，逐科加入成绩单，自动算综合成绩档、UCAS 分、能匹配的大学，以及离目标还差多少。每科都附官方评分规则链接，可自己点进去核对。"
        data-en="Pick your exam board → choose a subject → enter your marks per paper/unit → get that subject's grade. Add each subject to build your profile, then see your overall grades, UCAS points, matching universities and the gap to your target. Each subject links to the official grading rules.">选考试局 → 选科目 → 填每个 paper / 单元的分数 → 估算该科等级，逐科加入成绩单，自动算综合成绩档、UCAS 分、能匹配的大学，以及离目标还差多少。每科都附官方评分规则链接，可自己点进去核对。</p>
 
+    <div class="path-tabs" id="pathTabs" aria-label="application route">
+      <button class="path-tab active" type="button" data-path="uk" data-zh="英国方向 · A-level / IGCSE" data-en="UK route · A-level / IGCSE">英国方向 · A-level / IGCSE</button>
+      <button class="path-tab" type="button" data-path="us" data-zh="美本方向 · SAT / AP" data-en="US route · SAT / AP">美本方向 · SAT / AP</button>
+    </div>
+
+    <div id="ukwrap" data-path-panel="uk">
     <!-- BUILDER -->
     <div class="calc">
       <h2 data-zh="① 选考试局和科目" data-en="① Pick exam board & subject">① Pick exam board &amp; subject</h2>
@@ -133,11 +139,6 @@
       <div class="rcard" id="r-gap"></div>
     </div>
 
-    <div class="path-tabs" id="pathTabs">
-      <button class="path-tab active" type="button" data-path="uk" data-zh="英国方向 · A-level / IGCSE" data-en="UK route · A-level / IGCSE">英国方向 · A-level / IGCSE</button>
-      <button class="path-tab" type="button" data-path="us" data-zh="美本方向 · SAT / AP" data-en="US route · SAT / AP">美本方向 · SAT / AP</button>
-    </div>
-
     <!-- COURSE EXPLORER -->
     <div class="calc" id="coursewrap" data-path-panel="uk" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
@@ -152,10 +153,11 @@
       <div style="overflow-x:auto"><table class="gt" id="courseTable"></table></div>
       <p class="disclaimer" data-zh="⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。" data-en="⚠️ Offers are common standard offers published by each university (for reference — check the official page for the current year). ✅Match / 🟡Reach / 🔴Stretch is estimated from grades only; real admission also depends on your personal statement, references, admissions tests/interviews, competitions & activities, English scores and that year's competition — <b>meeting the grades is not a guarantee, and a strong overall profile can offset slightly lower grades</b>.">⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。</p>
     </div>
+    </div>
 
     <!-- US: AP & SAT -->
     <div class="calc" id="uswrap" data-path-panel="us" style="display:none">
-      <h2 data-zh="⑤ 美本方向：AP & SAT 对应学校" data-en="⑤ US route: AP & SAT → universities">⑤ 美本方向：AP & SAT 对应学校</h2>
+      <h2 data-zh="美本方向：SAT / AP 快速评估" data-en="US route: SAT / AP quick estimate">美本方向：SAT / AP 快速评估</h2>
       <p class="hint" data-zh="申美本主要看 SAT + AP + 在校 GPA + 文书/活动。下面按你的 SAT 总分和 AP 高分（4–5 分）估算大致档次。" data-en="US admission looks at SAT + AP + GPA + essays/activities. Below estimates a tier from your SAT total and strong (4–5) AP scores.">申美本主要看 SAT + AP + 在校 GPA + 文书/活动。下面按你的 SAT 总分和 AP 高分（4–5 分）估算大致档次。</p>
       <div class="field">
         <label data-zh="SAT（数学 + 阅读写作，各 200–800）" data-en="SAT (Math + EBRW, each 200–800)">SAT（数学 + 阅读写作，各 200–800）</label>
@@ -534,9 +536,10 @@
   function applyPathTabs(){
     document.querySelectorAll('.path-tab').forEach(function(btn){btn.classList.toggle('active',btn.getAttribute('data-path')===currentPath);});
     var tabs=document.getElementById('pathTabs');if(tabs)tabs.style.display='flex';
-    var us=document.getElementById('uswrap'),uk=document.getElementById('coursewrap');
+    var us=document.getElementById('uswrap'),uk=document.getElementById('ukwrap'),course=document.getElementById('coursewrap');
+    if(uk)uk.style.display=currentPath==='uk'?'block':'none';
     if(us)us.style.display=currentPath==='us'?'block':'none';
-    if(currentPath==='uk')renderCourses();else if(uk)uk.style.display='none';
+    if(currentPath==='uk')renderCourses();else if(course)course.style.display='none';
   }
 
   boardSel.onchange=function(){fillSubjects();renderUnits();};
@@ -547,7 +550,12 @@
   document.getElementById('ucMode').onchange=renderCourses;
   document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();};
   document.getElementById('usCalc').onclick=renderUS;
-  document.querySelectorAll('.path-tab').forEach(function(btn){btn.onclick=function(){currentPath=btn.getAttribute('data-path')||'uk';applyPathTabs();};});
+  document.getElementById('pathTabs').onclick=function(e){
+    var btn=e.target.closest&&e.target.closest('.path-tab');
+    if(!btn)return;
+    currentPath=btn.getAttribute('data-path')||'uk';
+    applyPathTabs();
+  };
 
   function setLang(lang){
     var en=lang==='en';document.documentElement.lang=en?'en':'zh-CN';
