@@ -3,37 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free A-level & IGCSE Grade Calculator — See Your Gap to an A* | DAYA</title>
-<meta name="description" content="Free A-level / IGCSE grade calculator: enter your paper scores and weights to see your overall percentage, an indicative grade, and exactly how far you are from your target. For overseas Chinese families. 免费成绩计算器。">
-<meta name="robots" content="index, follow">
+<title>Free A-level & IGCSE Grade Calculator + University Match | DAYA 答鸭名校联盟</title>
+<meta name="description" content="Free, easy A-level & IGCSE grade calculator: enter your subjects and scores to get each grade, your overall profile and UCAS points, see which universities your grades match, and how far you are from your target. For overseas Chinese families.">
+<meta name="keywords" content="A-level grade calculator, IGCSE grade calculator, UCAS points calculator, what grades do I need university, A-level university match, grade boundary calculator">
 <link rel="canonical" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html">
 <link rel="alternate" hreflang="en" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html?lang=en">
 <link rel="alternate" hreflang="zh-CN" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html?lang=zh">
 <link rel="alternate" hreflang="x-default" href="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Free A-level & IGCSE Grade Calculator — See Your Gap to an A*">
-<meta property="og:description" content="Enter your paper scores and weights to see your overall %, an indicative grade, and how far you are from your target.">
+<meta property="og:title" content="Free A-level & IGCSE Grade Calculator + University Match">
+<meta property="og:description" content="Enter your subjects and scores to get your grades, UCAS points, matching universities, and the gap to your target.">
 <meta property="og:url" content="https://xinnygh.github.io/ketaya-tutoring/guides/grade-calculator.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="article.css">
 <style>
-  .calc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin:22px 0}
-  .calc h2{font-size:20px;margin:0 0 14px}
-  .crow{display:grid;grid-template-columns:1fr 90px 90px 32px;gap:8px;align-items:center;margin-bottom:8px}
-  .crow input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit}
-  .crow .rm{background:#f5f8fc;border:1px solid var(--line);border-radius:8px;cursor:pointer;height:36px;color:var(--rose,#b9575f);font-weight:800}
-  .chead{font-size:12px;color:var(--ink-soft);font-weight:700}
-  .calc-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
-  .calc-controls select{padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit}
-  .btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:12px 22px;font-weight:800;font-size:15px;cursor:pointer}
-  .btn-add{background:#fff;border:1px dashed var(--brand);color:var(--brand);border-radius:9px;padding:9px 14px;font-weight:700;font-size:14px;cursor:pointer}
-  .result{margin-top:16px;padding:18px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--line);display:none}
+  .calc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin:18px 0}
+  .calc h2{font-size:19px;margin:0 0 4px}
+  .calc .hint{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
+  .crow{display:grid;grid-template-columns:1fr 110px 84px 90px 30px;gap:8px;align-items:center;margin-bottom:8px}
+  .crow input,.crow select{width:100%;padding:9px 8px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit;background:#fff}
+  .crow .rm{background:#f5f8fc;border:1px solid var(--line);border-radius:8px;cursor:pointer;height:36px;color:#b9575f;font-weight:800}
+  .chead{font-size:11.5px;color:var(--ink-soft);font-weight:700}
+  .btn-add{background:#fff;border:1px dashed var(--brand);color:var(--brand);border-radius:9px;padding:9px 14px;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px}
+  .btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:13px 26px;font-weight:800;font-size:16px;cursor:pointer;margin-top:14px;width:100%}
+  .result{margin-top:18px;display:none}
   .result.show{display:block}
-  .result .big{font-size:34px;font-weight:850;color:var(--brand)}
-  .result .grade{font-size:20px;font-weight:800;margin-left:8px}
-  .result .gap{margin-top:8px;font-size:15px;color:#26384f}
-  .disclaimer{font-size:12px;color:var(--ink-soft);margin-top:12px;line-height:1.5}
-  @media(max-width:600px){.crow{grid-template-columns:1fr 70px 70px 30px}}
+  .rcard{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+  .rcard h3{font-size:15px;margin:0 0 8px;color:var(--brand-dark)}
+  .profile{font-size:30px;font-weight:850;color:var(--brand);letter-spacing:2px}
+  .ucas{font-size:14px;color:var(--ink-soft);margin-top:4px}
+  table.gt{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:6px}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:center}
+  table.gt th{background:#fff;font-weight:700}
+  .gap-pos{color:#b9575f;font-weight:800}
+  .gap-ok{color:#0f8f8c;font-weight:800}
+  .tier{font-size:17px;font-weight:800;color:var(--ink)}
+  .disclaimer{font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.55}
+  @media(max-width:620px){.crow{grid-template-columns:1fr 92px 64px 78px 28px;gap:6px}.crow input,.crow select{padding:8px 6px;font-size:13px}}
 </style>
 </head>
 <body>
@@ -57,50 +63,50 @@
 
   <article>
     <div class="kx" data-zh="免费工具" data-en="Free Tool">Free Tool</div>
-    <h1 data-zh="A-level / IGCSE 成绩计算器：算出你离目标还差多少"
-        data-en="A-level / IGCSE Grade Calculator: See How Far You Are From Your Target">A-level / IGCSE Grade Calculator: See How Far You Are From Your Target</h1>
-    <p class="lead" data-zh="把各试卷/科目的得分率和权重填进去，立刻算出加权总分、对应的大致等级，以及离你的目标还差几分。免费、即时、不收集任何信息。"
-       data-en="Enter each paper/component's score and weight to instantly get your weighted overall percentage, an indicative grade, and exactly how far you are from your target. Free, instant, and we collect nothing.">Enter each paper/component's score and weight to instantly get your weighted overall percentage, an indicative grade, and exactly how far you are from your target. Free, instant, and we collect nothing.</p>
+    <h1 data-zh="A-level / IGCSE 成绩计算器：算等级、看能申哪些大学、离目标还差多少"
+        data-en="A-level / IGCSE Grade Calculator: Your Grades, University Match & Gap to Target">A-level / IGCSE Grade Calculator: Your Grades, University Match &amp; Gap to Target</h1>
+    <p class="lead" data-zh="填入每科的得分，立刻算出各科等级、综合成绩档和 UCAS 分、能匹配什么档次的大学，以及离你的目标还差几分。免费、即时、不收集任何信息。"
+       data-en="Enter your score for each subject to instantly get each grade, your overall profile and UCAS points, the universities your grades match, and how far you are from your target. Free, instant, nothing collected.">Enter your score for each subject to instantly get each grade, your overall profile and UCAS points, the universities your grades match, and how far you are from your target. Free, instant, nothing collected.</p>
 
+    <!-- STEP 1: subjects -->
     <div class="calc">
-      <h2 data-zh="① 填入各部分得分与权重" data-en="① Enter each component's score and weight">① Enter each component's score and weight</h2>
+      <h2 data-zh="① 填入你的科目和分数" data-en="① Enter your subjects and scores">① Enter your subjects and scores</h2>
+      <p class="hint" data-zh="不知道确切分数？填你估计的得分率（%）即可。想算差距就顺手选个目标等级。" data-en="Not sure of the exact mark? Just enter your estimated percentage. Pick a target grade if you want the gap.">不知道确切分数？填你估计的得分率（%）即可。想算差距就顺手选个目标等级。</p>
       <div class="crow chead">
-        <span data-zh="科目 / 试卷（可选）" data-en="Subject / paper (optional)">Subject / paper (optional)</span>
+        <span data-zh="科目" data-en="Subject">Subject</span>
+        <span data-zh="考试" data-en="Exam">Exam</span>
         <span data-zh="得分 %" data-en="Score %">Score %</span>
-        <span data-zh="权重 %" data-en="Weight %">Weight %</span>
+        <span data-zh="目标等级" data-en="Target">Target</span>
         <span></span>
       </div>
       <div id="rows"></div>
-      <button class="btn-add" id="addRow" data-zh="＋ 添加一项" data-en="＋ Add component">＋ Add component</button>
-
-      <div class="calc-controls">
-        <span data-zh="② 目标等级（大致门槛）：" data-en="② Target grade (indicative threshold):">② Target grade (indicative threshold):</span>
-        <select id="target">
-          <option value="90">A* (≈90%)</option>
-          <option value="80" selected>A (≈80%)</option>
-          <option value="70">B (≈70%)</option>
-          <option value="60">C (≈60%)</option>
-        </select>
-        <button class="btn-calc" id="calcBtn" data-zh="③ 计算" data-en="③ Calculate">③ Calculate</button>
-      </div>
-
-      <div class="result" id="result"></div>
-
-      <p class="disclaimer" data-zh="⚠️ 说明：各考试局（CAIE / Edexcel 等）每次考试的实际等级分数线会浮动，这里用的是常见的大致门槛（A*≈90、A≈80、B≈70、C≈60），仅供估算参考，不代表官方分数线。"
-         data-en="⚠️ Note: actual grade boundaries vary by board (CAIE / Edexcel, etc.) and exam session. The thresholds here (A*≈90, A≈80, B≈70, C≈60) are common approximations for estimation only and are not official boundaries.">⚠️ Note: actual grade boundaries vary by board (CAIE / Edexcel, etc.) and exam session. The thresholds here (A*≈90, A≈80, B≈70, C≈60) are common approximations for estimation only and are not official boundaries.</p>
+      <button class="btn-add" id="addRow" data-zh="＋ 添加科目" data-en="＋ Add subject">＋ Add subject</button>
+      <button class="btn-calc" id="calcBtn" data-zh="② 计算我的成绩 & 能申的大学" data-en="② Calculate my grades & university match">② Calculate my grades &amp; university match</button>
     </div>
 
-    <div class="cta-band">
-      <h2 data-zh="离目标还差几分？我们帮你把这几分补回来" data-en="A few marks short? We help you close exactly that gap">A few marks short? We help you close exactly that gap</h2>
-      <p data-zh="先免费做一次学情诊断：国际学校在职名师当场告诉你这几分丢在哪、怎么补最快。中英双语、单节购买、绝不捆绑。"
-         data-en="Start with a free learning diagnosis: a current international-school teacher shows you exactly where those marks are lost and the fastest way to recover them. Bilingual, pay per lesson, no bundles.">Start with a free learning diagnosis: a current international-school teacher shows you exactly where those marks are lost and the fastest way to recover them. Bilingual, pay per lesson, no bundles.</p>
+    <!-- RESULTS -->
+    <div class="result" id="result">
+      <div class="rcard" id="r-overall"></div>
+      <div class="rcard" id="r-table"></div>
+      <div class="rcard" id="r-uni"></div>
+      <div class="rcard" id="r-gap"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-band" id="cta">
+      <h2 data-zh="离目标还差几分？让名师告诉你这几分丢在哪" data-en="A few marks short? Let a teacher show you exactly where they go">A few marks short? Let a teacher show you exactly where they go</h2>
+      <p data-zh="计算器只告诉你「差多少」；免费学情诊断告诉你「差在哪、怎么补」——国际学校在职名师看你的真实丢分点，给提分路径。中英双语、单节购买、绝不捆绑。"
+         data-en="The calculator tells you the size of the gap; the free diagnosis tells you where it is and how to close it — a current international-school teacher reviews your real lost marks and maps the path. Bilingual, pay per lesson, no bundles.">计算器只告诉你「差多少」；免费学情诊断告诉你「差在哪、怎么补」——国际学校在职名师看你的真实丢分点，给提分路径。中英双语、单节购买、绝不捆绑。</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20I%20used%20the%20grade%20calculator%20and%27d%20like%20a%20free%20diagnosis%20to%20close%20my%20gap%20(year%2Fexam%2Fsubject)." target="_blank" rel="noopener" data-zh="💬 WhatsApp 预约免费诊断" data-en="💬 Book free diagnosis on WhatsApp">💬 Book free diagnosis on WhatsApp</a>
+        <a class="btn btn-primary" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20I%20used%20the%20grade%20calculator.%20My%20current%20vs%20target%3A%20___.%20I%27d%20like%20a%20free%20diagnosis%20of%20where%20I%27m%20losing%20marks." target="_blank" rel="noopener" data-zh="💬 WhatsApp 免费诊断丢分点" data-en="💬 Free diagnosis on WhatsApp">💬 WhatsApp 免费诊断丢分点</a>
         <a class="btn btn-ghost" href="free-learning-diagnosis.html" data-zh="了解免费诊断 →" data-en="About the free diagnosis →">About the free diagnosis →</a>
       </div>
     </div>
 
-    <p style="margin-top:22px"><a href="index.html" data-zh="← 返回升学指南" data-en="← Back to all guides">← Back to all guides</a></p>
+    <p class="disclaimer" data-zh="⚠️ 重要说明：① 各考试局（CAIE / Edexcel 等）每次考试的实际等级分数线都会按当次难度浮动，本工具用常见的大致门槛（A*≈90、A≈80、B≈70、C≈60、D≈50、E≈40）估算，仅供参考，不是官方分数线。② A-level 的 A* 还要求 A2（第二年）部分 ≥90%，不只是总分高——所以 A2 冲刺最关键。③ 大学方向仅为大致参考，真实录取还取决于科目组合、考试局、笔试/面试、文书、推荐信和当年竞争，请以各校官网当年要求为准。"
+       data-en="⚠️ Important: (1) Real grade boundaries vary every session by difficulty; this tool uses common approximate thresholds (A*≈90, A≈80, B≈70, C≈60, D≈50, E≈40) for estimation only — not official boundaries. (2) An A-level A* also requires ≥90% in the A2 (second) year, not just a high total — which is why A2 is the make-or-break stage. (3) University matches are indicative only; real offers depend on subject combination, exam board, admissions tests/interviews, essays, references and that year's competition — always check each university's current requirements.">⚠️ Important: (1) Real grade boundaries vary every session by difficulty; this tool uses common approximate thresholds (A*≈90, A≈80, B≈70, C≈60, D≈50, E≈40) for estimation only — not official boundaries. (2) An A-level A* also requires ≥90% in the A2 (second) year, not just a high total — which is why A2 is the make-or-break stage. (3) University matches are indicative only; real offers depend on subject combination, exam board, admissions tests/interviews, essays, references and that year's competition.</p>
+
+    <p style="margin-top:20px"><a href="index.html" data-zh="← 返回升学指南" data-en="← Back to all guides">← Back to all guides</a></p>
   </article>
 </div>
 
@@ -117,51 +123,133 @@
 <script>
 (function(){
   var T={
-    zh:{ph:'如 Paper 1',need:'要达到目标，剩余部分还需平均约',already:'已达到/超过目标 🎉',overall:'加权总分',grade:'大致等级',gapTo:'离目标还差',pts:'分',fillWeight:'请填入至少一项的得分和权重（权重>0）',weightSum:'当前权重合计',ofWeight:'（按已填权重折算）'},
-    en:{ph:'e.g. Paper 1',need:'To hit your target, the remaining part needs to average about',already:'Target already reached 🎉',overall:'Weighted overall',grade:'Indicative grade',gapTo:'Gap to target',pts:'pts',fillWeight:'Enter score and weight for at least one row (weight > 0)',weightSum:'Weights total',ofWeight:'(scaled to weights entered)'}
+    zh:{ph:'如 数学 Maths',alevel:'A-level',igcse:'IGCSE',none:'—',fill:'请至少填一科的得分 %（0–100）',
+      overall:'综合成绩档',ucas:'UCAS 分（A-level 计）',subj:'科目',score:'得分',grade:'等级',target:'目标',gap:'差距',
+      met:'已达标 ✅',needp:'还需 +',pts:'分',uniTitle:'你的成绩大致能冲的大学方向',
+      gapTitle:'离目标还差多少',noGap:'（想算差距：在上面给科目选个目标等级）',
+      a2note:'提醒：A-level 的 A* 还要看 A2（第二年）≥90%，本表按总分估算。',
+      perfectTitle:'各科等级',
+      tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial 档，多数要 A*）',
+             'G5 与世界 Top 方向（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）',
+             '英国罗素集团 / 不错的美本（AAB–ABB 档）',
+             '英国中上游好校（BBB 档）',
+             '主流大学，冲名校建议再提分（BBC–CCC 档）',
+             '先打基础、稳步提分，目标可逐步上移'],
+      igOnly:'你填的主要是 IGCSE。IGCSE 是基础阶段，大学主要看 A-level / AP；先把 IGCSE 底子打好，再冲 A-level 决定能上什么大学。你的 IGCSE 平均≈'},
+    en:{ph:'e.g. Maths',alevel:'A-level',igcse:'IGCSE',none:'—',fill:'Enter a score % (0–100) for at least one subject',
+      overall:'Overall profile',ucas:'UCAS points (A-level)',subj:'Subject',score:'Score',grade:'Grade',target:'Target',gap:'Gap',
+      met:'Met ✅',needp:'need +',pts:'pts',uniTitle:'Universities your grades broadly match',
+      gapTitle:'How far from your target',noGap:'(For the gap: pick a target grade for a subject above)',
+      a2note:'Note: an A-level A* also needs A2 (year 2) ≥90%; this estimates from your total.',
+      perfectTitle:'Grade per subject',
+      tiers:['Oxbridge / G5 STEM tier (Oxford·Cambridge·Imperial — mostly need A*)',
+             'G5 & world-top tier (A*AA–AAA; UCL·LSE·IC, top US — very competitive)',
+             'UK Russell Group / strong US schools (AAB–ABB)',
+             'Solid UK universities (BBB)',
+             'Mainstream universities; raise grades to reach top schools (BBC–CCC)',
+             'Build the foundation and improve step by step'],
+      igOnly:'You mostly entered IGCSE. IGCSE is the foundation stage; universities mainly look at A-level / AP. Secure your IGCSE base, then A-level decides your university. Your IGCSE average ≈'}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
   var rows=document.getElementById('rows');
-  function addRow(name){
+  function addRow(){
     var d=document.createElement('div'); d.className='crow';
-    d.innerHTML='<input class="cn" type="text"><input class="cs" type="number" min="0" max="100" inputmode="decimal"><input class="cw" type="number" min="0" max="100" inputmode="decimal"><button class="rm" title="remove">×</button>';
-    d.querySelector('.cn').placeholder=T[L()].ph;
+    d.innerHTML='<input class="cn" type="text"><select class="ce"><option value="al">A-level</option><option value="ig">IGCSE</option></select><input class="cs" type="number" min="0" max="100" inputmode="decimal"><select class="ct"></select><button class="rm">×</button>';
+    var t=T[L()]; d.querySelector('.cn').placeholder=t.ph;
+    fillTarget(d.querySelector('.ct'));
     d.querySelector('.rm').onclick=function(){d.remove();};
     rows.appendChild(d);
   }
+  function fillTarget(sel){
+    var t=T[L()], opts=['','A*','A','B','C','D','E'];
+    sel.innerHTML=opts.map(function(o){return '<option value="'+o+'">'+(o===''?t.none:o)+'</option>';}).join('');
+  }
   addRow(); addRow(); addRow();
-  document.getElementById('addRow').onclick=function(){addRow();};
+  document.getElementById('addRow').onclick=addRow;
 
-  function gradeOf(p){ if(p>=90)return'A*'; if(p>=80)return'A'; if(p>=70)return'B'; if(p>=60)return'C'; if(p>=50)return'D'; if(p>=40)return'E'; return'U'; }
+  function gradeFromPct(p,exam){
+    if(p>=90)return'A*'; if(p>=80)return'A'; if(p>=70)return'B'; if(p>=60)return'C'; if(p>=50)return'D'; if(p>=40)return'E';
+    if(exam==='ig'){ if(p>=30)return'F'; if(p>=20)return'G'; }
+    return'U';
+  }
+  function pctForGrade(g){ return {'A*':90,'A':80,'B':70,'C':60,'D':50,'E':40}[g]||0; }
+  function ucas(g){ return {'A*':56,'A':48,'B':40,'C':32,'D':24,'E':16}[g]||0; }
+  function rank(g){ return {'A*':6,'A':5,'B':4,'C':3,'D':2,'E':1,'U':0,'F':0,'G':0}[g]||0; }
+
+  function tierIndex(top3){ // top3 = grade letters sorted desc (A-level). A*=6 A=5 B=4 C=3
+    var r=top3.map(rank); while(r.length<3)r.push(0);
+    var s=r[0]+r[1]+r[2]; // A*A*A=17, A*AA=16, AAA=15, AAB=14, ABB=13, BBB=12, BBC=11, CCC=9
+    if(r[0]>=6&&r[1]>=6&&r[2]>=5)return 0;  // A*A*A
+    if(s>=15)return 1;                       // A*AA / AAA
+    if(s>=13)return 2;                       // AAB / ABB
+    if(s>=12)return 3;                       // BBB
+    if(s>=9)return 4;                        // BBC–CCC
+    return 5;
+  }
 
   document.getElementById('calcBtn').onclick=function(){
-    var t=T[L()];
-    var rs=rows.querySelectorAll('.crow'), sumW=0, sumSW=0;
+    var t=T[L()], rs=rows.querySelectorAll('.crow');
+    var subs=[];
     rs.forEach(function(r){
-      var s=parseFloat(r.querySelector('.cs').value), w=parseFloat(r.querySelector('.cw').value);
-      if(!isNaN(s)&&!isNaN(w)&&w>0){ sumW+=w; sumSW+=s*w; }
+      var name=r.querySelector('.cn').value.trim();
+      var exam=r.querySelector('.ce').value;
+      var s=parseFloat(r.querySelector('.cs').value);
+      var tg=r.querySelector('.ct').value;
+      if(!isNaN(s)){ subs.push({name:name||(exam==='al'?t.alevel:t.igcse),exam:exam,pct:Math.max(0,Math.min(100,s)),grade:gradeFromPct(Math.max(0,Math.min(100,s)),exam),target:tg}); }
     });
-    var res=document.getElementById('result'); res.className='result show';
-    if(sumW<=0){ res.innerHTML='<div class="gap">'+t.fillWeight+'</div>'; return; }
-    var overall=sumSW/sumW;
-    var target=parseFloat(document.getElementById('target').value);
-    var g=gradeOf(overall);
-    var html='<div><span class="big">'+overall.toFixed(1)+'%</span><span class="grade">'+t.grade+': '+g+'</span></div>';
-    if(sumW<100){ html+='<div class="gap" style="font-size:13px;color:#888">'+t.weightSum+': '+sumW+'% '+t.ofWeight+'</div>'; }
-    if(overall>=target){
-      html+='<div class="gap">✅ '+t.already+'</div>';
+    var res=document.getElementById('result');
+    if(!subs.length){ res.className='result show'; document.getElementById('r-overall').innerHTML='<div class="ucas">'+t.fill+'</div>'; document.getElementById('r-table').innerHTML=''; document.getElementById('r-uni').innerHTML=''; document.getElementById('r-gap').innerHTML=''; return; }
+    res.className='result show';
+
+    var al=subs.filter(function(x){return x.exam==='al';});
+    var ig=subs.filter(function(x){return x.exam==='ig';});
+
+    // overall
+    var oh='<h3>'+t.overall+'</h3>';
+    if(al.length){
+      var alg=al.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);});
+      var totUcas=al.reduce(function(a,x){return a+ucas(x.grade);},0);
+      oh+='<div class="profile">'+alg.join(' ')+'</div><div class="ucas">'+t.ucas+': <b>'+totUcas+'</b></div>';
     } else {
-      var gap=(target-overall);
-      html+='<div class="gap">📉 '+t.gapTo+' <b>'+gap.toFixed(1)+' '+t.pts+'</b></div>';
-      var remW=100-sumW;
-      if(remW>0){
-        var needAvg=(target*100 - overall*sumW)/remW;
-        if(needAvg<=100 && needAvg>=0){
-          html+='<div class="gap">🎯 '+t.need+' <b>'+needAvg.toFixed(1)+'%</b>'+(L()==='en'?' on the remaining '+remW+'%.':'（剩余 '+remW+'% 部分）。')+'</div>';
-        }
-      }
+      var avg=Math.round(ig.reduce(function(a,x){return a+x.pct;},0)/ig.length);
+      oh+='<div class="profile">'+ig.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).join(' ')+'</div><div class="ucas">'+t.igOnly+avg+'%</div>';
     }
-    res.innerHTML=html;
+    document.getElementById('r-overall').innerHTML=oh;
+
+    // table
+    var th='<h3>'+t.perfectTitle+'</h3><table class="gt"><tr><th>'+t.subj+'</th><th>'+t.score+'</th><th>'+t.grade+'</th><th>'+t.target+'</th><th>'+t.gap+'</th></tr>';
+    subs.forEach(function(x){
+      var gapCell='–';
+      if(x.target){ var need=pctForGrade(x.target)-x.pct; gapCell = need<=0 ? '<span class="gap-ok">'+t.met+'</span>' : '<span class="gap-pos">'+t.needp+need.toFixed(0)+'%</span>'; }
+      th+='<tr><td>'+x.name+'</td><td>'+x.pct+'%</td><td><b>'+x.grade+'</b></td><td>'+(x.target||'–')+'</td><td>'+gapCell+'</td></tr>';
+    });
+    th+='</table>';
+    if(al.length) th+='<div class="disclaimer">'+t.a2note+'</div>';
+    document.getElementById('r-table').innerHTML=th;
+
+    // university match (A-level based)
+    var uh='<h3>'+t.uniTitle+'</h3>';
+    if(al.length>=1){
+      var top3=al.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).slice(0,3);
+      uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3)]+'</div>';
+    } else {
+      uh+='<div class="ucas">'+t.igOnly+Math.round(ig.reduce(function(a,x){return a+x.pct;},0)/ig.length)+'%</div>';
+    }
+    document.getElementById('r-uni').innerHTML=uh;
+
+    // gap summary
+    var gaps=subs.filter(function(x){return x.target && (pctForGrade(x.target)-x.pct)>0;});
+    var gh='<h3>'+t.gapTitle+'</h3>';
+    if(!subs.some(function(x){return x.target;})){
+      gh+='<div class="ucas">'+t.noGap+'</div>';
+    } else if(!gaps.length){
+      gh+='<div class="gap-ok" style="font-size:16px">'+t.met+'</div>';
+    } else {
+      gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+'：<span class="gap-pos">'+t.needp+(pctForGrade(x.target)-x.pct).toFixed(0)+'%</span> → '+x.target+'</li>';}).join('')+'</ul>';
+    }
+    document.getElementById('r-gap').innerHTML=gh;
+
+    document.getElementById('cta').scrollIntoView({behavior:'smooth',block:'nearest'});
   };
 
   function setLang(lang){
@@ -172,7 +260,9 @@
       if(v!=null) el.innerHTML=v;
     });
     var b=document.getElementById('langToggle'); if(b) b.textContent=en?'中文':'EN';
-    rows.querySelectorAll('.cn').forEach(function(i){i.placeholder=T[L()].ph;});
+    var t=T[L()];
+    rows.querySelectorAll('.cn').forEach(function(i){i.placeholder=t.ph;});
+    rows.querySelectorAll('.ct').forEach(function(sel){var cur=sel.value;fillTarget(sel);sel.value=cur;});
     try{localStorage.setItem('site_lang',lang);}catch(e){}
   }
   window.__setLang=setLang;
