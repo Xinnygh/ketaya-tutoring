@@ -695,7 +695,13 @@
     var lang=L(),lines=[];
     if(lang==='en')lines.push('Hi DAYA, I used the grade calculator and would like a learning diagnosis.');
     else lines.push('你好，我用了成绩计算器，想咨询学情诊断。');
-    if(profile.length){
+    if(currentPath==='us'&&usPlanMeta){
+      lines.push(lang==='en'?'US target plan:':'美本目标方案：');
+      lines.push('- '+usPlanMeta.goal);
+      lines.push('- '+(lang==='en'?'Suggested SAT target: ':'建议 SAT 目标：')+usPlanMeta.targetSat+'+');
+      lines.push('- '+(lang==='en'?'Suggested AP target: ':'建议 AP 目标：')+usPlanMeta.targetAP+' '+(lang==='en'?'APs at 4-5':'门 AP 4-5 分'));
+      if(usPlanMeta.total!=null)lines.push('- SAT: '+usPlanMeta.total);
+    } else if(profile.length){
       var hasTargetOnly=profile.some(function(x){return x.targetOnly;});
       lines.push(hasTargetOnly?(lang==='en'?'My current / target profile:':'当前 / 目标成绩：'):(lang==='en'?'My current results:':'当前成绩：'));
       profile.forEach(function(x){
@@ -709,12 +715,6 @@
         if(x.retakePlan&&x.retakePlan.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+x.retakePlan.slice(0,3).join(', '));
         else if(x.lowUnits&&x.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+x.lowUnits.slice(0,3).join(', '));
       });
-    } else if(usPlanMeta){
-      lines.push(lang==='en'?'US target plan:':'美本目标方案：');
-      lines.push('- '+usPlanMeta.goal);
-      lines.push('- '+(lang==='en'?'Suggested SAT target: ':'建议 SAT 目标：')+usPlanMeta.targetSat+'+');
-      lines.push('- '+(lang==='en'?'Suggested AP target: ':'建议 AP 目标：')+usPlanMeta.targetAP+' '+(lang==='en'?'APs at 4-5':'门 AP 4-5 分'));
-      if(usPlanMeta.total!=null)lines.push('- SAT: '+usPlanMeta.total);
     } else if(lastSubjectMeta){
       lines.push((lang==='en'?'Current estimate: ':'当前估算：')+lastSubjectMeta.board+' / '+lastSubjectMeta.subject+': '+lastSubjectMeta.grade+' ('+lastSubjectMeta.pct.toFixed(0)+'%)');
     } else {
