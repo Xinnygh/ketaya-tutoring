@@ -1114,7 +1114,7 @@
     var testGap=standard==null?null:(useAct?Math.max(0,goal.targetACT-actScore):Math.max(0,goal.targetSat-total));
     var testGapLabel=useAct?('ACT +'+testGap):('SAT +'+testGap);
     if(standard==null)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.satBlank+'</div>';
-    else if(standard>=goal.targetSat)html+='<div class="gap-ok">'+t.satMet+'</div>';
+    else if(testGap<=0)html+='<div class="gap-ok">'+t.satMet+'</div>';
     else html+='<div class="gap-pos">'+t.testGap+' '+testGapLabel+'</div>';
     if(apList.length===0)html+='<div class="mini-note">'+t.apBlank+'</div>';
     else if(ap5>=goal.targetAP)html+='<div class="gap-ok">'+t.apMet+'</div>';
