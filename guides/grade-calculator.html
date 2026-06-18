@@ -529,8 +529,11 @@
     if(!anyDone||total<=0)return null;
     return finishProgress({completedPct:doneContribution/total,coverage:doneWeight/total*100,missingUnits:missingUnits,doneUnits:doneUnits,totalWeight:total});
   }
-  function finishProgress(data){
-    var target=subjectTargetSel.value,targetPct=targetPctValue(),missing=Math.max(0,100-data.coverage),req=null,pct=data.completedPct,status=missing>0?'partial':'actual';
+  function finishProgress(data,forcedTargetPct,forcedTargetGrade){
+    var forced=arguments.length>1,
+      target=forced?(forcedTargetGrade||''):subjectTargetSel.value,
+      targetPct=forced?Math.max(0,Math.min(100,forcedTargetPct||0)):targetPctValue(),
+      missing=Math.max(0,100-data.coverage),req=null,pct=data.completedPct,status=missing>0?'partial':'actual';
     var doneAvg=data.coverage>0?data.completedPct/(data.coverage/100):0;
     if(missing>0&&targetPct>0){
       req=(targetPct-data.completedPct)/(missing/100);
@@ -549,7 +552,23 @@
         return Object.assign({},u,{targetPct:targetUnitPct});
       });
     }
-    return {pct:Math.max(0,Math.min(100,pct)),completedPct:data.completedPct,doneAvg:doneAvg,coverage:data.coverage,missing:missing,missingUnits:data.missingUnits||[],doneUnits:data.doneUnits||[],required:req,targetPct:targetPct,targetGrade:target,status:status,retakeNeed:retakeNeed,lowUnits:low,retakeTargets:retakeTargets};
+    return {pct:Math.max(0,Math.min(100,pct)),completedPct:data.completedPct,doneAvg:doneAvg,coverage:data.coverage,missing:missing,missingUnits:data.missingUnits||[],doneUnits:data.doneUnits||[],totalWeight:totalWeight,required:req,targetPct:targetPct,targetGrade:target,status:status,retakeNeed:retakeNeed,lowUnits:low,retakeTargets:retakeTargets};
+  }
+  function applySubjectPlan(item,prog){
+    item.pct=prog.pct;
+    item.grade=gradeFromPct(prog.pct,item.exam,item.scale);
+    item.complete=Math.round(prog.coverage);
+    item.required=prog.required;
+    item.status=prog.status;
+    item.futureUnits=(prog.missingUnits||[]).map(function(u){return prog.required!=null?unitTargetText(u,prog.required):u.name;});
+    item.lowUnits=(prog.lowUnits||[]).map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';});
+    item.retakePlan=(prog.retakeTargets||[]).map(function(u){return unitTargetText(u,u.targetPct);});
+    item.retakeNeed=prog.retakeNeed;
+  }
+  function refreshSubjectPlan(item){
+    if(!item||item.targetOnly||!item.planBase)return;
+    var prog=finishProgress(item.planBase,item.targetPct||0,item.target||'');
+    applySubjectPlan(item,prog);
   }
   function liveCalc(){
     var t=T[L()],prog=subjectProgress();
@@ -618,7 +637,8 @@
     var p=prog.pct,s=cur(),nm=subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim(),ex=curExam(),g=gradeFromPct(p,ex,s.scale),target=subjectTargetSel.value||'';
     var idx=-1;profile.forEach(function(x,i){if(x.name===nm&&x.exam===ex)idx=i;});
     lastSubjectMeta={board:DATA[boardSel.value].label,subject:nm,grade:g,pct:p};
-    var item={name:nm,exam:ex,pct:p,grade:g,target:target,targetPct:prog.targetPct,scale:s.scale||'',board:DATA[boardSel.value].label,complete:Math.round(prog.coverage),required:prog.required,status:prog.status,futureUnits:(prog.missingUnits||[]).map(function(u){return prog.required!=null?unitTargetText(u,prog.required):u.name;}),lowUnits:(prog.lowUnits||[]).map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';}),retakePlan:(prog.retakeTargets||[]).map(function(u){return unitTargetText(u,u.targetPct);}),retakeNeed:prog.retakeNeed};
+    var item={name:nm,exam:ex,target:target,targetPct:prog.targetPct,scale:s.scale||'',board:DATA[boardSel.value].label,targetOnly:false,planBase:{completedPct:prog.completedPct,coverage:prog.coverage,totalWeight:prog.totalWeight,missingUnits:prog.missingUnits,doneUnits:prog.doneUnits}};
+    applySubjectPlan(item,prog);
     if(idx>=0){profile[idx]=Object.assign(profile[idx],item);} else {profile.push(item);}
     renderMy();renderResults();
     document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -645,6 +665,7 @@
 
   function renderMy(){
     var t=T[L()],wrap=document.getElementById('mywrap'),box=document.getElementById('mysubs');
+    profile.forEach(refreshSubjectPlan);
     renderTargetOnlyActions();
     wrap.style.display=profile.length?'block':'none';
     box.innerHTML=profile.map(function(x,i){
@@ -666,6 +687,7 @@
       x.target=s.value;
       x.targetPct=pctForGrade(s.value||'');
       if(x.targetOnly&&s.value){x.grade=s.value;x.pct=x.targetPct;}
+      else refreshSubjectPlan(x);
       saveProfile();renderMy();renderResults();
     };});
     box.querySelectorAll('.x').forEach(function(b){b.onclick=function(){profile.splice(+b.getAttribute('data-x'),1);saveProfile();renderMy();renderResults();};});
@@ -806,7 +828,7 @@
     return missing;
   }
   function saveProfile(){try{localStorage.setItem('grade_calc_profile',JSON.stringify(profile));}catch(e){}}
-  function loadProfile(){try{var raw=localStorage.getItem('grade_calc_profile');if(raw){profile=JSON.parse(raw)||[];profile.forEach(function(x){x.targetOnly=!!x.targetOnly;x.scale=x.scale||'';x.board=x.board||'';x.status=x.targetOnly?'target-only':(x.status||'actual');x.complete=(x.complete==null?100:x.complete);x.futureUnits=x.futureUnits||[];x.lowUnits=x.lowUnits||[];x.retakePlan=x.retakePlan||[];x.retakeNeed=x.retakeNeed||0;x.targetPct=x.targetPct||pctForGrade(x.target||'');if(x.targetOnly){x.target=x.target||x.grade;x.grade=x.target;x.pct=x.targetPct||pctForGrade(x.target||'');}});}}catch(e){profile=[];}}
+  function loadProfile(){try{var raw=localStorage.getItem('grade_calc_profile');if(raw){profile=JSON.parse(raw)||[];profile.forEach(function(x){x.targetOnly=!!x.targetOnly;x.scale=x.scale||'';x.board=x.board||'';x.status=x.targetOnly?'target-only':(x.status||'actual');x.complete=(x.complete==null?100:x.complete);x.futureUnits=x.futureUnits||[];x.lowUnits=x.lowUnits||[];x.retakePlan=x.retakePlan||[];x.retakeNeed=x.retakeNeed||0;x.planBase=x.planBase||null;x.targetPct=x.targetPct||pctForGrade(x.target||'');if(x.targetOnly){x.target=x.target||x.grade;x.grade=x.target;x.pct=x.targetPct||pctForGrade(x.target||'');}else refreshSubjectPlan(x);});}}catch(e){profile=[];}}
   function ukConsultContextLines(lang){
     var lines=[],al=profile.filter(function(x){return x.exam==='al';});
     if(!al.length)return lines;
