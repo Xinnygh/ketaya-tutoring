@@ -141,7 +141,7 @@
   var SCI=[{n:'Paper 1 (MCQ)',max:40,w:15.5},{n:'Paper 2 (AS Structured)',max:60,w:23},{n:'Paper 3 (AS Practical)',max:40,w:11.5},{n:'Paper 4 (A2 Structured)',max:100,w:38.5},{n:'Paper 5 (A2 Planning/Analysis)',max:30,w:11.5}];
   var DATA={
     caie:{label:'CAIE (Cambridge International)',exam:'al',rules:CAIE_RULES,subjects:{
-      'Mathematics 9709 (P1·P3·M1·S1)':{units:[{n:'Paper 1 Pure 1',max:75,w:30},{n:'Paper 3 Pure 3',max:75,w:30},{n:'Paper 4 Mechanics',max:50,w:20},{n:'Paper 5 Prob & Stats 1',max:50,w:20}],rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-mathematics-9709/'},
+      'Mathematics 9709 — 勾选你考的卷':{pick:true,pool:[{n:'P1 Pure Mathematics 1',max:75},{n:'P3 Pure Mathematics 3',max:75},{n:'P4 Mechanics',max:50},{n:'P5 Probability & Statistics 1',max:50},{n:'P6 Probability & Statistics 2',max:50}],rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-mathematics-9709/'},
       'Physics 9702':{units:SCI,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-physics-9702/'},
       'Chemistry 9701':{units:SCI,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-chemistry-9701/'},
       'Biology 9700':{units:SCI,rules:'https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-international-as-and-a-level-biology-9700/'},
@@ -149,6 +149,7 @@
       'Other CAIE subject (overall %)':{overall:true,rules:CAIE_RULES}
     }},
     edexcel:{label:'Edexcel / Pearson (IAL)',exam:'al',rules:EDX_RULES,subjects:{
+      'Mathematics (IAL) — 勾选你考的单元':{pick:true,pool:[{n:'P1 Pure 1',max:75},{n:'P2 Pure 2',max:75},{n:'P3 Pure 3',max:75},{n:'P4 Pure 4',max:75},{n:'M1 Mechanics 1',max:75},{n:'M2 Mechanics 2',max:75},{n:'S1 Statistics 1',max:75},{n:'S2 Statistics 2',max:75},{n:'D1 Decision 1',max:75},{n:'FP1 Further Pure 1',max:75},{n:'FP2 Further Pure 2',max:75},{n:'FP3 Further Pure 3',max:75}],rules:EDX_RULES},
       'Any Edexcel IAL subject (overall %)':{overall:true,rules:EDX_RULES}
     }},
     oaqa:{label:'Oxford AQA (OxfordAQA Intl)',exam:'al',rules:'https://www.oxfordaqa.com/results/grade-boundaries/',subjects:{
@@ -163,13 +164,13 @@
   };
 
   var T={
-    zh:{none:'—',overallU:'整体得分率',pick:'先选科目',liveGrade:'本科估算',grade:'等级',need:'输入分数后显示',
+    zh:{none:'—',pickHint:'勾选你这一科考的卷，再填分数（右边是满分）。不同人选的卷不一样，按你勾的算。',overallHint:'这一科按整体得分率估算，填你的 % 即可。',fixedHint:'填各卷得分（不知道确切分就估），右边是满分。',overallU:'整体得分率',pick:'先选科目',liveGrade:'本科估算',grade:'等级',need:'输入分数后显示',
       overall:'综合成绩档',ucas:'UCAS 分（A-level 计）',uniTitle:'你的成绩大致能冲的大学方向',gapTitle:'离目标还差多少',
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 ≥90%，本表按总分估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
-    en:{none:'—',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'This subject',grade:'Grade',need:'Enter marks to see',
+    en:{none:'—',pickHint:'Tick the papers you actually take, then enter your marks (max on the right). Everyone picks different units — it scores what you tick.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Enter your mark per paper (estimate if unsure); max on the right.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'This subject',grade:'Grade',need:'Enter marks to see',
       overall:'Overall profile',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: an A-level A* also needs A2 ≥90%; estimated from your total.',
       lt3:'(Add 3 A-levels for a meaningful university match)',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
@@ -194,21 +195,32 @@
   function renderUnits(){
     var s=cur(),t=T[L()];
     rulesEl.href=s.rules||DATA[boardSel.value].rules;
+    document.getElementById('unitHint').innerHTML=s.pick?t.pickHint:(s.overall?t.overallHint:t.fixedHint);
+    var html='';
     if(s.overall){
-      unitsEl.innerHTML='<div class="urow"><span class="un">'+t.overallU+'</span><input class="um" type="number" min="0" max="100" inputmode="decimal" data-max="100"><span class="umax">/100</span></div>';
+      html='<div class="urow"><span class="un">'+t.overallU+'</span><input class="um" type="number" min="0" max="100" inputmode="decimal"><span class="umax">/100</span></div>';
+    } else if(s.pick){
+      html=s.pool.map(function(u){return '<div class="urow" data-max="'+u.max+'"><span class="un"><label style="cursor:pointer"><input type="checkbox" class="uck" style="margin-right:6px">'+u.n+'</label></span><input class="um" type="number" min="0" max="'+u.max+'" inputmode="decimal"><span class="umax">/'+u.max+'</span></div>';}).join('');
     } else {
-      unitsEl.innerHTML=s.units.map(function(u){return '<div class="urow"><span class="un">'+u.n+'</span><input class="um" type="number" min="0" max="'+u.max+'" inputmode="decimal" data-max="'+u.max+'" data-w="'+u.w+'"><span class="umax">/'+u.max+'</span></div>';}).join('');
+      html=s.units.map(function(u){return '<div class="urow" data-max="'+u.max+'" data-w="'+u.w+'"><span class="un">'+u.n+'</span><input class="um" type="number" min="0" max="'+u.max+'" inputmode="decimal"><span class="umax">/'+u.max+'</span></div>';}).join('');
     }
+    unitsEl.innerHTML=html;
     unitsEl.querySelectorAll('.um').forEach(function(i){i.addEventListener('input',liveCalc);});
+    unitsEl.querySelectorAll('.uck').forEach(function(c){c.addEventListener('change',liveCalc);});
     liveCalc();
   }
   function subjectPct(){
-    var s=cur(),ins=unitsEl.querySelectorAll('.um');
-    if(s.overall){var v=parseFloat(ins[0].value);return isNaN(v)?null:Math.max(0,Math.min(100,v));}
-    var sw=0,acc=0,any=false;
-    s.units.forEach(function(u,i){var v=parseFloat(ins[i].value);if(!isNaN(v)){any=true;acc+=(Math.max(0,Math.min(u.max,v))/u.max)*u.w;sw+=u.w;}});
-    if(!any||sw===0)return null;
-    return acc/sw*100; // scale to entered weights
+    var s=cur(),rows=unitsEl.querySelectorAll('.urow');
+    function cl(v,mx){return Math.max(0,Math.min(mx,v));}
+    if(s.overall){var v=parseFloat(rows[0].querySelector('.um').value);return isNaN(v)?null:cl(v,100);}
+    if(s.pick){
+      var sm=0,smax=0,any=false;
+      rows.forEach(function(r){var ck=r.querySelector('.uck');if(ck&&ck.checked){var mx=+r.getAttribute('data-max');var v=parseFloat(r.querySelector('.um').value);if(!isNaN(v)){any=true;sm+=cl(v,mx);smax+=mx;}}});
+      return (any&&smax>0)?(sm/smax*100):null;
+    }
+    var sw=0,acc=0,any2=false;
+    rows.forEach(function(r){var mx=+r.getAttribute('data-max'),w=+r.getAttribute('data-w');var v=parseFloat(r.querySelector('.um').value);if(!isNaN(v)){any2=true;acc+=(cl(v,mx)/mx)*w;sw+=w;}});
+    return (any2&&sw>0)?(acc/sw*100):null;
   }
   function liveCalc(){
     var t=T[L()],p=subjectPct();
@@ -219,7 +231,7 @@
 
   document.getElementById('addBtn').onclick=function(){
     var p=subjectPct();if(p===null)return;
-    profile.push({name:subjSel.value.replace(/\s*\(overall %\)/,'').replace(/\s*（overall %）/,''),exam:curExam(),pct:p,grade:gradeFromPct(p,curExam()),target:''});
+    profile.push({name:subjSel.value.replace(/\s*(—|\(|（).*$/,'').trim(),exam:curExam(),pct:p,grade:gradeFromPct(p,curExam()),target:''});
     renderMy();renderResults();
     document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
   };
