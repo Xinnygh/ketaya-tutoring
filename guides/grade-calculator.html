@@ -44,7 +44,15 @@
   .tier{font-size:17px;font-weight:800}
   .gap-pos{color:#b9575f;font-weight:800}.gap-ok{color:#0f8f8c;font-weight:800}
   .disclaimer{font-size:12px;color:var(--ink-soft);margin-top:10px;line-height:1.55}
-  @media(max-width:600px){.urow{grid-template-columns:1fr 64px 58px}}
+  @media(max-width:600px){
+    .urow{grid-template-columns:1fr 58px 52px;gap:6px}
+    .urow input,.urow select{padding:8px 6px;font-size:13px}
+    .calc{padding:15px}
+    table.gt th,table.gt td{padding:6px 7px;font-size:12.5px}
+    .profile{font-size:26px}
+    article h1{font-size:23px}
+    .mysub{font-size:13px}
+  }
 </style>
 </head>
 <body>
@@ -107,6 +115,21 @@
       <div class="rcard" id="r-overall"></div>
       <div class="rcard" id="r-uni"></div>
       <div class="rcard" id="r-gap"></div>
+    </div>
+
+    <!-- COURSE EXPLORER -->
+    <div class="calc" id="coursewrap" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <h2 style="margin:0" data-zh="④ 能上什么大学 & 专业" data-en="④ Which universities & courses">④ 能上什么大学 & 专业</h2>
+        <div><span style="font-size:12px;color:var(--ink-soft)" data-zh="按：" data-en="Using:">按：</span> <select id="ucMode" style="padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit"></select></div>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label data-zh="选专业方向（看各校录取要求 & 你够不够 / 反查要多少分）" data-en="Pick a course (see each uni's requirement & your fit / what you'd need)">选专业方向（看各校录取要求 & 你够不够 / 反查要多少分）</label>
+        <select id="course"></select>
+      </div>
+      <div id="courseReq" class="hint" style="margin:0 0 8px"></div>
+      <div style="overflow-x:auto"><table class="gt" id="courseTable"></table></div>
+      <p class="disclaimer" data-zh="⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。" data-en="⚠️ Offers are common standard offers published by each university (for reference — check the official page for the current year). ✅Match / 🟡Reach / 🔴Stretch is estimated from grades only; real admission also depends on your personal statement, references, admissions tests/interviews, competitions & activities, English scores and that year's competition — <b>meeting the grades is not a guarantee, and a strong overall profile can offset slightly lower grades</b>.">⚠️ 录取分为各校官网公布的常见 standard offer（整理参考，以官网当年要求为准）。「✅可冲 / 🟡有机会 / 🔴需提分」按分数估算；真实录取还要看文书、推荐信、笔试/面试、竞赛与活动、英语成绩及当年竞争——<b>分数够 ≠ 一定录取，分数稍差也可能靠综合实力录取</b>。</p>
     </div>
 
     <!-- CTA -->
@@ -172,12 +195,14 @@
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 ≥90%，本表按总分估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level——大学申请通常看 3 门，再加满就给你准的方向。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
       igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
+      modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 与世界 Top（A*AA–AAA；UCL·LSE·IC，美本 Top；竞争激烈）','英国罗素集团 / 不错的美本（AAB–ABB）','英国中上游好校（BBB）','主流大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick the papers you actually take, then enter your marks (max on the right). Everyone picks different units — it scores what you tick.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Enter your mark per paper (estimate if unsure); max on the right.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'This subject',grade:'Grade',need:'Enter marks to see',
       overall:'Overall profile',ucas:'UCAS points (A-level)',uniTitle:'Universities your grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: an A-level A* also needs A2 ≥90%; estimated from your total.',
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s) — universities usually look at 3; add the rest for an accurate match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
       igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
+      modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & world-top (A*AA–AAA; UCL·LSE·IC, top US — very competitive)','UK Russell Group / strong US (AAB–ABB)','Solid UK universities (BBB)','Mainstream; raise grades for top schools (BBC–CCC)','Build the foundation, improve step by step']}
   };
   function L(){return document.documentElement.lang==='en'?'en':'zh';}
@@ -276,21 +301,60 @@
     else gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+'：<span class="gap-pos">'+t.needp+(pctForGrade(x.target)-x.pct).toFixed(0)+'%</span> → '+x.target+'</li>';}).join('')+'</ul>';
     if(al.length)gh+='<div class="disclaimer">'+t.a2note+'</div>';
     document.getElementById('r-gap').innerHTML=gh;
+    renderCourses();
+  }
+
+  // ---- University & course explorer (indicative UK standard offers) ----
+  var COURSES={
+    'Medicine 医学':{req:{zh:'通常需 化学（+生物）',en:'usually Chemistry (+Biology)'},unis:[['University of Cambridge','A*A*A'],['Imperial College London','A*AA'],['UCL','A*AA'],["King's College London",'A*AA'],['University of Manchester','AAA'],['University of Leeds','AAA']]},
+    'Engineering 工程':{req:{zh:'需 数学 + 物理',en:'Maths + Physics required'},unis:[['Cambridge','A*A*A'],['Imperial','A*A*A'],['UCL','A*AA'],['University of Bristol','A*AA'],['Manchester','AAA'],['University of Sheffield','AAA']]},
+    'Computer Science 计算机':{req:{zh:'需 数学',en:'Maths required'},unis:[['Cambridge','A*A*A'],['Imperial','A*A*A'],['UCL','A*AA'],['University of Edinburgh','AAA'],['Manchester','AAA'],['University of Warwick','A*AA']]},
+    'Mathematics 数学':{req:{zh:'需 数学 A*（顶尖校可能要 STEP）',en:'Maths A* (top unis may need STEP)'},unis:[['Cambridge','A*A*A'],['Imperial','A*A*A'],['Warwick','A*AA'],['UCL','A*AA'],['Bristol','AAA']]},
+    'Economics 经济':{req:{zh:'需 数学（常要 A/A*）',en:'Maths required (often A/A*)'},unis:[['LSE','A*AA'],['Cambridge','A*A*A'],['UCL','A*AA'],['Warwick','A*AA'],['University of Bath','AAA'],['University of Nottingham','AAA']]},
+    'Business & Management 商科':{req:{zh:'无固定科目，数学有利',en:'no fixed subject; Maths helps'},unis:[['LSE','A*AA'],['Warwick','AAA'],['Bath','AAA'],['Manchester','AAA'],['University of Leeds','AAA'],['City, University of London','AAB']]},
+    'Law 法律':{req:{zh:'部分校需 LNAT',en:'LNAT for some unis'},unis:[['University of Oxford','AAA'],['Cambridge','A*AA'],['LSE','A*AA'],['UCL','A*AA'],["King's College London",'A*AA'],['Durham University','A*AA'],['Bristol','AAA']]},
+    'Natural / Physical Sciences 理科':{req:{zh:'需对应理科（物/化/生）',en:'relevant science(s) required'},unis:[['Cambridge','A*A*A'],['Imperial','A*AA'],['UCL','AAA'],['Manchester','AAA'],['Edinburgh','AAA']]},
+    'Accounting & Finance 会计金融':{req:{zh:'数学有利',en:'Maths helps'},unis:[['LSE','A*AA'],['Warwick','AAA'],['Manchester','AAA'],['Bath','AAA'],['Leeds','AAB'],['City','AAB']]},
+    'Psychology 心理':{req:{zh:'部分校需一门理科',en:'some unis need a science'},unis:[['UCL','AAA'],["King's College London",'AAA'],['Bath','AAA'],['Manchester','AAA'],['Edinburgh','AAA'],['Cardiff University','AAB']]}
+  };
+  function parseGrades(s){return (s.match(/A\*|[A-E]/g)||[]);}
+  function sumG(arr){return arr.map(rank).reduce(function(a,b){return a+b;},0);}
+  function profileGrades(mode){return profile.filter(function(x){return x.exam==='al';}).map(function(x){return (mode==='tgt'&&x.target)?x.target:x.grade;}).sort(function(a,b){return rank(b)-rank(a);});}
+  function fillCourse(){var c=document.getElementById('course'),cv=c.value;c.innerHTML=Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');if(cv)c.value=cv;}
+  function fillMode(){var m=document.getElementById('ucMode'),t=T[L()],mv=m.value;m.innerHTML='<option value="cur">'+t.modeCur+'</option><option value="tgt">'+t.modeTgt+'</option>';if(mv)m.value=mv;}
+  function renderCourses(){
+    var t=T[L()],wrap=document.getElementById('coursewrap');
+    var al=profile.filter(function(x){return x.exam==='al';});
+    if(!al.length){wrap.style.display='none';return;}
+    wrap.style.display='block';
+    var mode=document.getElementById('ucMode').value||'cur';
+    var stuTop=profileGrades(mode).slice(0,3),stuSum=sumG(stuTop);
+    var key=document.getElementById('course').value,c=COURSES[key];if(!c)return;
+    document.getElementById('courseReq').innerHTML='📌 '+(L()==='en'?c.req.en:c.req.zh)+' · '+t.yourProfile+'：<b>'+(stuTop.join('')||'—')+'</b>'+(al.length<3?(' '+t.lt3):'');
+    var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+t.fit+'</th></tr>';
+    c.unis.forEach(function(u){
+      var d=sumG(parseGrades(u[1]).slice(0,3))-stuSum;
+      var st=d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>');
+      h+='<tr><td style="text-align:left">'+u[0]+'</td><td><b>'+u[1]+'</b></td><td>'+st+'</td></tr>';
+    });
+    document.getElementById('courseTable').innerHTML=h;
   }
 
   boardSel.onchange=function(){fillSubjects();renderUnits();};
   subjSel.onchange=renderUnits;
   document.getElementById('clearBtn').onclick=function(){profile=[];renderMy();renderResults();};
+  document.getElementById('course').onchange=renderCourses;
+  document.getElementById('ucMode').onchange=renderCourses;
 
   function setLang(lang){
     var en=lang==='en';document.documentElement.lang=en?'en':'zh-CN';
     document.querySelectorAll('[data-en]').forEach(function(el){var v=en?el.getAttribute('data-en'):el.getAttribute('data-zh');if(v!=null)el.innerHTML=v;});
     var b=document.getElementById('langToggle');if(b)b.textContent=en?'中文':'EN';
-    renderUnits();renderMy();renderResults();
+    fillMode();renderUnits();renderMy();renderResults();
     try{localStorage.setItem('site_lang',lang);}catch(e){}
   }
   window.__setLang=setLang;
-  fillBoards();fillSubjects();
+  fillBoards();fillSubjects();fillCourse();fillMode();
   var saved=null;try{saved=localStorage.getItem('site_lang');}catch(e){}
   var urlLang=null;try{urlLang=new URLSearchParams(location.search).get('lang');}catch(e){}
   if(urlLang!=='zh'&&urlLang!=='en')urlLang=null;
