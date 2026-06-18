@@ -761,7 +761,14 @@
       lines.push('- '+usPlanMeta.goal);
       lines.push('- '+(lang==='en'?'Suggested SAT target: ':'建议 SAT 目标：')+usPlanMeta.targetSat+'+');
       lines.push('- '+(lang==='en'?'Suggested AP target: ':'建议 AP 目标：')+usPlanMeta.targetAP+' '+(lang==='en'?'APs at 4-5':'门 AP 4-5 分'));
-      if(usPlanMeta.total!=null)lines.push('- SAT: '+usPlanMeta.total);
+      if(usPlanMeta.total!=null){
+        lines.push('- SAT: '+usPlanMeta.total+' (Math '+usPlanMeta.math+', EBRW '+usPlanMeta.ebrw+')');
+        if(usPlanMeta.satGap>0)lines.push('- '+(lang==='en'?'SAT gap: +':'SAT 还差：+')+usPlanMeta.satGap);
+        if(usPlanMeta.weak)lines.push('- '+(lang==='en'?'Priority section: ':'优先补分模块：')+usPlanMeta.weak);
+      }
+      if(usPlanMeta.apScores&&usPlanMeta.apScores.length)lines.push('- '+(lang==='en'?'AP scores: ':'AP 成绩：')+usPlanMeta.apScores.join(', '));
+      lines.push('- '+(lang==='en'?'AP 4-5 count: ':'AP 4-5 分数量：')+usPlanMeta.apStrong+'/'+usPlanMeta.targetAP);
+      if(usPlanMeta.apGap>0)lines.push('- '+(lang==='en'?'AP 4-5 gap: ':'AP 4-5 还差：')+usPlanMeta.apGap);
     } else if(profile.length){
       var hasTargetOnly=profile.some(function(x){return x.targetOnly;});
       lines.push(hasTargetOnly?(lang==='en'?'My current / target profile:':'当前 / 目标成绩：'):(lang==='en'?'My current results:':'当前成绩：'));
@@ -876,11 +883,12 @@
   function renderAP(){
     var box=document.getElementById('apList');
     box.innerHTML=apList.map(function(a,i){return '<span style="display:inline-block;background:var(--bg-soft);border:1px solid var(--line);border-radius:8px;padding:4px 10px;margin:0 6px 6px 0;font-size:13px">'+a.n+': <b>'+a.s+'</b> <b data-x="'+i+'" style="cursor:pointer;color:#b9575f">×</b></span>';}).join('');
-    box.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){apList.splice(+b.getAttribute('data-x'),1);renderAP();};});
+    box.querySelectorAll('[data-x]').forEach(function(b){b.onclick=function(){apList.splice(+b.getAttribute('data-x'),1);renderAP();if(currentPath==='us')renderUS();};});
   }
   function renderUS(){
     var t=T[L()],m=parseFloat(document.getElementById('satM').value),r=parseFloat(document.getElementById('satR').value);
-    var total=(!isNaN(m)&&!isNaN(r))?(Math.max(200,Math.min(800,m))+Math.max(200,Math.min(800,r))):null;
+    var satMath=!isNaN(m)?Math.max(200,Math.min(800,m)):null,satRead=!isNaN(r)?Math.max(200,Math.min(800,r)):null;
+    var total=(satMath!=null&&satRead!=null)?satMath+satRead:null;
     var ap5=apList.filter(function(a){return a.s>=4;}).length;
     var goal=US_TIERS[+(document.getElementById('usGoal').value||0)]||US_TIERS[0];
     var html='<div class="rcard"><h3>'+t.dreamGap+'</h3><div class="tier">🎓 '+(L()==='en'?goal.en:goal.zh)+'</div>';
@@ -894,13 +902,13 @@
     else if(ap5>=goal.targetAP)html+='<div class="gap-ok">'+t.apMet+'</div>';
     else html+='<div class="gap-pos">'+t.apGap+' '+(goal.targetAP-ap5)+'</div>';
     if(total!=null&&total<goal.targetSat){
-      var weak=m<r?'Math':'Reading/Writing';
+      var weak=satMath<satRead?'Math':'Reading/Writing';
       html+='<div class="mini-note">'+(L()==='en'?'Priority section: ':'优先补分模块：')+weak+'</div>';
     }
     html+='</div>';
     html+='<div style="overflow-x:auto"><table class="gt"><tr><th style="text-align:left">'+t.usTier+'</th><th>SAT</th><th>AP</th><th>'+t.usEx+'</th></tr>'+US_TIERS.map(function(x,i){var hl=(total!=null&&usTier(total)===i)?' style="background:#eaf2ff"':'';return '<tr'+hl+'><td style="text-align:left">'+(L()==='en'?x.en:x.zh)+'</td><td>'+x.sat+'</td><td>'+(L()==='en'?x.ap.en:x.ap.zh)+'</td><td style="font-size:12px">'+x.ex+'</td></tr>';}).join('')+'</table></div>';
     document.getElementById('usResult').innerHTML=html;
-    usPlanMeta={goal:L()==='en'?goal.en:goal.zh,targetSat:goal.targetSat,targetAP:goal.targetAP,total:total,apStrong:ap5};
+    usPlanMeta={goal:L()==='en'?goal.en:goal.zh,targetSat:goal.targetSat,targetAP:goal.targetAP,total:total,math:satMath,ebrw:satRead,satGap:total!=null?Math.max(0,goal.targetSat-total):null,weak:(total!=null&&total<goal.targetSat)?(satMath<satRead?'Math':'Reading/Writing'):'',apStrong:ap5,apGap:Math.max(0,goal.targetAP-ap5),apScores:apList.map(function(a){return a.n+' '+a.s;})};
     lastSubjectMeta={board:'US route',subject:L()==='en'?'Target '+(goal.en):'目标 '+goal.zh,grade:total!=null?('SAT '+total):'SAT —',pct:0};
     updateWhatsAppLinks();
   }
@@ -923,7 +931,8 @@
   document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
   document.getElementById('targetOnlyAdd').onclick=addTargetOnly;
   targetOnlyNameEl.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addTargetOnly();}});
-  document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();};
+  document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();if(currentPath==='us')renderUS();};
+  ['satM','satR'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){if(currentPath==='us')renderUS();});});
   document.getElementById('usCalc').onclick=renderUS;
   document.getElementById('usGoal').onchange=renderUS;
   document.getElementById('pathTabs').onclick=function(e){
