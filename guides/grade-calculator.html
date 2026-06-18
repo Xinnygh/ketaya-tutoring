@@ -725,11 +725,20 @@
     renderTargetOnlyActions();
   }
 
+  function ensureResultCards(res){
+    if(!document.getElementById('r-overall')||!document.getElementById('r-uni')||!document.getElementById('r-gap')){
+      res.innerHTML='<div class="rcard" id="r-overall"></div><div class="rcard" id="r-uni"></div><div class="rcard" id="r-gap"></div>';
+    }
+  }
   function renderResults(){
     var t=T[L()],res=document.getElementById('result');
     if(!profile.length){
       res.style.display='none';
-      res.innerHTML='';
+      ensureResultCards(res);
+      ['r-overall','r-uni','r-gap'].forEach(function(id){
+        var el=document.getElementById(id);
+        if(el)el.innerHTML='';
+      });
       var cw=document.getElementById('coursewrap');
       if(cw)cw.style.display='none';
       renderCourseSources(null);
@@ -738,6 +747,7 @@
       return;
     }
     res.style.display='block';
+    ensureResultCards(res);
     var al=profile.filter(function(x){return x.exam==='al';}),ig=profile.filter(function(x){return x.exam==='ig';});
     var soft=profile.some(function(x){return x.status==='partial'||(x.complete&&x.complete<100);});
     var hasTargetOnly=profile.some(function(x){return x.targetOnly;});
@@ -889,10 +899,21 @@
       lines.push(lang==='en'?'University match: add 3 A-level subjects for a reliable check.':'大学匹配：还没满 3 门 A-level，建议先确认科目组合。');
       return lines;
     }
-    var key=document.getElementById('course').value,c=COURSES[key];if(!c)return lines;
     var targetOnlyAll=al.every(function(x){return x.targetOnly;});
     var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
-    var stuTop=profileGrades(mode).slice(0,3),missing=requiredSubjectGaps(key,al.map(function(x){return x.name;})),subjectGradeGaps=requiredSubjectGradeGaps(key,al,mode);
+    var stuTop=profileGrades(mode).slice(0,3),key=document.getElementById('course').value,c=COURSES[key];
+    if(!c){
+      lines.push(lang==='en'?'Course / university target: not selected yet; please help me confirm suitable options.':'目标专业/院校：暂未选择，希望老师帮忙判断适合冲哪些方向。');
+      if(targetOnlyAll){
+        lines.push((lang==='en'?'Target profile: ':'目标成绩档：')+(stuTop.join('')||'—'));
+      } else {
+        var currentTop=profileGrades('cur').slice(0,3),targetTop=profileGrades('tgt').slice(0,3),hasTargets=al.some(function(x){return x.target||x.targetPct;});
+        lines.push((lang==='en'?'Current profile: ':'当前成绩档：')+(currentTop.join('')||'—'));
+        if(hasTargets&&targetTop.join('')!==currentTop.join(''))lines.push((lang==='en'?'Target profile: ':'目标成绩档：')+(targetTop.join('')||'—'));
+      }
+      return lines;
+    }
+    var missing=requiredSubjectGaps(key,al.map(function(x){return x.name;})),subjectGradeGaps=requiredSubjectGradeGaps(key,al,mode);
     lines.push(lang==='en'?'Course target: '+key:'目标专业/方向：'+key);
     lines.push((lang==='en'?(mode==='tgt'?'Target profile: ':'Grade profile: '):(mode==='tgt'?'目标成绩档：':'成绩档：'))+(stuTop.join('')||'—'));
     if(al.length>3)lines.push(lang==='en'?'Note: checking top 3 plus required subjects; extra subjects do not replace required subjects.':'说明：按最高 3 门 + 必需科目判断；额外科目不能替代专业必修科目。');
