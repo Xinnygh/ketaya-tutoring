@@ -796,9 +796,9 @@
     var hasTargetOnly=profile.some(function(x){return x.targetOnly;});
     var allTargetOnly=profile.length>0&&profile.every(function(x){return x.targetOnly;});
     // overall
-    var oh='<h3>'+(allTargetOnly?t.targetOnly+' · '+t.overall:t.overall)+'</h3>';
+    var oh='<h3>'+(hasTargetOnly?t.targetOnly+' · '+t.overall:t.overall)+'</h3>';
     if(al.length){
-      var summaryMode=allTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
+      var summaryMode=hasTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
       var sorted=al.slice().sort(function(a,b){return rank(itemGrade(b,summaryMode))-rank(itemGrade(a,summaryMode));});
       var g=sorted.map(function(x){return itemGrade(x,summaryMode);});
       var top3=sorted.slice(0,3).map(function(x){return itemGrade(x,summaryMode);});
@@ -807,7 +807,7 @@
       if(al.length>3)oh+='<div class="ucas">'+t.top3+C()+'<b>'+top3.join(' ')+'</b> · '+t.allAL+C()+g.join(' ')+'</div>';
       oh+='<div class="ucas">'+(al.length>3?(t.top3Ucas+': <b>'+top3Ucas+'</b> · '+t.allUcas+': <b>'+allUcas+'</b>'):(t.ucas+': <b>'+allUcas+'</b>'))+'</div>';
       var targetLine=al.some(function(x){return !x.targetOnly&&(x.target||x.targetPct);});
-      if(targetLine){
+      if(targetLine&&!hasTargetOnly){
         var tg=profileGrades('tgt'),ttop=tg.slice(0,3);
         var cg=profileGrades('cur'),ctop=cg.slice(0,3);
         oh+='<div class="mini-note">'+(summaryMode==='tgt'?(L()==='en'?'Current projection':'当前预测'):(L()==='en'?'Target plan':'目标方案'))+C()+'<b>'+(summaryMode==='tgt'?(al.length>3?ctop.join(' '):cg.join(' ')):(al.length>3?ttop.join(' '):tg.join(' ')))+'</b>'+(al.length>3?' · '+t.allAL+C()+(summaryMode==='tgt'?cg.join(' '):tg.join(' ')):'')+'</div>';
@@ -823,8 +823,8 @@
     if(ig.length){var avg=Math.round(ig.reduce(function(a,x){return a+x.pct;},0)/ig.length);oh+='<div class="ucas" style="margin-top:6px">IGCSE: '+ig.map(function(x){return x.grade;}).sort(function(a,b){return rank(b)-rank(a);}).join(' ')+' · '+t.igAvg+avg+'%</div>';}
     document.getElementById('r-overall').innerHTML=oh;
     // uni
-    var uniMode=allTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
-    var uh='<h3>'+((allTargetOnly||uniMode==='tgt')?t.uniTitleTarget:t.uniTitle)+'</h3>';
+    var uniMode=hasTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
+    var uh='<h3>'+((hasTargetOnly||uniMode==='tgt')?t.uniTitleTarget:t.uniTitle)+'</h3>';
     if(al.length>=3){var top3u=profileGrades(uniMode).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+C()+'<b>'+top3u.join(' ')+'</b></div>';}
     else if(al.length>=1){uh+='<div class="ucas">'+t.addMore.replace('{n}',al.length)+'</div>';}
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
@@ -942,12 +942,12 @@
       lines.push(lang==='en'?'University match: add 3 A-level subjects for a reliable check.':'大学匹配：还没满 3 门 A-level，建议先确认科目组合。');
       return lines;
     }
-    var targetOnlyAll=al.every(function(x){return x.targetOnly;});
-    var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
+    var hasTargetOnly=al.some(function(x){return x.targetOnly;}),targetOnlyAll=al.every(function(x){return x.targetOnly;});
+    var mode=hasTargetOnly?'tgt':(document.getElementById('ucMode').value||'cur');
     var stuTop=profileGrades(mode).slice(0,3),key=document.getElementById('course').value,c=COURSES[key];
     if(!c){
       lines.push(lang==='en'?'Course / university target: not selected yet; please help me confirm suitable options.':'目标专业/院校：暂未选择，希望老师帮忙判断适合冲哪些方向。');
-      if(targetOnlyAll){
+      if(hasTargetOnly){
         lines.push((lang==='en'?'Target profile: ':'目标成绩档：')+(stuTop.join('')||'—'));
       } else {
         var currentTop=profileGrades('cur').slice(0,3),targetTop=profileGrades('tgt').slice(0,3),hasTargets=al.some(function(x){return x.target||x.targetPct;});
@@ -1104,8 +1104,8 @@
     var courseActions=document.getElementById('courseActions');if(courseActions)courseActions.style.display='none';
     if(currentPath!=='uk'){wrap.style.display='none';renderCourseSources(null);return;}
     var al=profile.filter(function(x){return x.exam==='al';});
-    var targetOnlyAll=al.length>0&&al.every(function(x){return x.targetOnly;});
-    var modeBox=document.getElementById('modeBox');if(modeBox)modeBox.style.display=targetOnlyAll?'none':'block';
+    var hasTargetOnly=al.some(function(x){return x.targetOnly;}),targetOnlyAll=al.length>0&&al.every(function(x){return x.targetOnly;});
+    var modeBox=document.getElementById('modeBox');if(modeBox)modeBox.style.display=hasTargetOnly?'none':'block';
     if(!al.length){wrap.style.display='none';renderCourseSources(null);return;}
     wrap.style.display='block';
     if(al.length<3){
@@ -1124,7 +1124,7 @@
       return;
     }
     fillDream();
-    var mode=targetOnlyAll?'tgt':(document.getElementById('ucMode').value||'cur');
+    var mode=hasTargetOnly?'tgt':(document.getElementById('ucMode').value||'cur');
     var stuTop=profileGrades(mode).slice(0,3);
     var modeIsTarget=mode==='tgt';
     renderCourseSources(c);
