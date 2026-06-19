@@ -937,7 +937,7 @@
   // ---- University & course explorer (indicative UK standard offers) ----
   var COURSES={
     'Medicine 医学':{req:{zh:'通常需 化学（+生物/数学/物理），另看 UCAT 和面试',en:'usually Chemistry (+ Biology/Maths/Physics), plus UCAT and interview'},check:{zh:'UCAT、面试、医学相关经历/反思；分数够不等于录取',en:'UCAT, interviews and medical experience/reflection; grades alone are not enough'},unis:[['University of Cambridge','A*A*A','https://www.undergraduate.study.cam.ac.uk/courses/medicine-mb-bchir'],['Imperial College London','A*AA','https://www.imperial.ac.uk/study/courses/undergraduate/medicine/'],['UCL','A*AA','https://www.ucl.ac.uk/prospective-students/undergraduate/degrees/medicine-mbbs-bsc'],["King's College London",'A*AA','https://www.kcl.ac.uk/study/undergraduate/courses/medicine-mbbs'],['University of Manchester','AAA','https://www.manchester.ac.uk/study/undergraduate/courses/2026/01428/mbchb-medicine/'],['University of Leeds','AAA','https://courses.leeds.ac.uk/i900/medicine-and-surgery-mbchb']]},
-    'Engineering 工程':{req:{zh:'需 数学 + 物理，部分学校看 ESAT/面试',en:'Maths + Physics required; some use ESAT/interviews'},check:{zh:'牛剑/Imperial 等可能看 ESAT、面试；需按目标院校核对',en:'Oxbridge/Imperial may use ESAT and interviews; check target universities'},unis:[['Cambridge','A*A*A','https://www.undergraduate.study.cam.ac.uk/courses/engineering-meng'],['Imperial','A*A*A','https://www.imperial.ac.uk/study/courses/undergraduate/electrical-electronic-engineering-beng/'],['UCL','A*AA','https://www.ucl.ac.uk/prospective-students/undergraduate/degrees/engineering-mechanical-beng'],['University of Bristol','A*AA','https://www.bristol.ac.uk/study/undergraduate/2027/mechanical-engineering/meng-mechanical-engineering/'],['Manchester','AAA','https://www.manchester.ac.uk/study/undergraduate/courses/2026/03338/beng-mechanical-engineering/'],['University of Sheffield','AAA','https://www.sheffield.ac.uk/undergraduate/courses/2026/mechanical-engineering-beng']]},
+    'Engineering 工程':{req:{zh:'需 数学 + 物理，部分学校看 ESAT/面试',en:'Maths + Physics required; some use ESAT/interviews'},check:{zh:'牛剑/Imperial 等可能看 ESAT、面试；需按目标院校核对',en:'Oxbridge/Imperial may use ESAT and interviews; check target universities'},unis:[['Cambridge','A*A*A','https://www.undergraduate.study.cam.ac.uk/courses/engineering-meng'],['Imperial','A*A*A','https://www.imperial.ac.uk/study/courses/undergraduate/electrical-electronic-engineering-beng/',{rule:'mathAStar'}],['UCL','A*AA','https://www.ucl.ac.uk/prospective-students/undergraduate/degrees/engineering-mechanical-beng',{rule:'mathOrPhysicsAStar'}],['University of Bristol','A*AA','https://www.bristol.ac.uk/study/undergraduate/2027/mechanical-engineering/meng-mechanical-engineering/'],['Manchester','AAA','https://www.manchester.ac.uk/study/undergraduate/courses/2026/03338/beng-mechanical-engineering/'],['University of Sheffield','AAA','https://www.sheffield.ac.uk/undergraduate/courses/2026/mechanical-engineering-beng']]},
     'Computer Science 计算机':{req:{zh:'需 数学；顶尖校常要 TMUA/STEP/面试',en:'Maths required; top unis often use TMUA/STEP/interviews'},check:{zh:'Imperial/Cambridge 等可能看 TMUA；UCL 2027/28 起 TARA；部分学校面试',en:'Imperial/Cambridge may use TMUA; UCL uses TARA from 2027/28; some interview'},unis:[['Cambridge','A*A*A','https://www.undergraduate.study.cam.ac.uk/courses/computer-science-ba-hons'],['Imperial','A*A*A','https://www.imperial.ac.uk/study/courses/undergraduate/computing-beng/'],['UCL','A*A*A','https://www.ucl.ac.uk/study/prospective-students/undergraduate/courses/computer-science-bsc'],['University of Edinburgh','AAA','https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400'],['Manchester','AAA','https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/'],['University of Warwick','A*A*A','https://warwick.ac.uk/study/undergraduate/courses/bsc-computer-science/']]},
     'Mathematics 数学':{req:{zh:'需 数学 A*；顶尖校可能要 STEP/TMUA',en:'Maths A* required; top unis may need STEP/TMUA'},check:{zh:'STEP / TMUA / AEA 可能影响 offer；普通数学与进阶数学组合需逐校核对',en:'STEP / TMUA / AEA may affect offers; Maths + Further Maths rules vary by university'},unis:[['Cambridge','A*A*A','https://www.undergraduate.study.cam.ac.uk/courses/mathematics-ba-hons'],['Imperial','A*A*A','https://www.imperial.ac.uk/study/courses/undergraduate/mathematics-bsc/'],['Warwick','A*A*A','https://warwick.ac.uk/study/undergraduate/courses/bsc-mathematics/'],['UCL','A*A*A','https://www.ucl.ac.uk/study/prospective-students/undergraduate/courses/mathematics-bsc'],['Bristol','AAA','https://www.bristol.ac.uk/study/undergraduate/2027/maths/bsc-mathematics/']]},
     'Economics 经济':{req:{zh:'需 数学（常要 A/A*），部分学校重视写作型科目',en:'Maths required (often A/A*); some prefer an essay subject'},check:{zh:'部分学校看 TMUA/面试；LSE 等会细看数学与写作型科目组合',en:'Some schools use TMUA/interviews; LSE-style courses scrutinise Maths plus essay-subject balance'},unis:[['LSE','A*AA','https://www.lse.ac.uk/study-at-lse/undergraduate/bsc-economics'],['Cambridge','A*A*A','https://www.undergraduate.study.cam.ac.uk/courses/economics-ba-hons'],['UCL','A*AA','https://www.ucl.ac.uk/study/prospective-students/undergraduate/courses/economics-bsc-econ'],['Warwick','A*AA','https://warwick.ac.uk/study/undergraduate/courses/bsc-economics/'],['University of Bath','A*AA','https://www.bath.ac.uk/courses/undergraduate-2027/economics/bsc-economics/'],['University of Nottingham','AAA','https://www.nottingham.ac.uk/studywithus/ugstudy/courses/UG/Economics-BSc-Hons-U6UECONC.html']]},
@@ -990,6 +990,16 @@
       need('Mathematics',isPlainMath,'A');
     } else if(courseKey.indexOf('Mathematics')===0) {
       need('Mathematics',isPlainMath,'A*');
+    }
+    return gaps;
+  }
+  function rowSubjectGradeGaps(courseKey,items,mode,uni){
+    var gaps=requiredSubjectGradeGaps(courseKey,items,mode).slice(),rule=uni&&uni[3]&&uni[3].rule;
+    if(courseKey.indexOf('Engineering')===0&&rule){
+      var mathBest=bestSubjectRank(items,isPlainMath,mode),physBest=bestSubjectRank(items,subjectMatches([/physics|物理/]),mode);
+      function add(label){if(gaps.indexOf(label)<0)gaps.push(label);}
+      if(rule==='mathAStar'&&mathBest&&mathBest<rank('A*'))add('Mathematics ≥ A*');
+      if(rule==='mathOrPhysicsAStar'&&mathBest&&physBest&&Math.max(mathBest,physBest)<rank('A*'))add('Mathematics / Physics ≥ A*');
     }
     return gaps;
   }
@@ -1048,9 +1058,10 @@
     var di=document.getElementById('dreamUni').value;
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
+      var dreamSubjectGradeGaps=rowSubjectGradeGaps(key,al,mode,du);
       lines.push((lang==='en'?'Dream university: ':'目标院校：')+du[0]+' · '+du[1]);
       if(missing.length)lines.push(lang==='en'?'Main gap: required subject combination.':'主要差距：科目组合不满足要求。');
-      else if(subjectGradeGaps.length)lines.push((lang==='en'?'Main gap: required subject grade. ':'主要差距：必需科目目标不够。')+subjectGradeGaps.join(' / '));
+      else if(dreamSubjectGradeGaps.length)lines.push((lang==='en'?'Main gap: required subject grade. ':'主要差距：必需科目目标不够。')+dreamSubjectGradeGaps.join(' / '));
       else if(gap.steps>0)lines.push((lang==='en'?'Grade gap: about ':'成绩差距：约差 ')+gap.steps+(lang==='en'?' grade step(s).':' 个等级档。'));
       else lines.push(lang==='en'?'Grade fit: appears to meet the standard offer by grades.':'分数匹配：按成绩看已达到常见 offer。');
     }
@@ -1232,8 +1243,9 @@
     var dreamBox=document.getElementById('dreamGap'),di=document.getElementById('dreamUni').value;
     if(di!==''){
       var du=c.unis[+di],gap=offerGap(stuTop,du[1]);
+      var dreamSubjectGradeGaps=rowSubjectGradeGaps(key,al,mode,du);
       dreamBox.style.display='block';
-      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+C()+'<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+C()+'<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+C()+missingSubjects.join(' / ')+'</div>':(subjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+C()+subjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+(c.check?t.gradeMetBut:t.fitMatch)+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+(c.check?'<div class="mini-note check-note">'+t.nonGrade+C()+(L()==='en'?c.check.en:c.check.zh)+'</div>':'')+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
+      dreamBox.innerHTML='<h3>'+t.dreamGap+'</h3><div class="tier">'+du[0]+' · '+du[1]+'</div><div class="ucas">'+(modeIsTarget?t.yourTargetProfile:t.yourProfile)+C()+'<b>'+(stuTop.join('')||'—')+'</b> · '+t.needGrades+C()+'<b>'+gap.req.join('')+'</b></div>'+(missingSubjects.length?'<div class="gap-pos">'+t.fitMissing+C()+missingSubjects.join(' / ')+'</div>':(dreamSubjectGradeGaps.length?'<div style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+C()+dreamSubjectGradeGaps.join(' / ')+'</div>':(gap.steps<=0?'<div class="gap-ok">'+(c.check?t.gradeMetBut:t.fitMatch)+'</div>':'<div class="gap-pos">'+t.missingSteps+' '+gap.steps+' '+t.gradeSteps+'</div>')))+(c.check?'<div class="mini-note check-note">'+t.nonGrade+C()+(L()==='en'?c.check.en:c.check.zh)+'</div>':'')+'<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
     } else {
       dreamBox.style.display='none';
     }
@@ -1241,7 +1253,8 @@
     var h='<tr><th style="text-align:left">'+t.uni+'</th><th>'+t.offer+'</th><th>'+(modeIsTarget?t.fitTarget:t.fit)+'</th></tr>';
     c.unis.forEach(function(u){
       var d=offerGap(stuTop,u[1]).steps;
-      var st=missingSubjects.length?'<span class="gap-pos">'+t.fitMissing+'</span>':(subjectGradeGaps.length?'<span style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'</span>':(d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>')));
+      var rowGaps=rowSubjectGradeGaps(key,al,mode,u);
+      var st=missingSubjects.length?'<span class="gap-pos">'+t.fitMissing+'</span>':(rowGaps.length?'<span style="color:#cf8a1e;font-weight:800">'+t.fitSubjectGrade+'</span>':(d<=0?'<span class="gap-ok">'+t.fitMatch+'</span>':(d<=2?'<span style="color:#cf8a1e;font-weight:800">'+t.fitReach+'</span>':'<span class="gap-pos">'+t.fitStretch+'</span>')));
       h+='<tr><td style="text-align:left">'+u[0]+'</td><td><b>'+u[1]+'</b></td><td>'+st+'</td></tr>';
     });
     document.getElementById('courseTable').innerHTML=h;
