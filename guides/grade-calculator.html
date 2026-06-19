@@ -628,8 +628,8 @@
   }
   function liveCalc(){
     var t=T[L()],prog=subjectProgress();
-    if(prog&&prog.invalid){liveEl.innerHTML='<span class="gap-pos">'+t.invalidDone+'</span>';document.getElementById('addBtn').disabled=true;return;}
-    if(prog===null){liveEl.innerHTML=t.liveGrade+C()+'<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;return;}
+    if(prog&&prog.invalid){liveEl.innerHTML='<span class="gap-pos">'+t.invalidDone+'</span>';document.getElementById('addBtn').disabled=true;updateWhatsAppLinks();return;}
+    if(prog===null){liveEl.innerHTML=t.liveGrade+C()+'<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;updateWhatsAppLinks();return;}
     var g=gradeFromPct(prog.pct,curExam(),cur().scale),
       targetName=subjectTargetSel.value||((prog.targetPct||0)>0?(t.targetPct+' '+prog.targetPct.toFixed(0)+'%'):''),
       label=(prog.targetPct&&prog.missing>0&&prog.required>100&&targetName)?(L()==='en'?'Target '+targetName+', max future projection':'目标 '+targetName+'，未考满分后预计'):(prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade),
@@ -668,6 +668,7 @@
     }
     liveEl.innerHTML=html;
     document.getElementById('addBtn').disabled=false;
+    updateWhatsAppLinks();
   }
 
   function targetALCount(){
@@ -978,6 +979,7 @@
     var lang=L(),lines=[];
     if(lang==='en')lines.push('Hi DAYA, I used the grade calculator and would like a learning diagnosis.');
     else lines.push('你好，我用了成绩计算器，想咨询学情诊断。');
+    var liveSubjectLines=currentSubjectConsultLines(lang);
     if(currentPath==='us'&&usPlanMeta){
       lines.push(lang==='en'?'US target plan:':'美本目标方案：');
       lines.push('- '+usPlanMeta.goal);
@@ -997,9 +999,10 @@
       if(usPlanMeta.apGap>0)lines.push('- '+(lang==='en'?'AP 4-5 gap: ':'AP 4-5 还差：')+usPlanMeta.apGap);
     } else if(currentPath==='us') {
       lines.push(lang==='en'?'US route: target tier / SAT or ACT / AP / GPA situation:':'美本方向：目标院校档次 / SAT或ACT / AP / GPA情况：');
-    } else if(profile.length){
+    } else if(profile.length||liveSubjectLines.length){
       var hasTargetOnly=profile.some(function(x){return x.targetOnly;});
       lines.push(hasTargetOnly?(lang==='en'?'My current / target profile:':'当前 / 目标成绩：'):(lang==='en'?'My current results:':'当前成绩：'));
+      liveSubjectLines.forEach(function(line){lines.push(line);});
       profile.forEach(function(x){
         if(x.targetOnly){
           lines.push('- '+x.name+': '+(lang==='en'?'target ':'目标 ')+(x.target||x.grade));
@@ -1008,7 +1011,11 @@
         var partial=(x.status==='partial'||(x.complete&&x.complete<100))?(lang==='en'?' [unfinished units]':'【含未考单元】'):'';
         var curG=itemGrade(x,'cur'),curP=itemPct(x,'cur');
         var line='- '+(x.board?x.board+' / ':'')+x.name+': '+(lang==='en'?'current ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+partial;
-        if(x.target||x.targetPct)line+=' -> '+(lang==='en'?'target plan ':'目标方案 ')+itemGrade(x,'tgt')+' ('+itemPct(x,'tgt').toFixed(0)+'%)';
+        if(x.target||x.targetPct){
+          var tgtGrade=itemGrade(x,'tgt'),tgtPct=itemPct(x,'tgt'),targetLabel=x.target||Math.round(x.targetPct)+'%';
+          if(x.status==='partial'&&x.target&&x.required>100)line+=' -> '+(lang==='en'?'target ':'目标 ')+targetLabel+(lang==='en'?'; max future projection ':'；未考满分后预计 ')+(x.grade||tgtGrade)+' ('+(x.pct!=null?x.pct:tgtPct).toFixed(0)+'%)';
+          else line+=' -> '+(lang==='en'?'target plan ':'目标方案 ')+tgtGrade+' ('+tgtPct.toFixed(0)+'%)';
+        }
         lines.push(line);
         var gapPct=(x.targetPct||pctForGrade(x.target||''))-curP;
         if(gapPct>0)lines.push('  '+(lang==='en'?'Gap to target: about +':'距离目标：约还差 +')+gapPct.toFixed(0)+'%');
@@ -1024,13 +1031,39 @@
     }
     return lines.join('\n');
   }
+  function currentSubjectConsultLines(lang){
+    if(currentPath!=='uk')return [];
+    var prog=subjectProgress();
+    if(!prog||prog.invalid)return [];
+    var nm=selectedSubjectName(),ex=curExam();
+    if(needsCustomSubjectName()&&!(customSubjectNameEl&&customSubjectNameEl.value.trim()))return [];
+    if(profile.some(function(x){return !x.targetOnly&&sameSubjectEntry(x,nm,ex);}))return [];
+    var s=cur(),curP=prog.currentPct||prog.pct,curG=gradeFromPct(curP,ex,s.scale),
+      planP=prog.pct,planG=gradeFromPct(planP,ex,s.scale),
+      target=subjectTargetSel.value||((prog.targetPct||0)>0?Math.round(prog.targetPct)+'%':'');
+    var lines=[];
+    lines.push('- '+DATA[boardSel.value].label+' / '+nm+': '+(lang==='en'?'current prediction ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+(prog.status==='partial'?(lang==='en'?' [unfinished units]':'【含未考单元】'):''));
+    if(target){
+      if(prog.status==='partial'&&subjectTargetSel.value&&planG!==subjectTargetSel.value)lines.push('  '+(lang==='en'?'Target: ':'目标：')+subjectTargetSel.value+(lang==='en'?'; max future projection ':'；未考满分后预计 ')+planG+' ('+planP.toFixed(0)+'%)');
+      else lines.push('  '+(lang==='en'?'Target plan: ':'目标方案：')+planG+' ('+planP.toFixed(0)+'%)'+(subjectTargetSel.value?' / '+subjectTargetSel.value:''));
+    }
+    if(prog.missing>0&&prog.missingUnits&&prog.missingUnits.length){
+      if(prog.required!=null)lines.push('  '+(lang==='en'?'Next unit targets: ':'下一步单元目标：')+prog.missingUnits.slice(0,4).map(function(u){return unitTargetText(u,prog.required);}).join(', '));
+      else lines.push('  '+(lang==='en'?'Future units: ':'未考单元：')+prog.missingUnits.slice(0,4).map(function(u){return u.name;}).join(', '));
+    }
+    if(prog.required>=88)lines.push('  '+T[lang].highRisk);
+    if(prog.retakeTargets&&prog.retakeTargets.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+prog.retakeTargets.slice(0,3).map(function(u){return unitTargetText(u,u.targetPct);}).join(', '));
+    else if(prog.lowUnits&&prog.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+prog.lowUnits.slice(0,3).map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';}).join(', '));
+    if(prog.retakeNeed>0)lines.push('  '+(lang==='en'?'Future units alone are not enough; recover about ':'只靠未考单元不够，还需从已考单元补回约 ')+prog.retakeNeed.toFixed(1)+'%');
+    return lines;
+  }
   function updateWhatsAppLinks(){
     var href='https://wa.me/8618156122672?text='+encodeURIComponent(consultText());
     ['ctaWa','floatWa','targetOnlyWa'].forEach(function(id){var a=document.getElementById(id);if(a)a.href=href;});
     document.querySelectorAll('.context-wa').forEach(function(a){a.href=href;});
     var float=document.getElementById('floatWa');
     if(float){
-      var hasDetails=currentPath==='us'?!!usPlanMeta:profile.length>0;
+      var hasDetails=currentPath==='us'?!!usPlanMeta:(profile.length>0||currentSubjectConsultLines(L()).length>0);
       float.textContent=hasDetails?(L()==='en'?'💬 Send details':'💬 发结果咨询'):(L()==='en'?'💬 Quick chat':'💬 直接咨询');
     }
   }
