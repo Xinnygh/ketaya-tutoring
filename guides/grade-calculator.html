@@ -535,7 +535,7 @@
     if(!rows.length)return null;
     if(s.overall){
       var v=parseFloat(rows[0].querySelector('.um').value);
-      return isNaN(v)?null:finishProgress({completedPct:cl(v,100),coverage:100,missingUnits:[],doneUnits:[{name:tName(),score:cl(v,100),max:100,pct:cl(v,100),type:'percent'}]});
+      return isNaN(v)?null:finishProgress({completedPct:cl(v,100),coverage:100,missingUnits:[],doneUnits:[{name:selectedSubjectName(),score:cl(v,100),max:100,pct:cl(v,100),type:'percent'}]});
     }
     return progressFromRows(rows,s.pick);
   }
