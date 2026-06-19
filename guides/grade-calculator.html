@@ -630,7 +630,10 @@
     var t=T[L()],prog=subjectProgress();
     if(prog&&prog.invalid){liveEl.innerHTML='<span class="gap-pos">'+t.invalidDone+'</span>';document.getElementById('addBtn').disabled=true;return;}
     if(prog===null){liveEl.innerHTML=t.liveGrade+C()+'<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;return;}
-    var g=gradeFromPct(prog.pct,curExam(),cur().scale),label=prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade,html=label+C()+'<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
+    var g=gradeFromPct(prog.pct,curExam(),cur().scale),
+      targetName=subjectTargetSel.value||((prog.targetPct||0)>0?(t.targetPct+' '+prog.targetPct.toFixed(0)+'%'):''),
+      label=(prog.targetPct&&prog.missing>0&&prog.required>100&&targetName)?(L()==='en'?'Target '+targetName+', max future projection':'目标 '+targetName+'，未考满分后预计'):(prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade),
+      html=label+C()+'<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
     html+='<div class="mini-note">'+t.currentDone+C()+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'%';
     if(prog.missing>0)html+=' · '+t.remaining+' '+prog.missing.toFixed(0)+'%';
     html+='</div>';
@@ -641,7 +644,7 @@
       html+='<div class="mini-note">'+t.addPlan+'</div>';
     }
     if(prog.missing>0){
-      var target=subjectTargetSel.value||((prog.targetPct||0)>0?(t.targetPct+' '+prog.targetPct.toFixed(0)+'%'):'');
+      var target=targetName;
       if(!prog.targetPct)html+='<div class="mini-note">'+t.targetNow+'</div>';
       else if(prog.required<=0)html+='<div class="mini-note gap-ok">'+t.alreadyTarget.replace('{g}',target)+'</div>';
       else if(prog.required>100){
