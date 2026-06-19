@@ -389,24 +389,24 @@
 
   var T={
     zh:{none:'—',pickHint:'先勾“已考”并填分；还会计入最终成绩但没考的单元勾“计入”。系统会按目标反推未来单元要求。',routeHint:'先选官方考试组合；已考卷勾“已考”并填 raw mark，未考卷不要勾。',overallHint:'这一科按整体得分率估算，填你的 % 即可。',fixedHint:'已考卷勾“已考”并填得分率 %；没考卷不要勾，卷名后是该卷占比。',umsHint:'请填 UMS 或 UMS 得分率；已出分单元勾“已考”，未考但会计入的单元勾“计入”。',overallU:'整体得分率',pick:'先选科目',liveGrade:'当前预测',grade:'等级',need:'先勾已考单元并填分',
-      done:'已考',planned:'计入',remaining:'未考/未填',needRemain:'若目标 {g}，未考单元平均需要',unitNeed:'建议下一步考到',retake:'建议重刷到',weak:'低分环节',retakeNeed:'只靠未考单元不够，还需从已考单元补回约',impossible:'目标 {g} 需要未考单元超过 100%，需要重刷或调整目标',alreadyTarget:'按已考单元，目标 {g} 已经够线',targetNow:'先选择目标等级或目标分数，可反推未考单元要求',estimated:'按目前均分预测',partial:'含未考单元预测',actual:'已填完整',overMax:'超过满分',maxStillShort:'满分也不够，需重刷',
+      done:'已考',planned:'计入',remaining:'未考/未填',needRemain:'若目标 {g}，未考单元平均需要',unitNeed:'建议下一步考到',retake:'建议重刷到',raiseTo:'提分目标',weak:'低分环节',retakeNeed:'只靠未考单元不够，还需从已考单元补回约',impossible:'目标 {g} 需要未考单元超过 100%，需要重刷或调整目标',alreadyTarget:'按已考单元，目标 {g} 已经够线',targetNow:'先选择目标等级或目标分数，可反推未考单元要求',estimated:'按目前均分预测',partial:'含未考单元预测',actual:'已填完整',overMax:'超过满分',maxStillShort:'满分也不够，需重刷',
       targetPct:'目标分数',currentDone:'已考贡献',projected:'按当前表现预测最终',highRisk:'要求偏高，建议尽快做学情诊断',nextPlan:'下一步补分清单',addPlan:'先勾未来会计入最终成绩的单元，才能准确反推',invalidDone:'已勾“已考”的单元需要填分',
       targetOnly:'目标成绩',targetOnlyBadge:'目标方案',targetOnlyNeedName:'请先填写目标科目',customSubjectNeed:'请先填写具体科目名称',targetOnlyAdded:'已加入目标成绩单。加满 3 门后即可看大学匹配；也可以直接咨询客服确认科目组合。',targetOnlyUpdated:'已更新 {s} 目标为 {g}，同一科不会重复计算。',targetOnlyProgress:'已加入 {s} {g}。还差 {n} 门即可看大学匹配。',targetOnlyComplete:'目标成绩单已够 3 门。下一步先选专业方向，系统会反推目标院校差距；也可以直接咨询客服确认科目组合。',targetOnlyExtra:'已加入 {n} 门 A-level。系统会按最高 3 门 + 必需科目判断；额外科目能加分，但不能替代专业必修科目。',targetOnlyGap:'这是目标成绩单，可先看目标院校；如果要算真实提分差距，再补当前单元分。',
       overall:'综合成绩档',top3:'最高 3 门',allAL:'全部 A-level',ucas:'UCAS 分（A-level 计）',top3Ucas:'最高 3 门 UCAS 分',allUcas:'全部 A-level UCAS 分',extraALNote:'多数英国大学主要看 3 门 A-level 和指定必需科目；第 4/5 门可以增强竞争力，但不能替代必修科目。',uniTitle:'你的成绩大致能冲的英国大学方向',uniTitleTarget:'目标成绩大致能冲的英国大学方向',gapTitle:'离目标还差多少',
       target:'目标',met:'已达标 ✅',needp:'还需 +',pts:'%',addOk:'已加入 ✓',a2note:'提醒：A-level 的 A* 还要看 A2 / UMS 规则，本表按可输入数据估算。',
       lt3:'（A-level 建议加满 3 门，荐校才准）',addMore:'你已填 {n} 门 A-level。大学申请通常看 3 门；请先加满 3 门，再看具体大学匹配。',pickTarget:'给科目选目标等级即可看差距',igAvg:'IGCSE 平均≈',
-      igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；先打好底子。',
+      igTitle:'IGCSE 提分方向',igOnly:'IGCSE 是基础阶段，大学主要看 A-level / AP；但数学、英语和科学会影响后续选课。建议先做弱项诊断，把目标等级拆成可执行的提分计划。',
       modeCur:'现在成绩',modeTgt:'目标成绩',yourProfile:'你的成绩',yourTargetProfile:'你的目标成绩',uni:'大学',offer:'常见录取要求',fit:'你的情况',fitTarget:'目标匹配',fitMatch:'✅ 可冲',fitReach:'🟡 有机会',fitStretch:'🔴 需提分',fitMissing:'🔴 需补必需科目',fitSubjectGrade:'🟡 必需科目需提分',missingSubject:'缺少必需科目',subjectGradeGap:'必需科目目标偏低',chooseCourse:'先选专业方向',coursePrompt:'先选择专业方向，系统会按该专业的必需科目和常见 offer，反推你离目标院校还差什么。',official:'官网',dreamGap:'目标院校差距',needGrades:'目标至少需要',missingSteps:'还差约',gradeSteps:'个等级档',apStrong:'AP 4–5 分',usTier:'档次',usEx:'示例学校',satGap:'SAT 还差',testGap:'标化还差',apGap:'AP 4–5 分还差',satMet:'标化已到目标区间',apMet:'AP 数量已够参考线',satBlank:'还没填 SAT/ACT；顶尖美本通常需要或强烈建议标化，UC 系不参考 SAT/ACT。',apBlank:'还没填 AP；AP 不是硬性替代，但能补强学术竞争力。',usTargetReq:'目标建议',usTargetOnly:'只选目标也可以先咨询：客服会帮你拆 SAT/ACT/AP/GPA/活动差距。',usNonScore:'非分数门槛：GPA/课程难度、文书、活动、推荐信；各校 SAT/ACT 政策不同，UC 系不看 SAT/ACT。',
       sendGap:'把这个差距发给客服 →',nonGrade:'非成绩门槛',gradeMetBut:'分数达标，但还要准备这些门槛',
       tiers:['牛剑 / G5 理工方向（Oxford·Cambridge·Imperial，多数要 A*）','G5 / 英国顶尖大学（A*AA–AAA；UCL·LSE·Imperial 等，竞争激烈）','英国罗素集团 / 强势专业（AAB–ABB）','英国中上游好校（BBB）','主流英国大学，冲名校建议再提分（BBC–CCC）','先打基础、稳步提分']},
     en:{none:'—',pickHint:'Tick “done” for completed units and enter marks; tick “counts” for future units that will count toward the final grade.',routeHint:'Choose the official route; tick completed papers and enter raw marks, leave future papers unticked.',overallHint:'Estimated from your overall %, just enter it.',fixedHint:'Tick completed papers and enter %; leave future papers unticked. The figure after each name is the weighting.',umsHint:'Enter UMS or UMS percentage; tick completed units and tick future units that will count.',overallU:'Overall %',pick:'Choose a subject first',liveGrade:'Current projection',grade:'Grade',need:'Tick completed units and enter marks',
-      done:'Done',planned:'Counts',remaining:'Future / blank',needRemain:'To reach {g}, future units need on average',unitNeed:'Next units need',retake:'Retake target',weak:'Weak units',retakeNeed:'Future units alone are not enough; recover about',impossible:'Target {g} needs over 100% on future units, so retake or adjust target',alreadyTarget:'With completed units, target {g} is already on track',targetNow:'Choose a target grade or target percentage to reverse-calculate future units',estimated:'projected from current average',partial:'includes future-unit projection',actual:'all entered',overMax:'over full marks',maxStillShort:'even full marks are not enough; retake needed',
+      done:'Done',planned:'Counts',remaining:'Future / blank',needRemain:'To reach {g}, future units need on average',unitNeed:'Next units need',retake:'Retake target',raiseTo:'Improvement target',weak:'Weak units',retakeNeed:'Future units alone are not enough; recover about',impossible:'Target {g} needs over 100% on future units, so retake or adjust target',alreadyTarget:'With completed units, target {g} is already on track',targetNow:'Choose a target grade or target percentage to reverse-calculate future units',estimated:'projected from current average',partial:'includes future-unit projection',actual:'all entered',overMax:'over full marks',maxStillShort:'even full marks are not enough; retake needed',
       targetPct:'Target %',currentDone:'Completed contribution',projected:'Projected final at current pace',highRisk:'High requirement; book a diagnosis soon',nextPlan:'Next score plan',addPlan:'Tick future units that will count for an accurate reverse calculation',invalidDone:'Completed units need a mark',
       targetOnly:'Target grade',targetOnlyBadge:'Target plan',targetOnlyNeedName:'Enter a target subject first',customSubjectNeed:'Enter the specific subject name first',targetOnlyAdded:'Added to target profile. Add 3 A-levels to see university matching, or message us to check the subject combination.',targetOnlyUpdated:'Updated {s} target to {g}; the same subject will not be counted twice.',targetOnlyProgress:'Added {s} {g}. Add {n} more subject(s) for university matching.',targetOnlyComplete:'Target profile has 3 subjects. Next, choose a course so the calculator can reverse-calculate the target university gap; or message us to review the subject combination.',targetOnlyExtra:'Added {n} A-levels. The calculator checks the top 3 plus required subjects; extra subjects can strengthen the profile, but they do not replace required subjects.',targetOnlyGap:'This is a target profile. Use it to check target universities now; add current unit marks later for the real improvement gap.',
       overall:'Overall profile',top3:'Top 3',allAL:'All A-levels',ucas:'UCAS points (A-level)',top3Ucas:'Top-3 UCAS points',allUcas:'All A-level UCAS points',extraALNote:'Most UK universities mainly look at 3 A-levels and required subjects; a 4th/5th subject can strengthen the application, but it does not replace required subjects.',uniTitle:'UK universities your grades broadly match',uniTitleTarget:'UK universities your target grades broadly match',gapTitle:'How far from your target',
       target:'Target',met:'Met ✅',needp:'need +',pts:'%',addOk:'Added ✓',a2note:'Note: A-level A* also depends on A2 / UMS rules; this is estimated from the data entered.',
       lt3:'(Add 3 A-levels for a meaningful university match)',addMore:'You have entered {n} A-level(s). Universities usually look at 3; add the rest before using the university match.',pickTarget:'Pick a target grade on a subject to see the gap',igAvg:'IGCSE average ≈',
-      igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP.',
+      igTitle:'IGCSE improvement direction',igOnly:'IGCSE is the foundation; universities mainly look at A-level / AP, but Maths, English and Sciences affect later subject choices. A quick diagnosis can turn the target grade into a practical score plan.',
       modeCur:'Current grades',modeTgt:'Target grades',yourProfile:'Your grades',yourTargetProfile:'Your target grades',uni:'University',offer:'Typical offer',fit:'Your fit',fitTarget:'Target fit',fitMatch:'✅ Match',fitReach:'🟡 Reach',fitStretch:'🔴 Stretch',fitMissing:'🔴 Missing required subject',fitSubjectGrade:'🟡 Required subject needs a higher grade',missingSubject:'Missing required subject',subjectGradeGap:'Required subject target is low',chooseCourse:'Choose a course first',coursePrompt:'Choose a course first, then the calculator will use required subjects and typical offers to show the target university gap.',official:'Official',dreamGap:'Target university gap',needGrades:'Target needs at least',missingSteps:'about',gradeSteps:'grade step(s) short',apStrong:'AP 4–5s:',usTier:'Tier',usEx:'Examples',satGap:'SAT gap',testGap:'Standardized score gap',apGap:'AP 4–5 gap',satMet:'Standardized score is in target range',apMet:'AP count meets the reference line',satBlank:'No SAT/ACT entered yet; top US colleges often require or strongly value standardized testing; UC campuses do not consider SAT/ACT.',apBlank:'No AP entered yet; AP is not a substitute, but it strengthens academic evidence.',usTargetReq:'Target recommendation',usTargetOnly:'You can message us with only a target: we will break down SAT/ACT/AP/GPA/activity gaps.',usNonScore:'Non-score checkpoints: GPA/course rigor, essays, activities and recommendations; SAT/ACT policies vary, and UC campuses do not consider SAT/ACT.',
       sendGap:'Send this gap to an advisor →',nonGrade:'Non-grade checkpoints',gradeMetBut:'Grades meet the offer, but these still matter',
       tiers:['Oxbridge / G5 STEM (Oxford·Cambridge·Imperial — mostly need A*)','G5 & top UK universities (A*AA–AAA; UCL·LSE·Imperial — very competitive)','UK Russell Group / strong UK courses (AAB–ABB)','Solid UK universities (BBB)','Mainstream UK universities; raise grades for top UK courses (BBC–CCC)','Build the foundation, improve step by step']}
@@ -725,12 +725,12 @@
         if(prog.required>=88)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.highRisk+'</div>';
       }
       if(prog.lowUnits&&prog.lowUnits.length&&(prog.required>85||prog.retakeNeed>0)){
-        html+='<div class="mini-note">'+t.retake+C()+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join(J())+'</div>';
+        html+='<div class="mini-note">'+(curExam()==='ig'?t.raiseTo:t.retake)+C()+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join(J())+'</div>';
       }
       if(prog.retakeNeed>0)html+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+prog.retakeNeed.toFixed(1)+'%</div>';
     } else if(prog.targetPct&&prog.pct<prog.targetPct){
       html+='<div class="mini-note gap-pos">'+t.needp+(prog.targetPct-prog.pct).toFixed(1)+'%</div>';
-      if(prog.retakeTargets&&prog.retakeTargets.length)html+='<div class="mini-note">'+t.retake+C()+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join(J())+'</div>';
+      if(prog.retakeTargets&&prog.retakeTargets.length)html+='<div class="mini-note">'+(curExam()==='ig'?t.raiseTo:t.retake)+C()+prog.retakeTargets.map(function(u){return unitTargetText(u,u.targetPct);}).join(J())+'</div>';
     }
     liveEl.innerHTML=html;
     document.getElementById('addBtn').disabled=false;
@@ -815,7 +815,7 @@
       if(x.officialNote)plan+='<div class="mini-note check-note">'+x.officialNote+'</div>';
       if(x.officialSummary)plan+='<div class="mini-note">'+x.officialSummary+'</div>';
       if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+C()+x.futureUnits.slice(0,4).join(J())+'</div>';
-      if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+t.retake+C()+x.retakePlan.slice(0,3).join(J())+'</div>';
+      if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+(x.exam==='ig'?t.raiseTo:t.retake)+C()+x.retakePlan.slice(0,3).join(J())+'</div>';
       else if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.weak+C()+x.lowUnits.slice(0,3).join(J())+'</div>';
       if(x.retakeNeed>0)plan+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%</div>';
       var currentDiff=!x.targetOnly&&x.target&&(x.currentGrade||x.currentPct!=null)&&((x.currentGrade||x.grade)!==x.grade||Math.round(itemPct(x,'cur'))!==Math.round(x.pct));
@@ -892,7 +892,7 @@
     document.getElementById('r-overall').innerHTML=oh;
     // uni
     var uniMode=hasTargetOnly?'tgt':((document.getElementById('ucMode')&&document.getElementById('ucMode').value)||'cur');
-    var uh='<h3>'+((hasTargetOnly||uniMode==='tgt')?t.uniTitleTarget:t.uniTitle)+'</h3>';
+    var uh='<h3>'+(!al.length&&ig.length?t.igTitle:((hasTargetOnly||uniMode==='tgt')?t.uniTitleTarget:t.uniTitle))+'</h3>';
     if(al.length>=3){var top3u=profileGrades(uniMode).slice(0,3);uh+='<div class="tier">🎓 '+t.tiers[tierIndex(top3u)]+'</div><div class="ucas">'+t.top3+C()+'<b>'+top3u.join(' ')+'</b></div>';}
     else if(al.length>=1){uh+='<div class="ucas">'+t.addMore.replace('{n}',al.length)+'</div>';}
     else{uh+='<div class="ucas">'+t.igOnly+'</div>';}
@@ -912,7 +912,7 @@
       if(x.officialNote)parts.push(x.officialNote);
       if(x.officialSummary)parts.push(x.officialSummary);
       if(x.futureUnits&&x.futureUnits.length)parts.push(t.unitNeed+C()+x.futureUnits.slice(0,3).join(J()));
-      if(x.retakePlan&&x.retakePlan.length)parts.push(t.retake+C()+x.retakePlan.slice(0,2).join(J()));
+      if(x.retakePlan&&x.retakePlan.length)parts.push((x.exam==='ig'?t.raiseTo:t.retake)+C()+x.retakePlan.slice(0,2).join(J()));
       else if(x.lowUnits&&x.lowUnits.length)parts.push(t.weak+C()+x.lowUnits.slice(0,2).join(J()));
       if(x.retakeNeed>0)parts.push(t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%');
       return parts.length?'<li><b>'+x.name+'</b>'+C()+parts.join(J())+'</li>':'';
@@ -1095,7 +1095,7 @@
         if(gapPct>0)lines.push('  '+(lang==='en'?'Gap to target: about +':'距离目标：约还差 +')+gapPct.toFixed(0)+'%');
         if(x.futureUnits&&x.futureUnits.length)lines.push('  '+(lang==='en'?'Next unit targets: ':'下一步单元目标：')+x.futureUnits.slice(0,4).join(', '));
         if(x.required>=88)lines.push('  '+T[lang].highRisk);
-        if(x.retakePlan&&x.retakePlan.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+x.retakePlan.slice(0,3).join(', '));
+        if(x.retakePlan&&x.retakePlan.length)lines.push('  '+(x.exam==='ig'?(lang==='en'?'Improvement target: ':'提分目标：'):(lang==='en'?'Retake targets: ':'重考目标：'))+x.retakePlan.slice(0,3).join(', '));
         else if(x.lowUnits&&x.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+x.lowUnits.slice(0,3).join(', '));
         if(x.retakeNeed>0)lines.push('  '+(lang==='en'?'Future units alone are not enough; recover about ':'只靠未考单元不够，还需从已考单元补回约 ')+x.retakeNeed.toFixed(1)+'%');
       });
@@ -1137,7 +1137,7 @@
       else lines.push('  '+(lang==='en'?'Future units: ':'未考单元：')+prog.missingUnits.slice(0,4).map(function(u){return u.name;}).join(', '));
     }
     if(prog.required>=88)lines.push('  '+T[lang].highRisk);
-    if(prog.retakeTargets&&prog.retakeTargets.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+prog.retakeTargets.slice(0,3).map(function(u){return unitTargetText(u,u.targetPct);}).join(', '));
+    if(prog.retakeTargets&&prog.retakeTargets.length)lines.push('  '+(ex==='ig'?(lang==='en'?'Improvement target: ':'提分目标：'):(lang==='en'?'Retake targets: ':'重考目标：'))+prog.retakeTargets.slice(0,3).map(function(u){return unitTargetText(u,u.targetPct);}).join(', '));
     else if(prog.lowUnits&&prog.lowUnits.length)lines.push('  '+(lang==='en'?'Weak units: ':'低分环节：')+prog.lowUnits.slice(0,3).map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';}).join(', '));
     if(prog.retakeNeed>0)lines.push('  '+(lang==='en'?'Future units alone are not enough; recover about ':'只靠未考单元不够，还需从已考单元补回约 ')+prog.retakeNeed.toFixed(1)+'%');
     return lines;
