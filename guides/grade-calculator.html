@@ -34,6 +34,7 @@
   .live{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line);font-size:15px}
   .live b{color:var(--brand)}
   .btn-add,.btn-calc{background:var(--brand);color:#fff;border:none;border-radius:10px;min-height:48px;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px;width:100%}
+  .btn-secondary{background:#fff;color:var(--brand);border:1px solid var(--brand);border-radius:10px;min-height:48px;padding:11px 18px;font-weight:800;font-size:15px;cursor:pointer}
   .btn-add:disabled,.btn-calc:disabled{opacity:.45;cursor:not-allowed}
   .mini-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:8px 0 0}
   .route-select{width:100%;max-width:100%;min-height:46px;box-sizing:border-box;margin-bottom:10px;padding:10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit;background:#fff}
@@ -70,6 +71,8 @@
   .target-grid .btn-add{margin-top:0;width:auto;min-width:150px}
   #ucMode{min-height:44px}
   .next-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .form-actions .btn-calc,.form-actions .btn-secondary{margin-top:0;width:auto;flex:1;min-width:160px}
   .mini-action{flex:1;min-height:44px;box-sizing:border-box;border:1px solid var(--brand);border-radius:9px;padding:10px 12px;background:#fff;color:var(--brand);font-size:13px;font-weight:850;font-family:inherit;text-align:center;text-decoration:none;cursor:pointer}
   .mini-action-primary{background:var(--brand);color:#fff}
   .action-summary{border:1px solid #d8e7e6;background:#f3fbfa;border-radius:10px;padding:10px 12px;color:var(--ink)}
@@ -96,6 +99,8 @@
     .target-grid .btn-add{width:100%;min-height:48px}
     .next-actions{flex-direction:column}
     .mini-action{width:100%}
+    .form-actions{flex-direction:column}
+    .form-actions .btn-calc,.form-actions .btn-secondary{width:100%;min-width:0}
     .wa-float{right:10px;bottom:10px;min-height:44px;box-sizing:border-box;font-size:13px;padding:10px 12px}
     body.is-editing .wa-float{display:none}
   }
@@ -272,7 +277,10 @@
         </div>
         <div id="apList" style="margin-top:8px"></div>
       </div>
-      <button class="btn-calc" id="usCalc" data-zh="计算离目标院校还差多少 →" data-en="Calculate gap to target →">计算离目标院校还差多少 →</button>
+      <div class="form-actions">
+        <button class="btn-calc" id="usCalc" data-zh="计算离目标院校还差多少 →" data-en="Calculate gap to target →">计算离目标院校还差多少 →</button>
+        <button type="button" class="btn-secondary" id="usClear" data-zh="清空美国成绩" data-en="Clear US scores">清空美国成绩</button>
+      </div>
       <div id="usResult" style="margin-top:14px"></div>
       <p class="disclaimer" data-zh="⚠️ 美本是 holistic（综合）录取：SAT/ACT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT/ACT 区间为公开 middle-50% 与官方 concordance 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。"
          data-en="⚠️ US admission is holistic: SAT/ACT/AP are only part of it — <b>GPA, essays, activities and references often matter more</b>. SAT/ACT ranges are rough public middle-50% and official concordance references; some schools have reinstated SAT/ACT, while UC campuses do not consider SAT/ACT. Policies change quickly, so always check official pages.">⚠️ 美本是 holistic（综合）录取：SAT/ACT/AP 只是其中一部分，<b>GPA、文书、活动、推荐信往往更关键</b>。SAT/ACT 区间为公开 middle-50% 与官方 concordance 的粗略参考；部分学校重新要求 SAT/ACT，但 UC 系不参考 SAT/ACT。不同学校政策变化很快，请以官网为准。</p>
@@ -1161,6 +1169,19 @@
     usPlanMeta={goal:L()==='en'?goal.en:goal.zh,targetSat:goal.targetSat,targetACT:goal.targetACT,targetAP:goal.targetAP,total:total,act:actScore,math:satMath,ebrw:satRead,testLabel:standard!=null?testLabel:'',testGap:testGap,testGapLabel:testGapLabel,weak:(!useAct&&total!=null&&total<goal.targetSat)?(satMath<satRead?'Math':'Reading/Writing'):'',apStrong:ap5,apGap:Math.max(0,goal.targetAP-ap5),apScores:apList.map(function(a){return a.n+' '+a.s;})};
     updateWhatsAppLinks();
   }
+  function resetUSForm(){
+    ['satM','satR','actC','apName'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el)el.value='';
+    });
+    var apScore=document.getElementById('apScore');
+    if(apScore)apScore.value='5';
+    apList=[];
+    renderAP();
+    var usResult=document.getElementById('usResult');
+    if(usResult)usResult.innerHTML='';
+    usPlanMeta=null;
+  }
   function applyPathTabs(){
     document.querySelectorAll('.path-tab').forEach(function(btn){btn.classList.toggle('active',btn.getAttribute('data-path')===currentPath);});
     var tabs=document.getElementById('pathTabs');if(tabs)tabs.style.display='flex';
@@ -1175,7 +1196,7 @@
   subjSel.onchange=function(){resetSubjectGoal();renderUnits();};
   subjectTargetSel.onchange=liveCalc;
   subjectTargetPctEl.addEventListener('input',liveCalc);
-  document.getElementById('clearBtn').onclick=function(){profile=[];if(currentPath==='us')usPlanMeta=null;renderMy();renderResults();};
+  document.getElementById('clearBtn').onclick=function(){profile=[];if(currentPath==='us')resetUSForm();renderMy();renderResults();};
   document.getElementById('course').onchange=function(){fillDream();renderCourses();updateWhatsAppLinks();};
   document.getElementById('ucMode').onchange=function(){renderResults();};
   document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
@@ -1185,6 +1206,7 @@
   document.getElementById('apAdd').onclick=function(){var n=document.getElementById('apName').value.trim()||'AP';apList.push({n:n,s:+document.getElementById('apScore').value});document.getElementById('apName').value='';renderAP();if(currentPath==='us')renderUS();};
   ['satM','satR','actC'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){if(currentPath==='us')renderUS();});});
   document.getElementById('usCalc').onclick=renderUS;
+  document.getElementById('usClear').onclick=function(){resetUSForm();updateWhatsAppLinks();};
   document.getElementById('usGoal').onchange=renderUS;
   document.getElementById('pathTabs').onclick=function(e){
     var btn=e.target.closest&&e.target.closest('.path-tab');
