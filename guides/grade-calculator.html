@@ -930,6 +930,7 @@
     }).filter(Boolean);
     if(planLines.length)gh+='<div class="mini-note action-summary"><b>'+t.nextPlan+'</b><ul>'+planLines.join('')+'</ul></div>';
     if(al.length)gh+='<div class="disclaimer">'+(soft?t.partial+(L()==='en'?'. ':'。 '):'')+t.a2note+'</div>';
+    gh+='<div class="next-actions"><a class="mini-action mini-action-primary context-wa" href="#" target="_blank" rel="noopener">'+t.sendGap+'</a></div>';
     document.getElementById('r-gap').innerHTML=gh;
     saveProfile();updateWhatsAppLinks();renderCourses();applyPathTabs();
   }
