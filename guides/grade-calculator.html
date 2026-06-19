@@ -457,6 +457,43 @@
     }
     return u.name+' ≈ '+(over?100:p.toFixed(0))+'%'+(over?'（'+t.maxStillShort+'）':'');
   }
+  function isP3P4Unit(name){
+    return /\bP3\b|\bP4\b|Pure\s*3|Pure\s*4/i.test(name||'');
+  }
+  function edxMathAStarRule(){
+    return L()==='en'?'Edexcel IAL Maths A* rule: total UMS ≥480/600 and P3+P4 ≥180/200.':'Edexcel IAL 数学 A* 规则：总 UMS ≥480/600，且 P3+P4 合计 ≥180/200。';
+  }
+  function edxMathAStarPlan(prog,name,board,target){
+    if(target!=='A*')return null;
+    if(!/edexcel|pearson/i.test(board||''))return null;
+    if(!/math|mathematics|数学/i.test(name||''))return null;
+    var done=prog.doneUnits||[],missing=prog.missingUnits||[];
+    var totalDone=done.reduce(function(a,u){return a+(u.type==='mark'?(+u.score||0):(+u.pct||0));},0);
+    var p34Done=done.filter(function(u){return isP3P4Unit(u.name);}).reduce(function(a,u){return a+(u.type==='mark'?(+u.score||0):(+u.pct||0));},0);
+    var p34Missing=missing.filter(function(u){return isP3P4Unit(u.name);});
+    var overallNeed=missing.length?(480-totalDone)/missing.length:0;
+    var p34Need=p34Missing.length?(180-p34Done)/p34Missing.length:0;
+    var targets=[],maxNeed=0;
+    missing.forEach(function(u){
+      var need=Math.max(0,isP3P4Unit(u.name)?Math.max(overallNeed,p34Need):overallNeed);
+      maxNeed=Math.max(maxNeed,need);
+      targets.push(unitTargetText(u,need));
+    });
+    var retakes=[];
+    if(!p34Missing.length&&p34Done<180)retakes.push((L()==='en'?'P3+P4 combined +':'P3+P4 合计还需 +')+(180-p34Done).toFixed(0)+' UMS');
+    if(!missing.length&&totalDone<480)retakes.push((L()==='en'?'Total UMS +':'总 UMS 还需 +')+(480-totalDone).toFixed(0));
+    return {
+      rule:edxMathAStarRule(),
+      futureUnits:targets,
+      retakePlan:retakes,
+      maxNeed:maxNeed,
+      highRisk:maxNeed>=88,
+      impossible:maxNeed>100||retakes.length>0,
+      totalDone:totalDone,
+      p34Done:p34Done,
+      summary:(L()==='en'?'Current UMS: ':'当前 UMS：')+totalDone.toFixed(0)+'/600 · P3+P4 '+p34Done.toFixed(0)+'/200'
+    };
+  }
   function unitRowMark(u,kind){
     var max=u.max||100,label=kind==='percent'?'%':'/'+max;
     return '<div class="urow" data-max="'+max+'" data-kind="'+kind+'"><label class="unit-check"><input type="checkbox" class="doneck"> '+T[L()].done+'</label><span class="un">'+u.n+'</span><input class="um" type="number" min="0" max="'+max+'" inputmode="decimal" disabled><span class="umax">'+label+'</span></div>';
@@ -620,6 +657,21 @@
     item.lowUnits=(prog.lowUnits||[]).map(function(u){return u.name+' '+u.pct.toFixed(0)+'%';});
     item.retakePlan=(prog.retakeTargets||[]).map(function(u){return unitTargetText(u,u.targetPct);});
     item.retakeNeed=prog.retakeNeed;
+    item.officialAStar=false;
+    item.officialNote='';
+    item.officialSummary='';
+    var edxAStar=edxMathAStarPlan(prog,item.name,item.board,item.target);
+    if(edxAStar){
+      item.officialAStar=true;
+      item.officialNote=edxAStar.rule;
+      item.officialSummary=edxAStar.summary;
+      item.grade=edxAStar.impossible?item.currentGrade:'A*';
+      item.futureUnits=edxAStar.futureUnits;
+      item.lowUnits=[];
+      item.retakePlan=edxAStar.retakePlan;
+      item.retakeNeed=0;
+      item.required=edxAStar.maxNeed;
+    }
   }
   function refreshSubjectPlan(item){
     if(!item||item.targetOnly||!item.planBase)return;
@@ -634,6 +686,20 @@
       targetName=subjectTargetSel.value||((prog.targetPct||0)>0?(t.targetPct+' '+prog.targetPct.toFixed(0)+'%'):''),
       label=(prog.targetPct&&prog.missing>0&&prog.required>100&&targetName)?(L()==='en'?'Target '+targetName+', max future projection':'目标 '+targetName+'，未考满分后预计'):(prog.targetPct&&prog.missing>0?(L()==='en'?'Target plan':'目标方案'):t.liveGrade),
       html=label+C()+'<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
+    var edxAStar=edxMathAStarPlan(prog,selectedSubjectName(),DATA[boardSel.value].label,subjectTargetSel.value);
+    if(edxAStar){
+      html=(L()==='en'?'Target plan':'目标方案')+C()+'<b>A*</b>';
+      html+='<div class="mini-note">'+t.currentDone+C()+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'% · '+t.remaining+' '+prog.missing.toFixed(0)+'%</div>';
+      html+='<div class="mini-note check-note">'+edxAStar.rule+'</div>';
+      html+='<div class="mini-note">'+edxAStar.summary+'</div>';
+      if(edxAStar.futureUnits.length)html+='<div class="mini-note">'+t.unitNeed+C()+edxAStar.futureUnits.slice(0,6).join(J())+'</div>';
+      if(edxAStar.highRisk)html+='<div class="mini-note badge-warn" style="display:inline-block">'+t.highRisk+'</div>';
+      if(edxAStar.retakePlan.length)html+='<div class="mini-note gap-pos">'+t.retake+C()+edxAStar.retakePlan.join(J())+'</div>';
+      liveEl.innerHTML=html;
+      document.getElementById('addBtn').disabled=false;
+      updateWhatsAppLinks();
+      return;
+    }
     html+='<div class="mini-note">'+t.currentDone+C()+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'%';
     if(prog.missing>0)html+=' · '+t.remaining+' '+prog.missing.toFixed(0)+'%';
     html+='</div>';
@@ -746,12 +812,14 @@
       var badge=x.targetOnly?' <span class="badge badge-warn">'+t.targetOnlyBadge+'</span>':(isPartial?' <span class="badge badge-warn">'+t.partial+'</span>':' <span class="badge">'+t.actual+'</span>');
       var req=(!x.targetOnly&&isPartial&&x.required!=null&&x.required>0&&x.required<=100)?'<span style="color:var(--ink-soft);font-size:12px"> · '+t.remaining+' '+(100-(x.complete||100))+'% ≈ '+x.required.toFixed(0)+'%</span>':'';
       var plan='';
+      if(x.officialNote)plan+='<div class="mini-note check-note">'+x.officialNote+'</div>';
+      if(x.officialSummary)plan+='<div class="mini-note">'+x.officialSummary+'</div>';
       if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+C()+x.futureUnits.slice(0,4).join(J())+'</div>';
       if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+t.retake+C()+x.retakePlan.slice(0,3).join(J())+'</div>';
       else if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.weak+C()+x.lowUnits.slice(0,3).join(J())+'</div>';
       if(x.retakeNeed>0)plan+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%</div>';
       var currentDiff=!x.targetOnly&&x.target&&(x.currentGrade||x.currentPct!=null)&&((x.currentGrade||x.grade)!==x.grade||Math.round(itemPct(x,'cur'))!==Math.round(x.pct));
-      var pctLabel=x.targetOnly?'':' <span style="color:var(--ink-soft);font-size:13px">'+(currentDiff?(itemPct(x,'cur').toFixed(0)+'% → '+x.pct.toFixed(0)+'%'):x.pct.toFixed(0)+'%')+'</span>';
+      var pctLabel=x.targetOnly?'':(x.officialAStar?' <span style="color:var(--ink-soft);font-size:13px">Edexcel UMS A* 规则</span>':' <span style="color:var(--ink-soft);font-size:13px">'+(currentDiff?(itemPct(x,'cur').toFixed(0)+'% → '+x.pct.toFixed(0)+'%'):x.pct.toFixed(0)+'%')+'</span>');
       var gradeLabel=x.targetOnly?(t.target+' '+x.target):(currentDiff?((L()==='en'?'Now ':'当前预测 ')+(x.currentGrade||x.grade)+' → '+(L()==='en'?'target ':'目标 ')+(x.target||x.grade)):x.grade);
       return '<div class="mysub"><span><span class="nm">'+x.name+'</span>'+badge+' <span class="gr">'+gradeLabel+'</span>'+pctLabel+req+plan+'</span><span><select data-i="'+i+'">'+opts+'</select> <button class="x" data-x="'+i+'">×</button></span></div>';
     }).join('');
@@ -832,7 +900,7 @@
     // gap
     var gaps=profile.map(function(x){
       var tp=x.targetPct||pctForGrade(x.target||'');
-      return Object.assign({},x,{gapPct:tp>0?tp-itemPct(x,'cur'):0});
+      return Object.assign({},x,{gapPct:(x.officialAStar?0:(tp>0?tp-itemPct(x,'cur'):0))});
     }).filter(function(x){return x.gapPct>0;});
     var gh='<h3>'+t.gapTitle+'</h3>';
     if(!profile.some(function(x){return x.target||x.targetPct>0;}))gh+='<div class="ucas">'+t.pickTarget+'</div>';
@@ -841,6 +909,8 @@
     else gh+='<ul style="margin:6px 0 0 18px">'+gaps.map(function(x){return '<li>'+x.name+C()+'<span class="gap-pos">'+t.needp+x.gapPct.toFixed(0)+'%</span> → '+(x.target||((x.targetPct||0).toFixed(0)+'%'))+'</li>';}).join('')+'</ul>';
     var planLines=profile.map(function(x){
       var parts=[];
+      if(x.officialNote)parts.push(x.officialNote);
+      if(x.officialSummary)parts.push(x.officialSummary);
       if(x.futureUnits&&x.futureUnits.length)parts.push(t.unitNeed+C()+x.futureUnits.slice(0,3).join(J()));
       if(x.retakePlan&&x.retakePlan.length)parts.push(t.retake+C()+x.retakePlan.slice(0,2).join(J()));
       else if(x.lowUnits&&x.lowUnits.length)parts.push(t.weak+C()+x.lowUnits.slice(0,2).join(J()));
@@ -1011,13 +1081,17 @@
         var partial=(x.status==='partial'||(x.complete&&x.complete<100))?(lang==='en'?' [unfinished units]':'【含未考单元】'):'';
         var curG=itemGrade(x,'cur'),curP=itemPct(x,'cur');
         var line='- '+(x.board?x.board+' / ':'')+x.name+': '+(lang==='en'?'current ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+partial;
-        if(x.target||x.targetPct){
+        if(x.officialAStar){
+          line+=' -> '+(lang==='en'?'target plan A* (Edexcel official UMS rule)':'目标方案 A*（Edexcel 官方 UMS 规则）');
+        } else if(x.target||x.targetPct){
           var tgtGrade=itemGrade(x,'tgt'),tgtPct=itemPct(x,'tgt'),targetLabel=x.target||Math.round(x.targetPct)+'%';
           if(x.status==='partial'&&x.target&&x.required>100)line+=' -> '+(lang==='en'?'target ':'目标 ')+targetLabel+(lang==='en'?'; max future projection ':'；未考满分后预计 ')+(x.grade||tgtGrade)+' ('+(x.pct!=null?x.pct:tgtPct).toFixed(0)+'%)';
           else line+=' -> '+(lang==='en'?'target plan ':'目标方案 ')+tgtGrade+' ('+tgtPct.toFixed(0)+'%)';
         }
         lines.push(line);
-        var gapPct=(x.targetPct||pctForGrade(x.target||''))-curP;
+        if(x.officialNote)lines.push('  '+x.officialNote);
+        if(x.officialSummary)lines.push('  '+x.officialSummary);
+        var gapPct=x.officialAStar?0:((x.targetPct||pctForGrade(x.target||''))-curP);
         if(gapPct>0)lines.push('  '+(lang==='en'?'Gap to target: about +':'距离目标：约还差 +')+gapPct.toFixed(0)+'%');
         if(x.futureUnits&&x.futureUnits.length)lines.push('  '+(lang==='en'?'Next unit targets: ':'下一步单元目标：')+x.futureUnits.slice(0,4).join(', '));
         if(x.required>=88)lines.push('  '+T[lang].highRisk);
@@ -1043,6 +1117,16 @@
       target=subjectTargetSel.value||((prog.targetPct||0)>0?Math.round(prog.targetPct)+'%':'');
     var lines=[];
     lines.push('- '+DATA[boardSel.value].label+' / '+nm+': '+(lang==='en'?'current prediction ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+(prog.status==='partial'?(lang==='en'?' [unfinished units]':'【含未考单元】'):''));
+    var edxAStar=edxMathAStarPlan(prog,nm,DATA[boardSel.value].label,subjectTargetSel.value);
+    if(edxAStar){
+      lines.push('  '+(lang==='en'?'Target plan: A* (Edexcel official UMS rule)':'目标方案：A*（Edexcel 官方 UMS 规则）'));
+      lines.push('  '+edxAStar.rule);
+      lines.push('  '+edxAStar.summary);
+      if(edxAStar.futureUnits.length)lines.push('  '+(lang==='en'?'Next unit targets: ':'下一步单元目标：')+edxAStar.futureUnits.slice(0,4).join(', '));
+      if(edxAStar.highRisk)lines.push('  '+T[lang].highRisk);
+      if(edxAStar.retakePlan.length)lines.push('  '+(lang==='en'?'Retake targets: ':'重考目标：')+edxAStar.retakePlan.slice(0,3).join(', '));
+      return lines;
+    }
     if(target){
       if(prog.status==='partial'&&subjectTargetSel.value&&planG!==subjectTargetSel.value)lines.push('  '+(lang==='en'?'Target: ':'目标：')+subjectTargetSel.value+(lang==='en'?'; max future projection ':'；未考满分后预计 ')+planG+' ('+planP.toFixed(0)+'%)');
       else if(subjectTargetSel.value&&planG!==subjectTargetSel.value)lines.push('  '+(lang==='en'?'Target: ':'目标：')+subjectTargetSel.value+(lang==='en'?'; gap about +':'；距离目标约差 +')+Math.max(0,prog.targetPct-curP).toFixed(0)+'%');
