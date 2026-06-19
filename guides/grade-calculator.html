@@ -823,6 +823,7 @@
       if(x.officialNote)plan+='<div class="mini-note check-note">'+x.officialNote+'</div>';
       if(x.officialSummary)plan+='<div class="mini-note">'+x.officialSummary+'</div>';
       if(x.futureUnits&&x.futureUnits.length)plan+='<div class="mini-note">'+t.unitNeed+C()+x.futureUnits.slice(0,4).join(J())+'</div>';
+      if(x.required>=88)plan+='<div class="mini-note badge-warn" style="display:inline-block">'+t.highRisk+'</div>';
       if(x.retakePlan&&x.retakePlan.length)plan+='<div class="mini-note">'+(x.exam==='ig'?t.raiseTo:t.retake)+C()+x.retakePlan.slice(0,3).join(J())+'</div>';
       else if(x.lowUnits&&x.lowUnits.length)plan+='<div class="mini-note">'+t.weak+C()+x.lowUnits.slice(0,3).join(J())+'</div>';
       if(x.retakeNeed>0)plan+='<div class="mini-note gap-pos">'+t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%</div>';
@@ -920,9 +921,11 @@
       if(x.officialNote)parts.push(x.officialNote);
       if(x.officialSummary)parts.push(x.officialSummary);
       if(x.futureUnits&&x.futureUnits.length)parts.push(t.unitNeed+C()+x.futureUnits.slice(0,3).join(J()));
+      if(x.required>=88)parts.push(t.highRisk);
       if(x.retakePlan&&x.retakePlan.length)parts.push((x.exam==='ig'?t.raiseTo:t.retake)+C()+x.retakePlan.slice(0,2).join(J()));
       else if(x.lowUnits&&x.lowUnits.length)parts.push(t.weak+C()+x.lowUnits.slice(0,2).join(J()));
       if(x.retakeNeed>0)parts.push(t.retakeNeed+' '+x.retakeNeed.toFixed(1)+'%');
+      parts=parts.map(function(p){return String(p||'').replace(/[。.;；\s]+$/,'');});
       return parts.length?'<li><b>'+x.name+'</b>'+C()+parts.join(J())+'</li>':'';
     }).filter(Boolean);
     if(planLines.length)gh+='<div class="mini-note action-summary"><b>'+t.nextPlan+'</b><ul>'+planLines.join('')+'</ul></div>';
