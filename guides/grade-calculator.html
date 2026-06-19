@@ -992,6 +992,8 @@
       else lines.push('- '+(lang==='en'?'AP scores: not entered yet':'AP 成绩：暂未填写'));
       lines.push('- '+(lang==='en'?'AP 4-5 count: ':'AP 4-5 分数量：')+usPlanMeta.apStrong+'/'+usPlanMeta.targetAP);
       if(usPlanMeta.apGap>0)lines.push('- '+(lang==='en'?'AP 4-5 gap: ':'AP 4-5 还差：')+usPlanMeta.apGap);
+    } else if(currentPath==='us') {
+      lines.push(lang==='en'?'US route: target tier / SAT or ACT / AP / GPA situation:':'美本方向：目标院校档次 / SAT或ACT / AP / GPA情况：');
     } else if(profile.length){
       var hasTargetOnly=profile.some(function(x){return x.targetOnly;});
       lines.push(hasTargetOnly?(lang==='en'?'My current / target profile:':'当前 / 目标成绩：'):(lang==='en'?'My current results:':'当前成绩：'));
@@ -1024,7 +1026,7 @@
     document.querySelectorAll('.context-wa').forEach(function(a){a.href=href;});
     var float=document.getElementById('floatWa');
     if(float){
-      var hasDetails=profile.length>0||(currentPath==='us'&&usPlanMeta);
+      var hasDetails=currentPath==='us'?!!usPlanMeta:profile.length>0;
       float.textContent=hasDetails?(L()==='en'?'💬 Send details':'💬 发结果咨询'):(L()==='en'?'💬 Quick chat':'💬 直接咨询');
     }
   }
@@ -1196,7 +1198,7 @@
   subjSel.onchange=function(){resetSubjectGoal();renderUnits();};
   subjectTargetSel.onchange=liveCalc;
   subjectTargetPctEl.addEventListener('input',liveCalc);
-  document.getElementById('clearBtn').onclick=function(){profile=[];if(currentPath==='us')resetUSForm();renderMy();renderResults();};
+  document.getElementById('clearBtn').onclick=function(){profile=[];saveProfile();if(currentPath==='us')resetUSForm();renderMy();renderResults();};
   document.getElementById('course').onchange=function(){fillDream();renderCourses();updateWhatsAppLinks();};
   document.getElementById('ucMode').onchange=function(){renderResults();};
   document.getElementById('dreamUni').onchange=function(){renderCourses();updateWhatsAppLinks();};
