@@ -632,7 +632,7 @@
     if(prog===null){liveEl.innerHTML=t.liveGrade+C()+'<b>'+t.need+'</b>';document.getElementById('addBtn').disabled=true;updateWhatsAppLinks();return;}
     var g=gradeFromPct(prog.pct,curExam(),cur().scale),
       targetName=subjectTargetSel.value||((prog.targetPct||0)>0?(t.targetPct+' '+prog.targetPct.toFixed(0)+'%'):''),
-      label=(prog.targetPct&&prog.missing>0&&prog.required>100&&targetName)?(L()==='en'?'Target '+targetName+', max future projection':'目标 '+targetName+'，未考满分后预计'):(prog.targetPct?(L()==='en'?'Target plan':'目标方案'):t.liveGrade),
+      label=(prog.targetPct&&prog.missing>0&&prog.required>100&&targetName)?(L()==='en'?'Target '+targetName+', max future projection':'目标 '+targetName+'，未考满分后预计'):(prog.targetPct&&prog.missing>0?(L()==='en'?'Target plan':'目标方案'):t.liveGrade),
       html=label+C()+'<b>'+prog.pct.toFixed(1)+'% → '+g+'</b>';
     html+='<div class="mini-note">'+t.currentDone+C()+prog.completedPct.toFixed(1)+'% · '+t.done+' '+prog.coverage.toFixed(0)+'%';
     if(prog.missing>0)html+=' · '+t.remaining+' '+prog.missing.toFixed(0)+'%';
@@ -1045,6 +1045,7 @@
     lines.push('- '+DATA[boardSel.value].label+' / '+nm+': '+(lang==='en'?'current prediction ':'当前预测 ')+curG+' ('+curP.toFixed(0)+'%)'+(prog.status==='partial'?(lang==='en'?' [unfinished units]':'【含未考单元】'):''));
     if(target){
       if(prog.status==='partial'&&subjectTargetSel.value&&planG!==subjectTargetSel.value)lines.push('  '+(lang==='en'?'Target: ':'目标：')+subjectTargetSel.value+(lang==='en'?'; max future projection ':'；未考满分后预计 ')+planG+' ('+planP.toFixed(0)+'%)');
+      else if(subjectTargetSel.value&&planG!==subjectTargetSel.value)lines.push('  '+(lang==='en'?'Target: ':'目标：')+subjectTargetSel.value+(lang==='en'?'; gap about +':'；距离目标约差 +')+Math.max(0,prog.targetPct-curP).toFixed(0)+'%');
       else lines.push('  '+(lang==='en'?'Target plan: ':'目标方案：')+planG+' ('+planP.toFixed(0)+'%)'+(subjectTargetSel.value?' / '+subjectTargetSel.value:''));
     }
     if(prog.missing>0&&prog.missingUnits&&prog.missingUnits.length){
