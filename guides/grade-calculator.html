@@ -407,6 +407,9 @@
   function C(){return L()==='en'?': ':'：';}
   function P(s){return L()==='en'?' ('+s+')':'（'+s+'）';}
   function J(){return L()==='en'?'; ':'； ';}
+  function courseLabel(k){
+    return L()==='en'?(k||'').replace(/\s*[\u4e00-\u9fff].*$/,'').trim():k;
+  }
   var boardSel=document.getElementById('board'),subjSel=document.getElementById('subject'),unitsEl=document.getElementById('units'),liveEl=document.getElementById('live'),rulesEl=document.getElementById('rules'),subjectTargetSel=document.getElementById('subjectTarget'),subjectTargetPctEl=document.getElementById('subjectTargetPct'),customSubjectField=document.getElementById('customSubjectField'),customSubjectNameEl=document.getElementById('customSubjectName');
   var targetOnlyNameEl=document.getElementById('targetOnlyName'),targetOnlyGradeEl=document.getElementById('targetOnlyGrade'),targetOnlyMsgEl=document.getElementById('targetOnlyMsg');
   var profile=[]; // {name,exam,pct,grade,target,scale,board,complete,required,status}
@@ -942,7 +945,7 @@
       return lines;
     }
     var missing=requiredSubjectGaps(key,al.map(function(x){return x.name;})),subjectGradeGaps=requiredSubjectGradeGaps(key,al,mode);
-    lines.push(lang==='en'?'Course target: '+key:'目标专业/方向：'+key);
+    lines.push(lang==='en'?'Course target: '+courseLabel(key):'目标专业/方向：'+key);
     lines.push((lang==='en'?(mode==='tgt'?'Target profile: ':'Grade profile: '):(mode==='tgt'?'目标成绩档：':'成绩档：'))+(stuTop.join('')||'—'));
     if(al.length>3)lines.push(lang==='en'?'Note: checking top 3 plus required subjects; extra subjects do not replace required subjects.':'说明：按最高 3 门 + 必需科目判断；额外科目不能替代专业必修科目。');
     lines.push((lang==='en'?'Typical subject requirement: ':'常见科目要求：')+(lang==='en'?c.req.en:c.req.zh));
@@ -1019,7 +1022,7 @@
   }
   function fillCourse(){
     var c=document.getElementById('course'),cv=c.value,t=T[L()];
-    c.innerHTML='<option value="">'+t.chooseCourse+'</option>'+Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');
+    c.innerHTML='<option value="">'+t.chooseCourse+'</option>'+Object.keys(COURSES).map(function(k){return '<option value="'+k+'">'+courseLabel(k)+'</option>';}).join('');
     c.value=(cv&&COURSES[cv])?cv:'';
     fillDream();
   }
