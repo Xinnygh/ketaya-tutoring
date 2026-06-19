@@ -1247,5 +1247,21 @@
   renderMy();renderResults();applyPathTabs();updateWhatsAppLinks();
 })();
 </script>
+<script>
+// Clamp a unit-mark input to its own max on blur, so e.g. 999 in a /75 field
+// can't silently read as a valid 100% / A*. Delegated so it survives re-renders.
+document.addEventListener('blur', function(e){
+  var el=e.target;
+  if(!el || !el.matches || !el.matches('.urow input[type="number"]')) return;
+  var v=parseFloat(el.value);
+  if(isNaN(v)) return;
+  var mx=el.max!=='' ? parseFloat(el.max) : NaN;
+  var mn=el.min!=='' ? parseFloat(el.min) : 0;
+  var c=v;
+  if(!isNaN(mx) && v>mx) c=mx;
+  else if(!isNaN(mn) && v<mn) c=mn;
+  if(c!==v){ el.value=c; el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }
+}, true);
+</script>
 </body>
 </html>
