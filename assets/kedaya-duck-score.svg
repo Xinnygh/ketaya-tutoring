@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220" role="img" aria-label="Kedaya duck with glasses and 100 score paper">
+  <defs>
+    <linearGradient id="bodyScore" x1="56" y1="42" x2="164" y2="166" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE88A"/>
+      <stop offset="1" stop-color="#F4AF22"/>
+    </linearGradient>
+    <linearGradient id="wingScore" x1="90" y1="104" x2="138" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1A6"/>
+      <stop offset="1" stop-color="#E99D1C"/>
+    </linearGradient>
+  </defs>
+  <circle cx="112" cy="112" r="88" fill="#fff" stroke="#151922" stroke-width="8"/>
+  <path d="M62 118c0-34 24-61 59-61 31 0 55 22 59 52 17 6 26 17 26 31 0 23-23 39-57 39H95c-34 0-59-24-59-56 0-14 7-28 18-38 4 10 7 21 8 33Z" fill="url(#bodyScore)" stroke="#151922" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M56 88c-22 2-36 9-42 22 15 4 30 1 44-8" fill="#F7A51E" stroke="#151922" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M78 63c15-17 39-22 61-13" fill="none" stroke="#151922" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="94" cy="86" r="13" fill="none" stroke="#151922" stroke-width="6"/>
+  <circle cx="131" cy="86" r="13" fill="none" stroke="#151922" stroke-width="6"/>
+  <path d="M107 86h11" stroke="#151922" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="94" cy="86" r="4" fill="#151922"/>
+  <circle cx="131" cy="86" r="4" fill="#151922"/>
+  <path d="M109 130c14 3 31-2 43-17-1 27-16 46-39 50-14 2-27-2-37-13 15-1 27-8 33-20Z" fill="url(#wingScore)" stroke="#151922" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M84 176h20M128 176h20" stroke="#151922" stroke-width="7" stroke-linecap="round"/>
+  <g transform="translate(141 28) rotate(7)">
+    <rect x="0" y="0" width="78" height="94" rx="9" fill="#fff" stroke="#151922" stroke-width="6"/>
+    <path d="M14 20h46M14 35h34M14 72h50" stroke="#D6A11D" stroke-width="5" stroke-linecap="round"/>
+    <text x="39" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="900" fill="#E33F45">100</text>
+  </g>
+</svg>

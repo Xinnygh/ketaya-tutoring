@@ -47,8 +47,8 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 22px}
   a{color:inherit;text-decoration:none}
 
   /* nav */
@@ -78,7 +78,7 @@
   .proof-item h3{font-size:14px;line-height:1.3}
   .proof-item p{font-size:12px;color:var(--ink-soft);margin-top:2px;line-height:1.45}
   .eyebrow{display:inline-block;background:#fff;border:1px solid var(--line);color:var(--brand);font-weight:600;font-size:13px;padding:6px 14px;border-radius:999px;margin-bottom:20px;box-shadow:var(--shadow)}
-  .hero h1{font-size:40px;line-height:1.25;font-weight:850;letter-spacing:-.5px;max-width:780px}
+  .hero h1{font-size:40px;line-height:1.25;font-weight:850;letter-spacing:-.5px;max-width:780px;overflow-wrap:anywhere}
   .hero h1 b{color:var(--brand)}
   .hero .sub{font-size:18px;color:var(--ink-soft);margin-top:18px;max-width:640px}
   .hero .sub-hl{font-size:18px;color:var(--brand);font-weight:700;margin-top:8px;max-width:640px}
@@ -193,7 +193,10 @@
     .hero-grid,.g3,.g2,.steps,.audience,.faq{grid-template-columns:1fr}
     .proof-panel{margin-top:8px}
     .shots{grid-template-columns:repeat(2,1fr)}
+    html,body{width:100%;max-width:100vw}
+    .wrap{width:100%;max-width:100%;margin-left:0;margin-right:0}
     .hero h1{font-size:30px}
+    .hero h1,.hero h1 b,.btn,.proof-panel h2,.proof-item h3,.proof-item p,.card h3,.card p{white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important}
     .head h2,.cta-band h2{font-size:24px}
     .btn{width:100%;justify-content:center}
     .contact-methods a{width:100%}
@@ -207,6 +210,7 @@
     <div class="logo" data-zh="答鸭<span>·</span>名校联盟" data-en="DAYA<span>·</span>Elite Tutoring">答鸭<span>·</span>名校联盟</div>
     <div class="nav-links">
       <a href="#courses" data-zh="课程" data-en="Courses">课程</a>
+      <a href="ielts-toefl-online-tutor.html" data-zh="雅思托福" data-en="IELTS/TOEFL">雅思托福</a>
       <a href="#pricing" data-zh="价格" data-en="Pricing">价格</a>
       <a href="#why" data-zh="优势" data-en="Why us">优势</a>
       <a href="#bilingual" data-zh="双语教学" data-en="Bilingual">双语教学</a>
@@ -239,17 +243,17 @@
           <span data-zh="👩‍🏫 国际校在职名师" data-en="👩‍🏫 Current intl-school teachers">👩‍🏫 国际校在职名师</span>
         </div>
         <div class="cta-row">
-          <a href="#contact" class="btn btn-primary" data-zh="免费学情咨询 · 客服先登记情况 →" data-en="Free consultation · our customer service team collects details first →">免费学情咨询 · 客服先登记情况 →</a>
+          <a href="#contact" class="btn btn-primary" data-zh="免费学情咨询 · 分配代课老师先判断 →" data-en="Free consultation · tutor allocation team checks fit first →">免费学情咨询 · 分配代课老师先判断 →</a>
           <a href="guides/grade-calculator.html" class="btn btn-ghost" data-zh="先算成绩差距" data-en="Calculate grade gap">先算成绩差距</a>
           <a href="#why" class="btn btn-ghost" data-zh="为什么选我们" data-en="Why choose us">为什么选我们</a>
         </div>
       </div>
       <aside class="proof-panel">
         <span class="free-tag" data-zh="第一步免费 · 0 风险" data-en="Step 1 is free · zero risk">第一步免费 · 0 风险</span>
-        <h2 data-zh="先和客服免费沟通情况，再安排合适老师。" data-en="Start with our customer service team, then we arrange the right tutor.">先和客服免费沟通情况，再安排合适老师。</h2>
+        <h2 data-zh="先提交学情，再由分配代课老师判断老师方向。" data-en="Share the student's situation first, then our tutor allocation team checks the right direction.">先提交学情，再由分配代课老师判断老师方向。</h2>
         <div class="proof-list">
-          <div class="proof-item"><div class="mark">1</div><div><h3 data-zh="客服先登记情况" data-en="Customer service collects details">客服先登记情况</h3><p data-zh="告诉我们课程体系（A-level / IGCSE / AP / SAT / AMC）、科目和当前问题。" data-en="Tell us the curriculum (A-level / IGCSE / AP / SAT / AMC), subject and current difficulty.">告诉我们课程体系（A-level / IGCSE / AP / SAT / AMC）、科目和当前问题。</p></div></div>
-          <div class="proof-item"><div class="mark">2</div><div><h3 data-zh="再安排合适老师" data-en="Then arrange the right tutor">再安排合适老师</h3><p data-zh="客服根据考试局、年级和薄弱点，帮你安排对口老师沟通或试课。" data-en="Our customer service team uses the exam board, year level and weak points to arrange the right tutor or trial lesson.">客服根据考试局、年级和薄弱点，帮你安排对口老师沟通或试课。</p></div></div>
+          <div class="proof-item"><div class="mark">1</div><div><h3 data-zh="先提交学情" data-en="Share student details">先提交学情</h3><p data-zh="告诉我们课程体系（A-level / IGCSE / AP / SAT / AMC）、科目和当前问题。" data-en="Tell us the curriculum (A-level / IGCSE / AP / SAT / AMC), subject and current difficulty.">告诉我们课程体系（A-level / IGCSE / AP / SAT / AMC）、科目和当前问题。</p></div></div>
+          <div class="proof-item"><div class="mark">2</div><div><h3 data-zh="分配代课老师判断" data-en="Tutor allocation team checks fit">分配代课老师判断</h3><p data-zh="根据考试局、年级和薄弱点，判断对口老师沟通或试课方向。" data-en="Based on exam board, year level and weak points, we check the right tutor or trial direction.">根据考试局、年级和薄弱点，判断对口老师沟通或试课方向。</p></div></div>
           <div class="proof-item"><div class="mark">3</div><div><h3 data-zh="先上一节看效果" data-en="Try one lesson">先上一节看效果</h3><p data-zh="单节购买、不用买大课包；觉得不合适可退，风险全在我们这边。" data-en="Pay per lesson, no package; refundable if it's not a fit — the risk is on us.">单节购买、不用买大课包；觉得不合适可退，风险全在我们这边。</p></div></div>
         </div>
       </aside>
@@ -283,7 +287,7 @@
       <a class="card" href="guides/free-learning-diagnosis.html" style="display:block;color:inherit">
         <div class="ic">📋</div>
         <h3 data-zh="免费学情咨询" data-en="Free Learning Consultation">免费学情咨询</h3>
-        <p data-zh="先由客服收集年级、考试局、科目和当前问题，再安排合适老师看是否适合试课。" data-en="Our customer service team first collects year level, exam board, subject and current difficulty, then arranges the right tutor if a trial lesson makes sense.">先由客服收集年级、考试局、科目和当前问题，再安排合适老师看是否适合试课。</p>
+        <p data-zh="先提交年级、考试局、科目和当前问题，再由分配代课老师判断是否适合试课。" data-en="Share year level, exam board, subject and current difficulty first, then our tutor allocation team checks whether a trial lesson makes sense.">先提交年级、考试局、科目和当前问题，再由分配代课老师判断是否适合试课。</p>
         <span style="display:inline-block;margin-top:12px;color:var(--brand);font-weight:800" data-zh="预约免费学情咨询 →" data-en="Book free consultation →">预约免费学情咨询 →</span>
       </a>
       <a class="card" href="guides/" style="display:block;color:inherit">
@@ -310,12 +314,16 @@
       <span class="pill"><b>AP</b></span>
       <span class="pill"><b>SAT</b></span>
       <span class="pill"><b>GMAT</b></span>
+      <span class="pill"><b>IELTS</b> / TOEFL</span>
       <span class="pill" data-zh="<b>AMC</b> / STEP 竞赛" data-en="<b>AMC</b> / STEP competitions"><b>AMC</b> / STEP 竞赛</span>
       <span class="pill" data-zh="<b>G5</b> 名校面试" data-en="<b>G5</b> admissions interviews"><b>G5</b> 名校面试</span>
       <span class="pill" data-zh="留学申请规划" data-en="Application planning">留学申请规划</span>
     </div>
     <div class="subjects" data-zh="<b>强项科目：</b>数学 · 物理 / 高数 · 化学 · 经济 · 会计 · 计算机 · 写作 · 生物" data-en="<b>Core subjects:</b> Maths · Physics / Further Maths · Chemistry · Economics · Accounting · Computer Science · Writing · Biology">
       <b>强项科目：</b>数学 · 物理 / 高数 · 化学 · 经济 · 会计 · 计算机 · 写作 · 生物
+    </div>
+    <div style="text-align:center;margin-top:24px">
+      <a class="btn btn-ghost" href="ielts-toefl-online-tutor.html" data-zh="查看雅思托福一对一 →" data-en="View IELTS/TOEFL tutoring →">查看雅思托福一对一 →</a>
     </div>
   </div>
 </section>
@@ -356,7 +364,7 @@
     </div>
     <p style="text-align:center;max-width:760px;margin:30px auto 0;font-size:16px;color:var(--ink)" data-zh="海外家庭和国内学生付<b style='color:var(--brand)'>一样的价</b>——同一批名师、同样的课，绝不因为你在海外就中间加价。" data-en="Overseas families pay the <b style='color:var(--brand)'>same price</b> as our students in China — same teachers, same lessons, no markup just because you're abroad.">海外家庭和国内学生付<b style="color:var(--brand)">一样的价</b>——同一批名师、同样的课，绝不因为你在海外就中间加价。</p>
     <div class="subjects" data-zh="IGCSE · GMAT · G5 名校面试 · 留学申请规划：欢迎单独咨询定价。" data-en="IGCSE · GMAT · G5 admissions interviews · application planning: priced on enquiry.">IGCSE · GMAT · G5 名校面试 · 留学申请规划：欢迎单独咨询定价。</div>
-    <div style="text-align:center;margin-top:26px"><a href="#contact" style="display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 26px;background:var(--brand);color:#fff;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none" data-zh="单节试课 / 先问客服 →" data-en="Try one lesson / ask us →">单节试课 / 先问客服 →</a></div>
+    <div style="text-align:center;margin-top:26px"><a href="#contact" style="display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 26px;background:var(--brand);color:#fff;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none" data-zh="单节试课 / 先发情况 →" data-en="Try one lesson / send details →">单节试课 / 先发情况 →</a></div>
   </div>
 </section>
 
@@ -371,7 +379,7 @@
     <div class="grid g3">
       <div class="card"><div class="ic">👩‍🏫</div><h3 data-zh="真正的名师资源" data-en="Real elite teachers">真正的名师资源</h3><p data-zh="授课老师为中国顶尖国际学校在职老师与伦敦本地在职外教，教龄 10 年以上，常年带国际课程与名校升学。" data-en="Lessons are taught by current teachers at top Chinese international schools and London schools — each with 10+ years in international curricula and admissions.">授课老师为中国顶尖国际学校在职老师与伦敦本地在职外教，教龄 10 年以上，常年带国际课程与名校升学。</p></div>
       <div class="card"><div class="ic">🎯</div><h3 data-zh="按考纲精准提分" data-en="Targeted, board-specific gains">按考纲精准提分</h3><p data-zh="不是泛泛讲题，而是针对 CAIE / Edexcel / AP 等具体考试局，定制提分方案，哪里弱补哪里。" data-en="Not generic problem-solving — tailored plans for your specific board (CAIE / Edexcel / AP), focused on your weak spots.">不是泛泛讲题，而是针对 CAIE / Edexcel / AP 等具体考试局，定制提分方案，哪里弱补哪里。</p></div>
-      <div class="card"><div class="ic">🌏</div><h3 data-zh="跨时区 · 中文沟通" data-en="Any time zone · Chinese support">跨时区 · 中文沟通</h3><p data-zh="线上直播一对一，配合你所在城市的时间安排；老师和客服全程中文，家长沟通零障碍。" data-en="Live online 1-on-1 scheduled around your city's time; teachers and the customer service team communicate in Chinese, so parents have zero barriers.">线上直播一对一，配合你所在城市的时间安排；老师和客服全程中文，家长沟通零障碍。</p></div>
+      <div class="card"><div class="ic">🌏</div><h3 data-zh="跨时区 · 中文沟通" data-en="Any time zone · Chinese support">跨时区 · 中文沟通</h3><p data-zh="线上直播一对一，配合你所在城市的时间安排；老师和课程顾问全程中文，家长沟通零障碍。" data-en="Live online 1-on-1 scheduled around your city's time; teachers and advisors communicate in Chinese, so parents have zero barriers.">线上直播一对一，配合你所在城市的时间安排；老师和课程顾问全程中文，家长沟通零障碍。</p></div>
       <div class="card"><div class="ic">💸</div><h3 data-zh="名师品质，更优价格" data-en="Top quality, better price">名师品质，更优价格</h3><p data-zh="同样的名师一对一，价格明显优于本地高端补习中心。把预算花在真正提分的地方。" data-en="The same calibre of 1-on-1, at clearly better prices than local premium centres. Spend your budget where it actually raises scores.">同样的名师一对一，价格明显优于本地高端补习中心。把预算花在真正提分的地方。</p></div>
       <div class="card"><div class="ic">🧩</div><h3 data-zh="专攻一对一 · 因材施教" data-en="Focused 1-on-1 · tailored">专攻一对一 · 因材施教</h3><p data-zh="目前专注线上一对一深度提分，老师只盯你一个孩子，进度和薄弱点全程跟到位。" data-en="We focus on deep 1-on-1 online tutoring — the teacher follows only your child's progress and weak points.">目前专注线上一对一深度提分，老师只盯你一个孩子，进度和薄弱点全程跟到位。</p><span class="note" style="margin-top:8px" data-zh="小班教学 · 敬请期待" data-en="Small-group classes · coming soon">小班教学 · 敬请期待</span></div>
       <div class="card"><div class="ic">🧾</div><h3 data-zh="单节购买 · 绝不捆绑" data-en="Pay per lesson · no bundles">单节购买 · 绝不捆绑</h3><p data-zh="不强制打包课时包。先买一节课上上看，觉得老师对、有效果，再继续——把选择权和风险都留给你。" data-en="No forced lesson packages. Buy a single lesson first; continue only if the teacher fits and it works — the choice and the risk stay with you.">不强制打包课时包。先买一节课上上看，觉得老师对、有效果，再继续——把选择权和风险都留给你。</p></div>
@@ -447,10 +455,10 @@
   <div class="wrap">
     <div class="head">
       <div class="kx">How It Works</div>
-      <h2 data-zh="四步开始：先客服沟通，再安排老师" data-en="Four steps — customer service first, tutor arranged next">四步开始：先客服沟通，再安排老师</h2>
+      <h2 data-zh="四步开始：先提交学情，再安排老师" data-en="Four steps — share student details first, tutor arranged next">四步开始：先提交学情，再安排老师</h2>
     </div>
     <div class="steps">
-      <div class="step"><h3 data-zh="客服登记学情" data-en="Customer service collects details">客服登记学情</h3><p data-zh="微信 / WhatsApp 告诉我们孩子的年级、考试和科目，客服先记录情况并确认需求。" data-en="Tell us your child's year, exam and subjects via WeChat / WhatsApp. Our customer service team records the details and confirms the need.">微信 / WhatsApp 告诉我们孩子的年级、考试和科目，客服先记录情况并确认需求。</p></div>
+      <div class="step"><h3 data-zh="提交学情" data-en="Share student details">提交学情</h3><p data-zh="微信 / WhatsApp 告诉我们孩子的年级、考试和科目，先把基础情况说清楚。" data-en="Tell us your child's year, exam and subjects via WeChat / WhatsApp, so the starting point is clear.">微信 / WhatsApp 告诉我们孩子的年级、考试和科目，先把基础情况说清楚。</p></div>
       <div class="step"><h3 data-zh="安排合适老师" data-en="Arrange the right tutor">安排合适老师</h3><p data-zh="根据考试局、科目和薄弱点安排老师；单节付费先上一节，不满意可退、不用再续。" data-en="We arrange a tutor based on exam board, subject and weak points; pay for one lesson first, refundable, no need to continue if it is not a fit.">根据考试局、科目和薄弱点安排老师；单节付费先上一节，不满意可退、不用再续。</p></div>
       <div class="step"><h3 data-zh="定制方案" data-en="Get a plan">定制方案</h3><p data-zh="觉得合适，再根据基础和目标定提分计划。" data-en="If it fits, we build a score-improvement plan around your level and goals.">觉得合适，再根据基础和目标定提分计划。</p></div>
       <div class="step"><h3 data-zh="持续提分" data-en="Keep improving">持续提分</h3><p data-zh="线上一对一按节推进，阶段性反馈进度。" data-en="Online 1-on-1, lesson by lesson, with regular progress updates.">线上一对一按节推进，阶段性反馈进度。</p></div>
@@ -469,7 +477,7 @@
     <div class="faq">
       <div class="faq-item">
         <h3 data-zh="线上一对一真的靠谱吗？怎么上课？" data-en="Is online 1-on-1 really reliable? How do lessons work?">线上一对一真的靠谱吗？怎么上课？</h3>
-        <p data-zh="靠谱。全程是真人老师<b>直播一对一</b>（不是录播），实时讲解、实时答疑，按你当地时区约课。最稳妥的判断方式是<b>先上一节</b>——看老师讲得清不清楚、孩子听不听得懂，再决定要不要继续；家长也能随时用中文向客服了解进度。我们是淘宝 10 年老店、综合评分 5.0、500+ 真实评价可查，海外和国内学生是同一批名师、同样的课。" data-en="Yes. Every lesson is <b>live 1-on-1 with a real teacher</b> (not pre-recorded) — real-time teaching and Q&A, scheduled around your local time zone. The surest test is to <b>take one lesson first</b>: see whether the teacher explains clearly and your child follows, then decide whether to continue. Parents can check progress with our team in Chinese anytime. We're a 10-year Taobao store with a 5.0 rating and 500+ verifiable reviews — overseas students get the same teachers and the same lessons as students in China.">靠谱。全程是真人老师<b>直播一对一</b>（不是录播），实时讲解、实时答疑，按你当地时区约课。最稳妥的判断方式是<b>先上一节</b>——看老师讲得清不清楚、孩子听不听得懂，再决定要不要继续；家长也能随时用中文向客服了解进度。我们是淘宝 10 年老店、综合评分 5.0、500+ 真实评价可查，海外和国内学生是同一批名师、同样的课。</p>
+        <p data-zh="靠谱。全程是真人老师<b>直播一对一</b>（不是录播），实时讲解、实时答疑，按你当地时区约课。最稳妥的判断方式是<b>先上一节</b>——看老师讲得清不清楚、孩子听不听得懂，再决定要不要继续；家长也能随时用中文了解进度。我们是淘宝 10 年老店、综合评分 5.0、500+ 真实评价可查，海外和国内学生是同一批名师、同样的课。" data-en="Yes. Every lesson is <b>live 1-on-1 with a real teacher</b> (not pre-recorded) — real-time teaching and Q&A, scheduled around your local time zone. The surest test is to <b>take one lesson first</b>: see whether the teacher explains clearly and your child follows, then decide whether to continue. Parents can check progress in Chinese anytime. We're a 10-year Taobao store with a 5.0 rating and 500+ verifiable reviews — overseas students get the same teachers and the same lessons as students in China.">靠谱。全程是真人老师<b>直播一对一</b>（不是录播），实时讲解、实时答疑，按你当地时区约课。最稳妥的判断方式是<b>先上一节</b>——看老师讲得清不清楚、孩子听不听得懂，再决定要不要继续；家长也能随时用中文了解进度。我们是淘宝 10 年老店、综合评分 5.0、500+ 真实评价可查，海外和国内学生是同一批名师、同样的课。</p>
       </div>
       <div class="faq-item">
         <h3 data-zh="可以只上一节试试吗？" data-en="Can we try just one lesson?">可以只上一节试试吗？</h3>
@@ -520,8 +528,8 @@
 <section class="block" id="contact">
   <div class="wrap">
     <div class="cta-band">
-      <h2 data-zh="先发情况给客服，再安排老师" data-en="Send details to our customer service team first, then we arrange a tutor">先发情况给客服，再安排老师</h2>
-      <p data-zh="把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们。客服先登记情况、确认需求，再帮你安排合适老师沟通或试一节课。确认老师和时间后再单节付费，绝不捆绑大课包。" data-en="Send us your child's year, exam (e.g. A-level / AP) and subjects to improve. Our customer service team records the details and confirms the need, then arranges the right tutor or a trial lesson. You only pay for one lesson after tutor and time are confirmed; no bundled packages.">把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们。客服先登记情况、确认需求，再帮你安排合适老师沟通或试一节课。确认老师和时间后再单节付费，绝不捆绑大课包。</p>
+      <h2 data-zh="先发情况，再由分配代课老师判断" data-en="Send details first, then our tutor allocation team checks fit">先发情况，再由分配代课老师判断</h2>
+      <p data-zh="把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们。分配代课老师先判断需求，再安排合适老师沟通或试一节课。确认老师和时间后再单节付费，绝不捆绑大课包。" data-en="Send us your child's year, exam (e.g. A-level / AP) and subjects to improve. Our tutor allocation team checks the need first, then arranges the right tutor or a trial lesson. You only pay for one lesson after tutor and time are confirmed; no bundled packages.">把孩子的年级、考试（如 A-level / AP）和想提分的科目发给我们。分配代课老师先判断需求，再安排合适老师沟通或试一节课。确认老师和时间后再单节付费，绝不捆绑大课包。</p>
       <div class="contact-methods">
         <a href="student-info-generator.html?source=home" data-zh="📝 先整理学情再发 WhatsApp" data-en="📝 Prepare details for WhatsApp">📝 先整理学情再发 WhatsApp</a>
         <a href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BE%85%E5%AF%BC%E3%80%82%E5%AD%A6%E7%94%9F%E5%B9%B4%E7%BA%A7%2F%E8%AF%BE%E7%A8%8B%E4%BD%93%E7%B3%BB%2F%E7%A7%91%E7%9B%AE%2F%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E6%98%AF%EF%BC%9A" target="_blank" rel="noopener" data-zh="💬 WhatsApp：+86 181 5612 2672" data-en="💬 WhatsApp: +86 181 5612 2672">💬 WhatsApp：+86 181 5612 2672</a>
