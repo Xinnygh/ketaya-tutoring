@@ -302,6 +302,7 @@
       <div class="cta-row">
         <a class="btn btn-primary" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E4%B8%80%E4%B8%8B" target="_blank" rel="noopener" data-zh="💬 直接咨询（不用填信息）" data-en="💬 Just message us (no info)">💬 直接咨询（不用填信息）</a>
         <a class="btn btn-ghost" id="ctaWa" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%9B%BD%E9%99%85%E8%AF%BE%E7%A8%8B%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BE%85%E5%AF%BC%E3%80%82%E5%AD%A6%E7%94%9F%E5%B9%B4%E7%BA%A7%2F%E8%AF%BE%E7%A8%8B%E4%BD%93%E7%B3%BB%2F%E7%A7%91%E7%9B%AE%2F%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E6%98%AF%EF%BC%9A" target="_blank" rel="noopener" data-zh="把成绩情况一起发 →" data-en="Send my details →">把成绩情况一起发 →</a>
+        <a class="btn btn-ghost" href="https://item.taobao.com/item.htm?id=547807091001" target="_blank" rel="noopener" data-zh="淘宝已上架 · 单节拍单 →" data-en="Taobao listing · pay per lesson →">淘宝已上架 · 单节拍单 →</a>
       </div>
     </div>
 
@@ -345,6 +346,7 @@
 
 <a class="wa-float" id="floatWa" href="https://wa.me/8618156122672?text=Hi%20DAYA%2C%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E4%B8%80%E4%B8%8B" target="_blank" rel="noopener" data-zh="💬 直接咨询" data-en="💬 Quick chat">💬 直接咨询</a>
 
+<script async src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
 (function(){
   var CAIE_RULES='https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-grade-threshold-tables/';
@@ -431,6 +433,31 @@
   var profile=[]; // {name,exam,pct,grade,target,scale,board,complete,required,status}
   var usPlanMeta=null;
   var currentPath='uk';
+  var usageTracker=null;
+
+  function dateKey(offset){
+    var d=new Date();
+    if(offset)d.setDate(d.getDate()+offset);
+    var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+    return y+'-'+m+'-'+day;
+  }
+  function getUsageTracker(){
+    if(usageTracker)return usageTracker;
+    if(!window.Counter)return null;
+    try{usageTracker=new Counter({workspace:'daya-grade-calculator'});}catch(e){usageTracker=null;}
+    return usageTracker;
+  }
+  function trackUsage(action,attempt){
+    var counter=getUsageTracker();
+    if(!counter){
+      if((attempt||0)<10)setTimeout(function(){trackUsage(action,(attempt||0)+1);},300);
+      return;
+    }
+    var day=dateKey(0);
+    ['grade-calculator-'+action+'-total','grade-calculator-'+action+'-'+day].forEach(function(name){
+      counter.up(name).catch(function(){});
+    });
+  }
 
   function gradeFromPct(p,exam,scale){
     if(scale==='ig9'){if(p>=90)return'9';if(p>=80)return'8';if(p>=70)return'7';if(p>=60)return'6';if(p>=50)return'5';if(p>=40)return'4';if(p>=30)return'3';if(p>=20)return'2';if(p>=10)return'1';return'U';}
@@ -780,6 +807,7 @@
     var item={name:nm,exam:ex,target:target,targetPct:prog.targetPct,scale:s.scale||'',board:DATA[boardSel.value].label,targetOnly:false,planBase:{completedPct:prog.completedPct,coverage:prog.coverage,totalWeight:prog.totalWeight,missingUnits:prog.missingUnits,doneUnits:prog.doneUnits}};
     applySubjectPlan(item,prog);
     if(idx>=0){profile[idx]=Object.assign(profile[idx],item);} else {profile.push(item);}
+    trackUsage('completed-calculation');
     renderMy();renderResults();
     document.getElementById('mywrap').scrollIntoView({behavior:'smooth',block:'nearest'});
   };
@@ -1395,6 +1423,7 @@
   var nav=(navigator.language||'').toLowerCase();
   setLang(urlLang||saved||(nav.indexOf('zh')===0?'zh':'en'));
   renderMy();renderResults();applyPathTabs();updateWhatsAppLinks();
+  trackUsage('page-view');
 })();
 </script>
 <script>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成绩计算器使用统计 | DAYA</title>
+<link rel="stylesheet" href="article.css">
+<style>
+  .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}
+  .stat-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+  .stat-card .num{font-size:38px;font-weight:850;color:var(--brand);line-height:1}
+  .stat-card .label{margin-top:8px;color:var(--ink-soft);font-size:14px}
+  .mini{font-size:13px;color:var(--ink-soft);line-height:1.65}
+  table.gt td,table.gt th{text-align:center}
+  @media(max-width:600px){.stats-grid{grid-template-columns:1fr}.stat-card .num{font-size:34px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="wrap-wide">
+    <a class="logo" href="../index.html">DAYA<span>·</span><span>名校联盟</span></a>
+    <div class="nav-right">
+      <a href="grade-calculator.html" class="nav-cta">打开计算器</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <article>
+    <div class="kx">内部查看</div>
+    <h1>成绩计算器使用统计</h1>
+    <p class="lead">这里统计的是从接入 CounterAPI 之后的数据。<br>“完成计算”指用户点击了「加入我的成绩单」，比单纯打开页面更接近真实使用。</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="num" id="todayViews">...</div>
+        <div class="label">今天打开页面</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="todayCalcs">...</div>
+        <div class="label">今天完成计算</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="totalViews">...</div>
+        <div class="label">累计打开页面</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="totalCalcs">...</div>
+        <div class="label">累计完成计算</div>
+      </div>
+    </div>
+
+    <h2>最近 7 天</h2>
+    <div style="overflow-x:auto"><table class="gt" id="weekTable"></table></div>
+    <p class="mini">说明：这个轻量统计不记录姓名、分数、联系方式，只记录次数。浏览器拦截脚本或网络失败时，个别访问可能不会被计入。</p>
+  </article>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
+<script>
+(function(){
+  var counter=null;
+  function dateKey(offset){
+    var d=new Date();
+    if(offset)d.setDate(d.getDate()+offset);
+    var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+    return y+'-'+m+'-'+day;
+  }
+  function setText(id,value){document.getElementById(id).textContent=value==null?'0':String(value);}
+  function getCounter(){
+    if(counter)return counter;
+    if(!window.Counter)return null;
+    counter=new Counter({workspace:'daya-grade-calculator'});
+    return counter;
+  }
+  function get(name){
+    var c=getCounter();
+    if(!c)return Promise.resolve(0);
+    return c.get(name).then(function(result){return result.value||0;}).catch(function(){return 0;});
+  }
+  function load(){
+    var today=dateKey(0);
+    Promise.all([
+      get('grade-calculator-page-view-'+today),
+      get('grade-calculator-completed-calculation-'+today),
+      get('grade-calculator-page-view-total'),
+      get('grade-calculator-completed-calculation-total')
+    ]).then(function(values){
+      setText('todayViews',values[0]);
+      setText('todayCalcs',values[1]);
+      setText('totalViews',values[2]);
+      setText('totalCalcs',values[3]);
+    });
+    var rows=[];
+    for(var i=0;i<7;i++)rows.push(dateKey(-i));
+    Promise.all(rows.map(function(day){
+      return Promise.all([
+        get('grade-calculator-page-view-'+day),
+        get('grade-calculator-completed-calculation-'+day)
+      ]).then(function(v){return {day:day,views:v[0],calcs:v[1]};});
+    })).then(function(data){
+      document.getElementById('weekTable').innerHTML='<tr><th>日期</th><th>打开页面</th><th>完成计算</th></tr>'+data.map(function(row){
+        return '<tr><td>'+row.day+'</td><td>'+row.views+'</td><td><b>'+row.calcs+'</b></td></tr>';
+      }).join('');
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
+})();
+</script>
+</body>
+</html>
