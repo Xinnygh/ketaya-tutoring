@@ -225,6 +225,7 @@
       <div class="rcard" id="r-overall"></div>
       <div class="rcard" id="r-uni"></div>
       <div class="rcard" id="r-gap"></div>
+      <a class="btn btn-primary context-wa" id="resultWa" href="https://wa.me/8618156122672?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E7%94%A8%E4%BA%86%E6%88%90%E7%BB%A9%E8%AE%A1%E7%AE%97%E5%99%A8%EF%BC%8C%E6%83%B3%E5%92%A8%E8%AF%A2%E5%AD%A6%E6%83%85%E8%AF%8A%E6%96%AD%E3%80%82" target="_blank" rel="noopener" style="display:flex;justify-content:center;text-align:center;margin:2px 0 14px;font-size:16px" data-zh="📲 把成绩结果发给顾问，免费获取提分诊断" data-en="📲 Send my results to an advisor — free score diagnosis">📲 把成绩结果发给顾问，免费获取提分诊断</a>
     </div>
 
     <!-- COURSE EXPLORER -->
@@ -875,7 +876,7 @@
 
   function ensureResultCards(res){
     if(!document.getElementById('r-overall')||!document.getElementById('r-uni')||!document.getElementById('r-gap')){
-      res.innerHTML='<div class="rcard" id="r-overall"></div><div class="rcard" id="r-uni"></div><div class="rcard" id="r-gap"></div>';
+      res.innerHTML='<div class="rcard" id="r-overall"></div><div class="rcard" id="r-uni"></div><div class="rcard" id="r-gap"></div><a class="btn btn-primary context-wa" id="resultWa" href="https://wa.me/8618156122672" target="_blank" rel="noopener" style="display:flex;justify-content:center;text-align:center;margin:2px 0 14px;font-size:16px" data-zh="📲 把成绩结果发给顾问，免费获取提分诊断" data-en="📲 Send my results to an advisor — free score diagnosis">📲 把成绩结果发给顾问，免费获取提分诊断</a>';
     }
   }
   function renderResults(){

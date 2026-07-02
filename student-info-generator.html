@@ -350,7 +350,7 @@
 
   function buildMessage(){
     var lines = [
-      '你好，我想咨询国际课程线上一对一。先把学生情况发给客服登记：',
+      '[来源：' + source + '] 你好，我想咨询国际课程线上一对一。先把学生情况发给客服登记：',
       ''
     ];
     fieldIds.forEach(function(id){
@@ -358,7 +358,6 @@
     });
     lines.push('');
     lines.push('我知道第一步是客服登记信息，再安排合适老师沟通或试课。');
-    lines.push('来源：' + source);
     return lines.join('\n');
   }
 
