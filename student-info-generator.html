@@ -147,17 +147,17 @@
     <h2>选择最像你的情况，再改细节</h2>
     <p>不确定怎么描述也没关系。先选一个模板，页面会自动帮你生成更像真实咨询的 WhatsApp 消息。</p>
     <div class="scenario-grid">
-      <button class="scenario-card" type="button" data-scenario="my-igcse">
-        <b>马来西亚 IGCSE 家长</b>
-        <span>Mock 后掉分，想先试一节数学/物理。</span>
+      <button class="scenario-card" type="button" data-scenario="my-spm">
+        <b>马来西亚 SPM 家长/学生</b>
+        <span>Add Math / Physics 突然跟不上。</span>
       </button>
-      <button class="scenario-card" type="button" data-scenario="sg-alevel">
-        <b>新加坡 A-Level 家长</b>
-        <span>AS/A2 难度上来，想确认老师是否匹配。</span>
+      <button class="scenario-card" type="button" data-scenario="my-stpm">
+        <b>STPM / Form 6 理科</b>
+        <span>Math T / Physics / Chemistry 想先诊断。</span>
       </button>
-      <button class="scenario-card" type="button" data-scenario="student-self">
-        <b>学生自己咨询</b>
-        <span>AP / SAT / AMC 备考，想快速问能不能安排。</span>
+      <button class="scenario-card" type="button" data-scenario="my-uec">
+        <b>独中 / UEC 数理</b>
+        <span>统考或转轨，想看材料能不能接。</span>
       </button>
       <button class="scenario-card" type="button" data-scenario="not-sure">
         <b>还不确定该补什么</b>
@@ -182,6 +182,9 @@
           <label for="curriculum">课程体系 / 考试局</label>
           <select id="curriculum" name="curriculum">
             <option value="">请选择或补充</option>
+            <option>SPM</option>
+            <option>STPM</option>
+            <option>UEC / 独中统考</option>
             <option>IGCSE / CAIE</option>
             <option>IGCSE / Edexcel</option>
             <option>A-Level / CAIE</option>
@@ -195,7 +198,7 @@
         </div>
         <div class="field">
           <label for="subject">想咨询的科目</label>
-          <input id="subject" name="subject" placeholder="例如：A-Level 数学 / IGCSE 物理">
+          <input id="subject" name="subject" placeholder="例如：SPM Add Math / STPM Math T / UEC 数学">
         </div>
         <div class="field">
           <label for="scoreTarget">当前成绩 / 目标</label>
@@ -287,48 +290,48 @@
   var copyState = document.getElementById('copy-state');
   document.getElementById('source-label').textContent = source;
   var quickMessages = {
-    lazy: '你好，我想咨询国际课程线上一对一，但不确定怎么说情况。学生在东南亚，请客服先问我几个问题登记。\\n\\n我知道第一步是客服登记，再安排合适老师沟通或试课。\\n来源：' + source,
-    price: '你好，我想先了解单节试课价格和流程。学生大概在东南亚，想补国际课程科目。请客服先帮我登记，再告诉我适合怎么安排。\\n\\n来源：' + source,
+    lazy: '你好，我想咨询线上数理诊断/一对一，但不确定怎么说情况。学生在东南亚，请客服先问我几个问题登记。\\n\\n我知道第一步是客服登记，再判断能否安排合适老师沟通或试课。\\n来源：' + source,
+    price: '你好，我想先了解单节试课价格和流程。学生大概在东南亚，想补数学/物理/化学。请客服先帮我登记，再告诉我适合怎么安排。\\n\\n来源：' + source,
     trust: '你好，我想先确认老师是否靠谱、是否匹配孩子的课程体系。请客服先说明怎么登记、怎么匹配老师、什么时候才需要付款。\\n\\n来源：' + source,
-    urgent: '你好，孩子近期要考试，想尽快安排一节国际课程试课。请客服先登记：国家/年级/科目/考试时间/可上课时间，我可以马上补充。\\n\\n来源：' + source,
-    'low-literacy': '你好，我看网页有点看不明白，想咨询孩子国际课程补课。请客服用中文慢慢问我需要哪些信息，先帮我登记。\\n\\n来源：' + source,
-    student: '你好，我是学生本人，想咨询国际课程一对一。请客服先帮我登记情况，看看是否适合安排老师试课。\\n\\n来源：' + source,
+    urgent: '你好，孩子近期要考试，想尽快安排一节数理诊断/试课。请客服先登记：国家/年级/体系/科目/考试时间/可上课时间，我可以马上补充。\\n\\n来源：' + source,
+    'low-literacy': '你好，我看网页有点看不明白，想咨询孩子数学/理科补课。请客服用中文慢慢问我需要哪些信息，先帮我登记。\\n\\n来源：' + source,
+    student: '你好，我是学生本人，想咨询数学/物理/化学一对一。请客服先帮我登记情况，看看是否适合安排老师试课。\\n\\n来源：' + source,
     unknown: '你好，我不确定孩子的课程体系/考试局，只知道数学或科学最近卡住了。请客服先帮我判断应该补什么、是否适合试课。\\n\\n来源：' + source,
     screenshots: '你好，我可以先发孩子最近成绩、错题或教材截图。请客服先看情况，判断是否适合安排老师单节试课。\\n\\n来源：' + source
   };
   var scenarios = {
-    'my-igcse': {
+    'my-spm': {
       countryCity: '马来西亚吉隆坡',
-      grade: 'Year 11 / IGCSE',
-      curriculum: 'IGCSE / CAIE',
-      subject: '数学和物理',
-      scoreTarget: 'Mock 数学 C，目标 A；物理 B，想稳到 A',
-      examDate: '2026 年 10 月考试',
-      problem: '平时作业能做，但 past paper 一换题型就丢分；英文题目能看懂，步骤分和解释分拿不满。想先试一节，看老师能不能抓到具体卡点。',
+      grade: 'Form 5 / SPM',
+      curriculum: 'SPM',
+      subject: 'Add Math 和 Physics',
+      scoreTarget: 'Add Math 最近 35 分左右，目标先及格再往 A；Physics 想稳住',
+      examDate: 'Trial / SPM 前',
+      problem: 'Add Math functions、trigonometry 和 calculus 基础题会卡；Physics 概念听得懂，但一到题目就不知道用哪个公式。想先判断是概念断层还是题型不会写。',
       times: '马来西亚时间周二/周四晚上 8 点后，或周六上午',
-      materials: '有 mock 成绩和几张错题截图，可以 WhatsApp 发'
+      materials: '有学校练习、trial paper 和几张错题截图，可以 WhatsApp 发'
     },
-    'sg-alevel': {
-      countryCity: '新加坡',
-      grade: 'AS / A-Level',
-      curriculum: 'A-Level / CAIE',
-      subject: '数学 Pure Maths / Mechanics',
-      scoreTarget: '目前 B/C 边缘，目标 A',
-      examDate: '下次 mock 在 6 周后',
-      problem: '从 IGCSE 升 A-Level 后函数、微积分和力学衔接不顺。孩子听课能懂，但自己做题慢，换问法容易卡住。',
-      times: '新加坡时间周一/周三晚上 7:30 后，周日晚上也可以',
-      materials: '可以发学校作业、近期 test 和错题'
+    'my-stpm': {
+      countryCity: '马来西亚雪兰莪',
+      grade: 'Form 6 / STPM',
+      curriculum: 'STPM',
+      subject: 'Math T / Physics',
+      scoreTarget: 'Sem 1 不太理想，目标先 pass，再看能不能冲 B',
+      examDate: '下一次 semester exam 前',
+      problem: 'Math T 和 Physics 进度快，听课能跟一点，但 tutorial 和 past year 不会下手。想先看是 Add Math 基础断层，还是 STPM 题型不会写。',
+      times: '马来西亚时间平日晚上或周末下午',
+      materials: '可以发学校 notes、tutorial questions 和 past year 题'
     },
-    'student-self': {
-      countryCity: '印尼雅加达',
-      grade: 'Grade 11',
-      curriculum: 'AP',
-      subject: 'AP Calculus / SAT Math',
-      scoreTarget: 'AP 目标 5，SAT Math 目标 780+',
-      examDate: 'AP 明年 5 月，SAT 预计 8 月',
-      problem: '我是学生本人，想找一对一老师帮我按题型训练。主要问题是做题速度和难题思路，不想上大班课。',
-      times: '雅加达时间周末下午，平日晚上 8 点后',
-      materials: '有 Khan Academy 错题和几套练习卷'
+    'my-uec': {
+      countryCity: '马来西亚槟城',
+      grade: '独中高三 / UEC',
+      curriculum: 'UEC / 独中统考',
+      subject: '理科数学 / 高数',
+      scoreTarget: '最近考试不稳定，想先把统考数学拉稳',
+      examDate: '统考前',
+      problem: '学校进度快，函数、三角和微积分有几章不稳。想先用学校讲义/历年题判断能不能线上补，不想整本重讲浪费时间。',
+      times: '马来西亚时间周末上午或平日晚上',
+      materials: '可以发学校讲义、历年题和最近考试卷'
     },
     'not-sure': {
       countryCity: '马来西亚槟城',
@@ -337,7 +340,7 @@
       subject: '数学和科学',
       scoreTarget: '最近成绩下滑，目标先稳定到班级中上',
       examDate: '学校暂时没有大考时间',
-      problem: '家长不确定是基础断层、英文理解，还是学习习惯问题。想先让客服看情况，判断是否适合安排一节试课。',
+      problem: '家长不确定是基础断层、英文理解、题型不会写，还是学习习惯问题。想先让客服看情况，判断是否适合安排一节诊断课。',
       times: '马来西亚时间周末上午或平日晚上',
       materials: '可以发最近作业和老师反馈'
     }
@@ -350,7 +353,7 @@
 
   function buildMessage(){
     var lines = [
-      '[来源：' + source + '] 你好，我想咨询国际课程线上一对一。先把学生情况发给客服登记：',
+      '[来源：' + source + '] 你好，我想咨询线上数理诊断/一对一。先把学生情况发给客服登记：',
       ''
     ];
     fieldIds.forEach(function(id){
