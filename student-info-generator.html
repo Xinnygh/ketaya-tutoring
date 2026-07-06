@@ -293,6 +293,17 @@
     times: '方便上课时间',
     materials: '可补充材料'
   };
+  var satFieldCopy = {
+    countryCity: { label: '所在地区 / 时区', placeholder: '例如：美国加州 / Eastern Time / Central Time' },
+    grade: { label: '年级', placeholder: '例如：Grade 10 / Grade 11 / Grade 12' },
+    curriculum: { label: '考试 / 课程', placeholder: '' },
+    subject: { label: '想咨询的科目', placeholder: 'Digital SAT Math / SAT Math' },
+    scoreTarget: { label: '当前 SAT/PSAT Math 分数 / 目标分', placeholder: '例如：目前 700 左右，目标 760+；或 PSAT Math 680' },
+    examDate: { label: '考试日期', placeholder: '例如：2026 年 8 月 / 10 月 SAT' },
+    problem: { label: '最常错的题型 / 当前卡点', placeholder: '例如：word problem 会漏条件，function graph 看错轴，Desmos 不知道什么时候用，后面 hard questions 时间不够。' },
+    times: { label: '方便上课时间（请写美国时区）', placeholder: '例如：Pacific Time 周二/周四 7pm 后，或周日下午' },
+    materials: { label: '是否有分数 / 错题 / 模考截图', placeholder: '例如：有最近 2-3 道错题截图；没有模考，但有 Khan / Bluebook 错题记录' }
+  };
   var form = document.getElementById('student-form');
   var preview = document.getElementById('preview');
   var whatsapp = document.getElementById('whatsapp-link');
@@ -300,6 +311,20 @@
   var copyBtn = document.getElementById('copy-btn');
   var copyState = document.getElementById('copy-state');
   document.getElementById('source-label').textContent = source;
+  if (isSatSource) {
+    Object.keys(satFieldCopy).forEach(function(id){
+      var copy = satFieldCopy[id];
+      var input = document.getElementById(id);
+      var label = document.querySelector('label[for="' + id + '"]');
+      if (label && copy.label) {
+        label.textContent = copy.label;
+        labels[id] = copy.label;
+      }
+      if (input && copy.placeholder) {
+        input.setAttribute('placeholder', copy.placeholder);
+      }
+    });
+  }
   var quickMessages = {
     lazy: '你好，我想咨询线上数理诊断/一对一，但不确定怎么说情况。学生在东南亚，请客服先问我几个问题登记。\\n\\n我知道第一步是客服登记，再判断能否安排合适老师沟通或试课。\\n来源：' + source,
     price: '你好，我想先了解单节试课价格和流程。学生大概在东南亚，想补数学/物理/化学。请客服先帮我登记，再告诉我适合怎么安排。\\n\\n来源：' + source,
