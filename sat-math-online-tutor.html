@@ -306,20 +306,42 @@
   var params = new URLSearchParams(window.location.search);
   var source = params.get('source') || params.get('utm_source') || 'sat-page';
   source = source.replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 40) || 'sat-page';
+  var sourcePresets = {
+    xhs_sat_630_parent: {
+      quickLines: [
+        '年级：',
+        '当前 SAT/PSAT Math 分数：630 左右',
+        '目标分：想提高 100 分左右',
+        '几月考试：',
+        '最常错：word problem / graph / Desmos / 基础题 / 时间不够'
+      ],
+      intro: '你好，我从 SAT Math 630 找老师的内容过来，想先判断是否适合一节诊断课。',
+      note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。',
+      intakeChannel: 'xhs_sat_630_parent'
+    }
+  };
+  var preset = sourcePresets[source] || null;
   var intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(source);
-  var quickLines = [
+  if (preset && preset.intakeChannel) {
+    intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(preset.intakeChannel);
+  }
+  var quickLines = (preset ? preset.quickLines : [
     '年级：',
     '当前 SAT/PSAT Math 分数：',
     '目标分：',
     '几月考试：',
     '最常错：word problem / graph / Desmos / 时间不够 / 基础断层'
-  ].join('\n');
+  ]).join('\n');
+  var quickCopyBox = document.getElementById('quickCopyText');
+  if (quickCopyBox) {
+    quickCopyBox.textContent = quickLines;
+  }
   var msg = [
-    '你好，我想先判断 SAT Math 是不是适合做一节诊断课。',
+    preset ? preset.intro : '你好，我想先判断 SAT Math 是不是适合做一节诊断课。',
     '',
     quickLines,
     '',
-    '如果需要，我可以再补 1-2 道最近错题截图。',
+    preset ? preset.note : '如果需要，我可以再补 1-2 道最近错题截图。',
     '来源：SAT Math 专页 / ' + source
   ].join('\n');
   var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
