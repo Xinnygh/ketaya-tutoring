@@ -106,7 +106,7 @@
     <a class="logo" href="index.html">答鸭<span>·</span>名校联盟</a>
     <div class="nav-actions">
       <a href="guides/sat-vs-ap-which-to-prioritise-2026.html">SAT vs AP</a>
-      <a href="student-info-generator.html?source=sat" class="nav-cta">发学情</a>
+      <a href="student-info-generator.html?source=sat" class="nav-cta intake-link">发学情</a>
     </div>
   </nav>
 </header>
@@ -126,7 +126,7 @@
         </div>
         <div class="cta-row">
           <a class="btn btn-primary wa-link" href="#">WhatsApp 发 5 项信息</a>
-          <a class="btn btn-ghost" href="student-info-generator.html?source=sat">先整理学情再发</a>
+          <a class="btn btn-ghost intake-link" href="student-info-generator.html?source=sat">先整理学情再发</a>
           <a class="btn btn-ghost" href="#process">看怎么到试课付款</a>
         </div>
       </div>
@@ -233,7 +233,7 @@
         <p>请发：年级、当前 SAT/PSAT Math 分数、目标分、考试日期、最容易错的题型。如果有 2-3 道错题截图，一起发最有效。</p>
         <div class="contact-methods">
           <a class="wa-link" href="#">WhatsApp 发 5 项信息</a>
-          <a href="student-info-generator.html?source=sat">用生成器整理学情</a>
+          <a class="intake-link" href="student-info-generator.html?source=sat">用生成器整理学情</a>
           <a href="guides/sat-vs-ap-which-to-prioritise-2026.html">看 SAT vs AP 指南</a>
           <a href="mailto:info.dayaedu@gmail.com">info.dayaedu@gmail.com</a>
         </div>
@@ -246,7 +246,7 @@
   <div class="wrap">
     <strong>答鸭 · 名校联盟</strong><br>
     Digital SAT Math · AP · A-Level · IGCSE 线上一对一 · 服务全球华人家庭<br>
-    <a href="index.html">首页</a> · <a href="sea-trial-lesson.html">试课流程</a> · <a href="student-info-generator.html?source=sat">学情生成器</a>
+    <a href="index.html">首页</a> · <a href="sea-trial-lesson.html">试课流程</a> · <a class="intake-link" href="student-info-generator.html?source=sat">学情生成器</a>
   </div>
 </footer>
 
@@ -258,6 +258,7 @@
   var params = new URLSearchParams(window.location.search);
   var source = params.get('source') || params.get('utm_source') || 'sat-page';
   source = source.replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 40) || 'sat-page';
+  var intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(source);
   var msg = [
     '你好，我想咨询 Digital SAT Math 线上一对一诊断课。先把学生情况发给客服判断：',
     '',
@@ -274,6 +275,7 @@
   ].join('\n');
   var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
   document.querySelectorAll('.wa-link').forEach(function(a){ a.href = url; a.target = '_blank'; a.rel = 'noopener'; });
+  document.querySelectorAll('.intake-link').forEach(function(a){ a.href = intakeUrl; });
 })();
 </script>
 </body>

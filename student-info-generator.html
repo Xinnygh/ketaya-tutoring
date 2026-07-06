@@ -274,7 +274,13 @@
     kiasu: 'KiasuParents'
   };
   var params = new URLSearchParams(window.location.search);
-  var source = sourceMap[params.get('source')] || '官网学情信息生成器';
+  var sourceKey = params.get('source') || '';
+  var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
+  var source = sourceMap[sourceKey] || '官网学情信息生成器';
+  if (channel) {
+    source += ' / ' + channel;
+  }
+  var isSatSource = sourceKey === 'sat';
   var fieldIds = ['countryCity','grade','curriculum','subject','scoreTarget','examDate','problem','times','materials'];
   var labels = {
     countryCity: '所在国家/城市',
@@ -304,6 +310,18 @@
     unknown: '你好，我不确定孩子的课程体系/考试局，只知道数学或科学最近卡住了。请客服先帮我判断应该补什么、是否适合试课。\\n\\n来源：' + source,
     screenshots: '你好，我可以先发孩子最近成绩、错题或教材截图。请客服先看情况，判断是否适合安排老师单节试课。\\n\\n来源：' + source
   };
+  if (isSatSource) {
+    quickMessages = {
+      lazy: '你好，我想咨询 Digital SAT Math 线上一对一诊断课，但不确定怎么说情况。请客服先问我年级、当前分数、目标分、考试日期和错题类型。\\n\\n我知道第一步是客服登记和判断，再确认老师和时间。\\n来源：' + source,
+      price: '你好，我想先了解 SAT Math 单节诊断型试课价格和流程。学生在美国高中，Math 分数有点卡住。请客服先帮我登记，再判断是否适合安排。\\n\\n来源：' + source,
+      trust: '你好，我想先确认 SAT Math 老师是否匹配孩子情况。希望先看 1-2 道最近错题，判断是读题、函数图像、Desmos、单位换算还是时间分配问题。\\n\\n来源：' + source,
+      urgent: '你好，孩子近期要考 Digital SAT，想尽快安排一节 Math 诊断课。请客服先登记：年级/当前分数/目标分/考试日期/可上课时间，我可以马上补充。\\n\\n来源：' + source,
+      'low-literacy': '你好，我看网页有点看不明白，想咨询美国高中 SAT Math 补习。请客服用中文慢慢问我需要哪些信息，先帮我判断是否适合试课。\\n\\n来源：' + source,
+      student: '你好，我是学生本人，想咨询 Digital SAT Math 一对一。请客服先帮我登记情况，看看是否适合做一节诊断型试课。\\n\\n来源：' + source,
+      unknown: '你好，我不确定孩子 SAT Math 主要卡在哪里，只知道分数不太动。请客服先帮我判断是基础、英文题干、函数图像、Desmos 还是时间问题。\\n\\n来源：' + source,
+      screenshots: '你好，我可以先发孩子最近 SAT/PSAT 分数、错题或模考截图。请客服先看情况，判断是否适合安排 SAT Math 单节诊断课。\\n\\n来源：' + source
+    };
+  }
   var scenarios = {
     'my-spm': {
       countryCity: '马来西亚吉隆坡',
@@ -368,7 +386,10 @@
   }
 
   function buildMessage(){
-    var lines = [
+    var lines = isSatSource ? [
+      '[来源：' + source + '] 你好，我想咨询 Digital SAT Math 线上一对一诊断课。先把学生情况发给客服判断：',
+      ''
+    ] : [
       '[来源：' + source + '] 你好，我想咨询线上数理诊断/一对一。先把学生情况发给客服登记：',
       ''
     ];
@@ -376,7 +397,7 @@
       lines.push('- ' + labels[id] + '：' + valueOf(id));
     });
     lines.push('');
-    lines.push('我知道第一步是客服登记信息，再安排合适老师沟通或试课。');
+    lines.push(isSatSource ? '我知道第一步是客服登记和判断，再确认老师和时间，之后才发单节试课付款说明。' : '我知道第一步是客服登记信息，再安排合适老师沟通或试课。');
     return lines.join('\n');
   }
 
