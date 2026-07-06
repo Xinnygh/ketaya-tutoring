@@ -74,6 +74,11 @@
   .mini{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
   .mini .n{width:34px;height:34px;border-radius:50%;background:#edf7f4;color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:900}
   .mini b{display:block;font-size:14px}.mini p{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.45}
+  .copy-box{margin-top:18px;background:#173f39;color:#fff;border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+  .copy-box h3{font-size:17px;line-height:1.35}.copy-box p{color:rgba(255,255,255,.82);font-size:13px;margin-top:5px}
+  .copy-text{white-space:pre-line;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.22);border-radius:13px;padding:12px;margin-top:12px;font-size:14px;line-height:1.55}
+  .copy-btn{margin-top:12px;width:100%;border:0;border-radius:999px;background:var(--gold);color:#173f39;font-weight:950;padding:10px 14px;cursor:pointer}
+  .copy-status{min-height:18px;font-size:12px;color:rgba(255,255,255,.82);margin-top:7px}
   section{padding:58px 0}
   .soft{background:#fff}
   .head{text-align:center;max-width:720px;margin:0 auto 34px}
@@ -141,6 +146,17 @@
           <div class="mini"><div class="n">3</div><div><b>目标分和考试日期</b><p>例如 760+，8 月考试。</p></div></div>
           <div class="mini"><div class="n">4</div><div><b>最容易错的题型</b><p>word problem、graph、Desmos、时间不够。</p></div></div>
           <div class="mini"><div class="n">5</div><div><b>2-3 道错题</b><p>最好是“明明会但还是错”的题。</p></div></div>
+        </div>
+        <div class="copy-box">
+          <h3>从小红书/论坛过来，不用组织长段话。</h3>
+          <p>先复制这 5 行发来，客服看到后再判断是不是适合安排诊断课。</p>
+          <div class="copy-text" id="quickCopyText">年级：
+当前 SAT/PSAT Math 分数：
+目标分：
+几月考试：
+最常错：word problem / graph / Desmos / 时间不够 / 基础断层</div>
+          <button class="copy-btn" type="button" id="quickCopyBtn">复制 5 行诊断信息</button>
+          <div class="copy-status" id="quickCopyStatus"></div>
         </div>
       </aside>
     </div>
@@ -291,23 +307,40 @@
   var source = params.get('source') || params.get('utm_source') || 'sat-page';
   source = source.replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 40) || 'sat-page';
   var intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(source);
+  var quickLines = [
+    '年级：',
+    '当前 SAT/PSAT Math 分数：',
+    '目标分：',
+    '几月考试：',
+    '最常错：word problem / graph / Desmos / 时间不够 / 基础断层'
+  ].join('\n');
   var msg = [
-    '你好，我想咨询 Digital SAT Math 线上一对一诊断课。先把学生情况发给客服判断：',
+    '你好，我想先判断 SAT Math 是不是适合做一节诊断课。',
     '',
-    '- 年级：',
-    '- 当前 SAT/PSAT Math 分数：',
-    '- 目标分：',
-    '- 考试日期：',
-    '- 最容易错的题型（word problem / graph / Desmos / 时间不够等）：',
-    '- 是否有 2-3 道错题截图：',
-    '- 方便上课的两个时间段（请写美国时区）：',
+    quickLines,
     '',
-    '我知道第一步是客服登记和判断，再确认老师和时间，之后才发单节试课付款说明。',
+    '如果需要，我可以再补 1-2 道最近错题截图。',
     '来源：SAT Math 专页 / ' + source
   ].join('\n');
   var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
   document.querySelectorAll('.wa-link').forEach(function(a){ a.href = url; a.target = '_blank'; a.rel = 'noopener'; });
   document.querySelectorAll('.intake-link').forEach(function(a){ a.href = intakeUrl; });
+  var copyBtn = document.getElementById('quickCopyBtn');
+  var copyText = document.getElementById('quickCopyText');
+  var copyStatus = document.getElementById('quickCopyStatus');
+  if(copyBtn && copyText && copyStatus){
+    copyBtn.addEventListener('click', function(){
+      var text = copyText.innerText || quickLines;
+      function done(ok){
+        copyStatus.textContent = ok ? '已复制。你可以直接粘贴到评论、私信或 WhatsApp。' : '复制失败，可以手动选中这 5 行。';
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){done(true);}).catch(function(){done(false);});
+      }else{
+        done(false);
+      }
+    });
+  }
 })();
 </script>
 </body>
