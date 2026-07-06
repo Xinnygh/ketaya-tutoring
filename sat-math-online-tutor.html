@@ -307,6 +307,18 @@
   var source = params.get('source') || params.get('utm_source') || 'sat-page';
   source = source.replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 40) || 'sat-page';
   var sourcePresets = {
+    sat_630_parent: {
+      quickLines: [
+        '年级：',
+        '当前 SAT/PSAT Math 分数：630 左右',
+        '目标分：想提高 100 分左右',
+        '几月考试：',
+        '最常错：word problem / graph / Desmos / 基础题 / 时间不够'
+      ],
+      intro: '你好，我想咨询 SAT Math 630 左右想提分的诊断课，先判断是否适合安排。',
+      note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。',
+      intakeChannel: 'sat_630_parent'
+    },
     xhs_sat_630_parent: {
       quickLines: [
         '年级：',
