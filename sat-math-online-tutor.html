@@ -92,6 +92,13 @@
   .message-box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
   .message-box code{display:block;white-space:pre-wrap;background:#f4f7f6;border:1px solid var(--line);border-radius:14px;padding:15px;color:var(--ink);font-family:inherit;font-size:15px;line-height:1.65}
   .message-box .small{font-size:14px;color:var(--muted);margin-top:10px}
+  .parent-panel{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .parent-box{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:stretch}
+  .parent-note{background:linear-gradient(135deg,#fffefa,#edf7f4);border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:var(--shadow)}
+  .parent-note h2{font-size:27px;line-height:1.25}.parent-note p{color:var(--muted);margin-top:10px}
+  .parent-points{display:grid;gap:10px}
+  .parent-point{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .parent-point b{display:block}.parent-point span{display:block;color:var(--muted);font-size:14px;margin-top:4px}
   .price{font-size:35px;color:var(--green);font-weight:950;margin-top:8px}.price span{font-size:14px;color:var(--muted);font-weight:700}
   .quote{font-size:17px;font-weight:850;color:var(--ink);margin-top:8px}
   .process{counter-reset:step}
@@ -104,7 +111,7 @@
   footer{background:var(--green-dark);color:#dce8e6;text-align:center;padding:30px 0;font-size:14px}
   footer a{color:#fff}
   .wa-float{position:fixed;right:18px;bottom:18px;z-index:30;background:#25D366;color:#fff;font-weight:950;font-size:15px;padding:13px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
-  @media(max-width:880px){.hero-grid,.g3,.g2{grid-template-columns:1fr}.diagnostic-card{margin-top:8px}.nav-actions a:not(.nav-cta){display:none}h1{font-size:32px}}
+  @media(max-width:880px){.hero-grid,.g3,.g2,.parent-box{grid-template-columns:1fr}.diagnostic-card{margin-top:8px}.nav-actions a:not(.nav-cta){display:none}h1{font-size:32px}}
   @media(max-width:560px){.wrap{padding:0 16px}.hero{padding-top:36px}h1{font-size:29px}.btn,.contact-methods a{width:100%}.wa-float{left:12px;right:12px;text-align:center}body{padding-bottom:76px}}
 </style>
 </head>
@@ -161,6 +168,25 @@
           <div class="copy-status" id="quickCopyStatus"></div>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="parent-panel" id="classified-parent">
+    <div class="wrap parent-box">
+      <div class="parent-note">
+        <div class="kx">For Parents From Classified Ads</div>
+        <h2>如果是家长在找 SAT 一对一，先用错题筛老师。</h2>
+        <p>孩子 Math 600-680、想提高 80-120 分时，最容易一上来只问“老师背景”和“多少钱”。但这个分数段更该先看最近错题：基础断层、英文读题、graph / Desmos，还是时间分配。</p>
+        <div class="cta-row">
+          <a class="btn btn-primary wa-link" href="#">发 5 项信息 + 两个美国时区时间</a>
+          <a class="btn btn-ghost" href="#pricing">看单节试课边界</a>
+        </div>
+      </div>
+      <div class="parent-points">
+        <div class="parent-point"><b>Math 630 左右，不先买长期课包</b><span>第一节只判断错因和是否适合继续，不做保分承诺。</span></div>
+        <div class="parent-point"><b>最好准备最近 2-3 道错题</b><span>看答案会懂、自己做会错的题最有诊断价值。</span></div>
+        <div class="parent-point"><b>想排试课就补两个美国时区时间</b><span>老师和时间确认后，再发单节付款方式。</span></div>
+      </div>
     </div>
   </section>
 
