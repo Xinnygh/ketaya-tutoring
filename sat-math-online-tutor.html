@@ -149,13 +149,15 @@
         </div>
         <div class="copy-box">
           <h3>从小红书/论坛过来，不用组织长段话。</h3>
-          <p>先复制这 5 行发来，客服看到后再判断是不是适合安排诊断课。</p>
+          <p>先复制这几行发来。若已经有错题或想排试课，也可以直接补两个美国时区时间。</p>
           <div class="copy-text" id="quickCopyText">年级：
 当前 SAT/PSAT Math 分数：
 目标分：
 几月考试：
-最常错：word problem / graph / Desmos / 时间不够 / 基础断层</div>
-          <button class="copy-btn" type="button" id="quickCopyBtn">复制 5 行诊断信息</button>
+最常错：word problem / graph / Desmos / 时间不够 / 基础断层
+最近错题：有 / 没有
+可上课时间（美国时区，选填）：</div>
+          <button class="copy-btn" type="button" id="quickCopyBtn">复制诊断 + 时间信息</button>
           <div class="copy-status" id="quickCopyStatus"></div>
         </div>
       </aside>
@@ -278,7 +280,7 @@
     <div class="wrap">
       <div class="cta-band">
         <h2>先把 SAT Math 情况发来，客服判断能不能安排</h2>
-        <p>请发：年级、当前 SAT/PSAT Math 分数、目标分、考试日期、最容易错的题型。如果有 2-3 道错题截图，一起发最有效。</p>
+        <p>请发：年级、当前 SAT/PSAT Math 分数、目标分、考试日期、最容易错的题型。如果有 2-3 道错题截图，或已经想排试课，直接补两个美国时区时间。</p>
         <div class="contact-methods">
           <a class="wa-link" href="#">WhatsApp 发 5 项信息</a>
           <a class="intake-link" href="student-info-generator.html?source=sat">用生成器整理学情</a>
@@ -313,10 +315,12 @@
         '当前 SAT/PSAT Math 分数：630 左右',
         '目标分：想提高 100 分左右',
         '几月考试：',
-        '最常错：word problem / graph / Desmos / 基础题 / 时间不够'
+        '最常错：word problem / graph / Desmos / 基础题 / 时间不够',
+        '最近错题：有 / 没有',
+        '可上课时间（美国时区，选填）：'
       ],
       intro: '你好，我想咨询 SAT Math 630 左右想提分的诊断课，先判断是否适合安排。',
-      note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。',
+      note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。若适合排试课，我也可以给两个美国时区时间。',
       intakeChannel: 'sat_630_parent'
     },
     xhs_sat_630_parent: {
@@ -325,10 +329,12 @@
         '当前 SAT/PSAT Math 分数：630 左右',
         '目标分：想提高 100 分左右',
         '几月考试：',
-        '最常错：word problem / graph / Desmos / 基础题 / 时间不够'
+        '最常错：word problem / graph / Desmos / 基础题 / 时间不够',
+        '最近错题：有 / 没有',
+        '可上课时间（美国时区，选填）：'
       ],
       intro: '你好，我从 SAT Math 630 找老师的内容过来，想先判断是否适合一节诊断课。',
-      note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。',
+      note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。若适合排试课，我也可以给两个美国时区时间。',
       intakeChannel: 'xhs_sat_630_parent'
     }
   };
@@ -342,7 +348,9 @@
     '当前 SAT/PSAT Math 分数：',
     '目标分：',
     '几月考试：',
-    '最常错：word problem / graph / Desmos / 时间不够 / 基础断层'
+    '最常错：word problem / graph / Desmos / 时间不够 / 基础断层',
+    '最近错题：有 / 没有',
+    '可上课时间（美国时区，选填）：'
   ]).join('\n');
   var quickCopyBox = document.getElementById('quickCopyText');
   if (quickCopyBox) {
@@ -353,7 +361,7 @@
     '',
     quickLines,
     '',
-    preset ? preset.note : '如果需要，我可以再补 1-2 道最近错题截图。',
+    preset ? preset.note : '如果需要，我可以再补 1-2 道最近错题截图。若适合排试课，我也可以给两个美国时区时间。',
     '来源：SAT Math 专页 / ' + source
   ].join('\n');
   var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
@@ -366,7 +374,7 @@
     copyBtn.addEventListener('click', function(){
       var text = copyText.innerText || quickLines;
       function done(ok){
-        copyStatus.textContent = ok ? '已复制。你可以直接粘贴到评论、私信或 WhatsApp。' : '复制失败，可以手动选中这 5 行。';
+        copyStatus.textContent = ok ? '已复制。你可以直接粘贴到评论、私信或 WhatsApp。' : '复制失败，可以手动选中这几行。';
       }
       if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(text).then(function(){done(true);}).catch(function(){done(false);});
