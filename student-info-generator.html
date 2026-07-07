@@ -284,6 +284,7 @@
     huaren_sat_math_680_hard_module: '北美华人 SAT Math 680 hard module帖',
     huaren_sat_math_710_to_780: '北美华人 SAT Math 710 到 780帖',
     huaren_sat_bluebook_bank_enough: '北美华人 SAT Bluebook题库够不够帖',
+    huaren_dsat_math_harder: '北美华人 DSAT Math变难帖',
     huaren_sat_1100_paid_app: '北美华人 SAT 1100 付费 app帖',
     huaren_sat_act_prep_class: '北美华人 SAT ACT补习班推荐帖',
     huaren_sat_act_prep_general: '北美华人 SAT ACT补习班泛推荐帖',
@@ -302,6 +303,7 @@
     huaren_sat_math_680_hard_module: '北美华人 SAT Math 680 hard module帖',
     huaren_sat_math_710_to_780: '北美华人 SAT Math 710 到 780帖',
     huaren_sat_bluebook_bank_enough: '北美华人 SAT Bluebook题库够不够帖',
+    huaren_dsat_math_harder: '北美华人 DSAT Math变难帖',
     huaren_sat_1100_paid_app: '北美华人 SAT 1100 付费 app帖',
     huaren_sat_act_prep_class: '北美华人 SAT ACT补习班推荐帖',
     huaren_sat_act_prep_general: '北美华人 SAT ACT补习班泛推荐帖',
@@ -317,13 +319,14 @@
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || channel === 'huaren_sat_math_650_improvement' || channel === 'huaren_sat_math_high_score_drop' || channel === 'huaren_sat_math_680_hard_module' || channel === 'huaren_sat_math_710_to_780' || channel === 'huaren_sat_bluebook_bank_enough' || channel === 'huaren_sat_1100_paid_app' || channel === 'huaren_sat_act_prep_class' || channel === 'huaren_sat_act_prep_general' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_math_650_improvement' || sourceKey === 'huaren_sat_math_high_score_drop' || sourceKey === 'huaren_sat_math_680_hard_module' || sourceKey === 'huaren_sat_math_710_to_780' || sourceKey === 'huaren_sat_bluebook_bank_enough' || sourceKey === 'huaren_sat_1100_paid_app' || sourceKey === 'huaren_sat_act_prep_class' || sourceKey === 'huaren_sat_act_prep_general';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || channel === 'huaren_sat_math_650_improvement' || channel === 'huaren_sat_math_high_score_drop' || channel === 'huaren_sat_math_680_hard_module' || channel === 'huaren_sat_math_710_to_780' || channel === 'huaren_sat_bluebook_bank_enough' || channel === 'huaren_dsat_math_harder' || channel === 'huaren_sat_1100_paid_app' || channel === 'huaren_sat_act_prep_class' || channel === 'huaren_sat_act_prep_general' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_math_650_improvement' || sourceKey === 'huaren_sat_math_high_score_drop' || sourceKey === 'huaren_sat_math_680_hard_module' || sourceKey === 'huaren_sat_math_710_to_780' || sourceKey === 'huaren_sat_bluebook_bank_enough' || sourceKey === 'huaren_dsat_math_harder' || sourceKey === 'huaren_sat_1100_paid_app' || sourceKey === 'huaren_sat_act_prep_class' || sourceKey === 'huaren_sat_act_prep_general';
   var isSatActEnglishTutorChannel = channel === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_act_english_tutor';
   var isSatHighScoreChannel = channel === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_high_score_sprint';
   var isSatMathHighScoreDropChannel = channel === 'huaren_sat_math_high_score_drop' || sourceKey === 'huaren_sat_math_high_score_drop';
   var isSatMath680HardModuleChannel = channel === 'huaren_sat_math_680_hard_module' || sourceKey === 'huaren_sat_math_680_hard_module';
   var isSatMath710To780Channel = channel === 'huaren_sat_math_710_to_780' || sourceKey === 'huaren_sat_math_710_to_780';
   var isSatBluebookBankChannel = channel === 'huaren_sat_bluebook_bank_enough' || sourceKey === 'huaren_sat_bluebook_bank_enough';
+  var isDsatMathHarderChannel = channel === 'huaren_dsat_math_harder' || sourceKey === 'huaren_dsat_math_harder';
   var isSat1100PaidAppChannel = channel === 'huaren_sat_1100_paid_app' || sourceKey === 'huaren_sat_1100_paid_app';
   var isSatActPrepClassChannel = channel === 'huaren_sat_act_prep_class' || sourceKey === 'huaren_sat_act_prep_class';
   var isSatActPrepGeneralChannel = channel === 'huaren_sat_act_prep_general' || sourceKey === 'huaren_sat_act_prep_general';
@@ -544,6 +547,17 @@
       times: '美国时间周中晚上或周末下午，可以给两个时间段',
       materials: '有最近 1-2 套 Bluebook 分数和 3-5 道 Math 错题，或 Question Bank 里反复错的题型'
     },
+    'dsat-math-harder': {
+      countryCity: '美国',
+      grade: 'Grade 10 / 11 / 12',
+      curriculum: 'Digital SAT',
+      subject: 'Digital SAT Math hard module',
+      scoreTarget: 'SAT/Bluebook Math 760 左右，目标 780 / 800 / 总分 1550+',
+      examDate: '预计下一次 SAT',
+      problem: '家长感觉机考 SAT Math 变难，prep book 或旧方法不太对路。想先判断最后几题卡在 hard module word problem、graph/Desmos、时间分配、低频几何/统计，还是 function 变形。',
+      times: '美国时间周中晚上或周末下午，可以给两个时间段',
+      materials: '有最近 1-2 套官方题分数、最后 3-5 道错题，或 Question Bank 里反复错的题型'
+    },
     'sat-1100-paid-app': {
       countryCity: '美国',
       grade: 'Grade 10',
@@ -668,7 +682,15 @@
     copyState.textContent = '已复制，可以直接粘贴到 WhatsApp。';
   });
 
-  var defaultSatScenario = isSatActPrepGeneralChannel ? 'sat-act-prep-general' : (isSatActPrepClassChannel ? 'sat-act-prep-class' : (isSat1100PaidAppChannel ? 'sat-1100-paid-app' : (isSatBluebookBankChannel ? 'sat-bluebook-bank-enough' : (isSatMath710To780Channel ? 'sat-math-710-to-780' : (isSatMath680HardModuleChannel ? 'sat-math-680-hard-module' : (isSatMathHighScoreDropChannel ? 'sat-math-high-score-drop' : (isSatHighScoreChannel ? 'sat-high-score-sprint' : 'sat-630-parent')))))));
+  var defaultSatScenario = isSatActPrepGeneralChannel ? 'sat-act-prep-general'
+    : (isSatActPrepClassChannel ? 'sat-act-prep-class'
+    : (isSat1100PaidAppChannel ? 'sat-1100-paid-app'
+    : (isDsatMathHarderChannel ? 'dsat-math-harder'
+    : (isSatBluebookBankChannel ? 'sat-bluebook-bank-enough'
+    : (isSatMath710To780Channel ? 'sat-math-710-to-780'
+    : (isSatMath680HardModuleChannel ? 'sat-math-680-hard-module'
+    : (isSatMathHighScoreDropChannel ? 'sat-math-high-score-drop'
+    : (isSatHighScoreChannel ? 'sat-high-score-sprint' : 'sat-630-parent'))))))));
   if (isSatParentChannel && scenarios[defaultSatScenario]) {
     fieldIds.forEach(function(id){
       document.getElementById(id).value = scenarios[defaultSatScenario][id] || '';
