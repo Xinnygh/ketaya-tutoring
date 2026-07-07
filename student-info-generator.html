@@ -276,6 +276,7 @@
     us_chinese_sat_parent: '美国华人 SAT Math 家长页',
     sat_math_630_parent_faq: 'SAT Math 630 家长 FAQ',
     huaren_find_sat_tutor: '北美华人 SAT 一对一找老师帖',
+    huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
   var channelMap = {
@@ -283,6 +284,7 @@
     us_chinese_sat_parent: '美国华人 SAT Math 家长页',
     sat_math_630_parent_faq: 'SAT Math 630 家长 FAQ',
     huaren_find_sat_tutor: '北美华人 SAT 一对一找老师帖',
+    huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容',
     sat_630_parent_ny_gmail: 'NYChinaRen 广告询价',
     sat_630_parent_sf_gmail: 'ChineseInSFBay 广告询价',
@@ -295,7 +297,7 @@
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
   if (channel) {
     source += ' / ' + (channelMap[channel] || channel);
