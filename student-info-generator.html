@@ -277,6 +277,7 @@
     sat_math_630_parent_faq: 'SAT Math 630 家长 FAQ',
     huaren_find_sat_tutor: '北美华人 SAT 一对一找老师帖',
     huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
+    huaren_sat_act_english_tutor: '北美华人 SAT/ACT 英文老师推荐帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
   var channelMap = {
@@ -285,6 +286,7 @@
     sat_math_630_parent_faq: 'SAT Math 630 家长 FAQ',
     huaren_find_sat_tutor: '北美华人 SAT 一对一找老师帖',
     huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
+    huaren_sat_act_english_tutor: '北美华人 SAT/ACT 英文老师推荐帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容',
     sat_630_parent_ny_gmail: 'NYChinaRen 广告询价',
     sat_630_parent_sf_gmail: 'ChineseInSFBay 广告询价',
@@ -297,7 +299,8 @@
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor';
+  var isSatActEnglishTutorChannel = channel === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_act_english_tutor';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
   if (channel) {
     source += ' / ' + (channelMap[channel] || channel);
@@ -326,6 +329,17 @@
     times: { label: '方便上课时间（请写美国时区）', placeholder: '例如：Pacific Time 周二/周四 7pm 后，或周日下午' },
     materials: { label: '是否有分数 / 错题 / 模考截图', placeholder: '例如：有最近 2-3 道错题截图；没有模考，但有 Khan / Bluebook 错题记录' }
   };
+  var satActEnglishFieldCopy = {
+    countryCity: { label: '所在地区 / 时区', placeholder: '例如：美国加州 / Eastern Time / Central Time' },
+    grade: { label: '年级', placeholder: '例如：Grade 10 / Grade 11 / Grade 12' },
+    curriculum: { label: '考试 / 课程', placeholder: '' },
+    subject: { label: '想咨询的科目', placeholder: 'SAT/ACT English / Reading / Math' },
+    scoreTarget: { label: '当前 SAT/ACT 分数 / 目标', placeholder: '例如：Reading 600，Math 650，目标总分 1450' },
+    examDate: { label: '考试日期', placeholder: '例如：2026 年 8 月 / 10 月 SAT/ACT' },
+    problem: { label: '英文和数学分别卡在哪里', placeholder: '例如：英文错 evidence / inference；Math 常错 word problem 或 graph。' },
+    times: { label: '方便上课时间（请写美国时区）', placeholder: '例如：Pacific Time 周二/周四 7pm 后，或周日下午' },
+    materials: { label: '是否有分数 / 错题 / 模考截图', placeholder: '例如：有 CB / ACT 官方题错题截图；有 Bluebook 或 ACT 模考分数' }
+  };
   var form = document.getElementById('student-form');
   var preview = document.getElementById('preview');
   var whatsapp = document.getElementById('whatsapp-link');
@@ -334,8 +348,9 @@
   var copyState = document.getElementById('copy-state');
   document.getElementById('source-label').textContent = source;
   if (isSatSource) {
-    Object.keys(satFieldCopy).forEach(function(id){
-      var copy = satFieldCopy[id];
+    var activeFieldCopy = isSatActEnglishTutorChannel ? satActEnglishFieldCopy : satFieldCopy;
+    Object.keys(activeFieldCopy).forEach(function(id){
+      var copy = activeFieldCopy[id];
       var input = document.getElementById(id);
       var label = document.querySelector('label[for="' + id + '"]');
       if (label && copy.label) {
@@ -367,6 +382,18 @@
       student: '你好，我是学生本人，想咨询 Digital SAT Math 一对一。请客服先帮我登记情况，看看是否适合做一节诊断型试课。\\n\\n来源：' + source,
       unknown: '你好，我不确定孩子 SAT Math 主要卡在哪里，只知道分数不太动。请客服先帮我判断是基础、英文题干、函数图像、Desmos 还是时间问题。\\n\\n来源：' + source,
       screenshots: '你好，我可以先发孩子最近 SAT/PSAT 分数、错题或模考截图。请客服先看情况，判断是否适合安排 SAT Math 单节诊断课。\\n\\n来源：' + source
+    };
+  }
+  if (isSatActEnglishTutorChannel) {
+    quickMessages = {
+      lazy: '你好，我想咨询 SAT/ACT 英文或数学一对一，但不确定怎么说情况。请客服先问我年级、当前 Reading/English 和 Math 分数、目标总分、考试日期和错题类型。\\n\\n我知道第一步是客服登记和判断，再确认老师和时间。\\n来源：' + source,
+      price: '你好，我想先了解 SAT/ACT 单节诊断型试课价格和流程。为了方便判断，我先补这几项：\\n\\n年级：\\n当前 SAT/ACT 分数：Reading/English；Math\\n目标总分 / 目标单科：\\n几月考试：\\n英文常错：vocab / long sentence / inference / evidence / time\\nMath 常错：word problem / graph / Desmos / 基础题 / 时间不够\\n最近错题：有 / 没有\\n可上课时间（美国时区，选填）：\\n\\n我知道价格要等老师、时间和是否适合试课确认后再定。\\n来源：' + source,
+      trust: '你好，我想先确认 SAT/ACT 老师是否匹配孩子情况。希望先看最近官方题错因，判断 English/Reading 和 Math 是否要分开补。\\n\\n来源：' + source,
+      urgent: '你好，孩子近期要考 SAT/ACT，想尽快安排一节诊断课。请客服先登记：年级/Reading 或 English 分数/Math 分数/目标总分/考试日期/可上课时间，我可以马上补充。\\n\\n来源：' + source,
+      'low-literacy': '你好，我看网页有点看不明白，想咨询美国高中 SAT/ACT 补习。请客服用中文慢慢问我需要哪些信息，先帮我判断是否适合试课。\\n\\n来源：' + source,
+      student: '你好，我是学生本人，想咨询 SAT/ACT 一对一。请客服先帮我登记情况，看看 English/Reading 和 Math 哪部分更适合先做诊断。\\n\\n来源：' + source,
+      unknown: '你好，我不确定孩子 SAT/ACT 主要卡在哪里，只知道总分不太动。请客服先帮我判断是 English/Reading、Math，还是时间分配问题。\\n\\n来源：' + source,
+      screenshots: '你好，我可以先发孩子最近 SAT/ACT 分数、错题或模考截图。请客服先看情况，判断是否适合安排单节诊断课。\\n\\n来源：' + source
     };
   }
   var scenarios = {
