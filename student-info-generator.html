@@ -279,6 +279,7 @@
     huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
     huaren_sat_act_english_tutor: '北美华人 SAT/ACT 英文老师推荐帖',
     huaren_sat_high_score_sprint: '北美华人 SAT 高分冲刺帖',
+    huaren_sat_math_650_improvement: '北美华人 SAT Math 650 提分帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
   var channelMap = {
@@ -289,6 +290,7 @@
     huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
     huaren_sat_act_english_tutor: '北美华人 SAT/ACT 英文老师推荐帖',
     huaren_sat_high_score_sprint: '北美华人 SAT 高分冲刺帖',
+    huaren_sat_math_650_improvement: '北美华人 SAT Math 650 提分帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容',
     sat_630_parent_ny_gmail: 'NYChinaRen 广告询价',
     sat_630_parent_sf_gmail: 'ChineseInSFBay 广告询价',
@@ -301,7 +303,7 @@
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || channel === 'huaren_sat_math_650_improvement' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_math_650_improvement';
   var isSatActEnglishTutorChannel = channel === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_act_english_tutor';
   var isSatHighScoreChannel = channel === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_high_score_sprint';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
