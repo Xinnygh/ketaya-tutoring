@@ -282,6 +282,7 @@
     huaren_sat_math_650_improvement: '北美华人 SAT Math 650 提分帖',
     huaren_sat_math_high_score_drop: '北美华人 SAT Math 高分掉分帖',
     huaren_sat_math_680_hard_module: '北美华人 SAT Math 680 hard module帖',
+    huaren_sat_1100_paid_app: '北美华人 SAT 1100 付费 app帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
   var channelMap = {
@@ -295,6 +296,7 @@
     huaren_sat_math_650_improvement: '北美华人 SAT Math 650 提分帖',
     huaren_sat_math_high_score_drop: '北美华人 SAT Math 高分掉分帖',
     huaren_sat_math_680_hard_module: '北美华人 SAT Math 680 hard module帖',
+    huaren_sat_1100_paid_app: '北美华人 SAT 1100 付费 app帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容',
     sat_630_parent_ny_gmail: 'NYChinaRen 广告询价',
     sat_630_parent_sf_gmail: 'ChineseInSFBay 广告询价',
@@ -307,11 +309,12 @@
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || channel === 'huaren_sat_math_650_improvement' || channel === 'huaren_sat_math_high_score_drop' || channel === 'huaren_sat_math_680_hard_module' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_math_650_improvement' || sourceKey === 'huaren_sat_math_high_score_drop' || sourceKey === 'huaren_sat_math_680_hard_module';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || channel === 'huaren_sat_math_650_improvement' || channel === 'huaren_sat_math_high_score_drop' || channel === 'huaren_sat_math_680_hard_module' || channel === 'huaren_sat_1100_paid_app' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_math_650_improvement' || sourceKey === 'huaren_sat_math_high_score_drop' || sourceKey === 'huaren_sat_math_680_hard_module' || sourceKey === 'huaren_sat_1100_paid_app';
   var isSatActEnglishTutorChannel = channel === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_act_english_tutor';
   var isSatHighScoreChannel = channel === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_high_score_sprint';
   var isSatMathHighScoreDropChannel = channel === 'huaren_sat_math_high_score_drop' || sourceKey === 'huaren_sat_math_high_score_drop';
   var isSatMath680HardModuleChannel = channel === 'huaren_sat_math_680_hard_module' || sourceKey === 'huaren_sat_math_680_hard_module';
+  var isSat1100PaidAppChannel = channel === 'huaren_sat_1100_paid_app' || sourceKey === 'huaren_sat_1100_paid_app';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
   if (channel) {
     source += ' / ' + (channelMap[channel] || channel);
@@ -507,6 +510,17 @@
       times: '美国时间周中晚上或周末下午，可以给两个时间段',
       materials: '有最近 3-5 道第二个 module 做不出的题，最好带 Bluebook / CB 题目截图'
     },
+    'sat-1100-paid-app': {
+      countryCity: '美国',
+      grade: 'Grade 10',
+      curriculum: 'SAT',
+      subject: 'Digital SAT Math / Reading & Writing',
+      scoreTarget: '学校第一次 SAT 1100 左右，目标先提高 150-250 分',
+      examDate: '明年夏天 SAT',
+      problem: '家长正在比较 Khan、AI/付费 app、group tutor 和一对一。想先用最近一套题判断是 Reading/Writing 词汇语法、Math 基础、word problem、graph/Desmos，还是时间问题。',
+      times: '美国时间周中晚上或周末下午，可以给两个时间段',
+      materials: '有最近一套题的分科结果和 3-5 道错题，可以先发给客服判断'
+    },
     'not-sure': {
       countryCity: '马来西亚槟城',
       grade: 'Year 9 / 国际学校',
@@ -598,7 +612,7 @@
     copyState.textContent = '已复制，可以直接粘贴到 WhatsApp。';
   });
 
-  var defaultSatScenario = isSatMath680HardModuleChannel ? 'sat-math-680-hard-module' : (isSatMathHighScoreDropChannel ? 'sat-math-high-score-drop' : (isSatHighScoreChannel ? 'sat-high-score-sprint' : 'sat-630-parent'));
+  var defaultSatScenario = isSat1100PaidAppChannel ? 'sat-1100-paid-app' : (isSatMath680HardModuleChannel ? 'sat-math-680-hard-module' : (isSatMathHighScoreDropChannel ? 'sat-math-high-score-drop' : (isSatHighScoreChannel ? 'sat-high-score-sprint' : 'sat-630-parent')));
   if (isSatParentChannel && scenarios[defaultSatScenario]) {
     fieldIds.forEach(function(id){
       document.getElementById(id).value = scenarios[defaultSatScenario][id] || '';
