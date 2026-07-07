@@ -333,6 +333,7 @@
   var params = new URLSearchParams(window.location.search);
   var source = params.get('source') || params.get('utm_source') || 'sat-page';
   source = source.replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 40) || 'sat-page';
+  var channel = (params.get('channel') || '').replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 64);
   var sourcePresets = {
     sat_630_parent: {
       heroTitle: 'SAT Math <b>630 左右</b>，先看错题再选老师。',
@@ -382,10 +383,8 @@
     if (parentPanelTitle && preset.parentTitle) parentPanelTitle.textContent = preset.parentTitle;
     if (parentPanelText && preset.parentText) parentPanelText.textContent = preset.parentText;
   }
-  var intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(source);
-  if (preset && preset.intakeChannel) {
-    intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(preset.intakeChannel);
-  }
+  var trackingChannel = channel || (preset && preset.intakeChannel) || source;
+  var intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(trackingChannel);
   var quickLines = (preset ? preset.quickLines : [
     '年级：',
     '当前 SAT/PSAT Math 分数：',
@@ -405,7 +404,7 @@
     quickLines,
     '',
     preset ? preset.note : '如果需要，我可以再补 1-2 道最近错题截图。若适合排试课，我也可以给两个美国时区时间。',
-    '来源：SAT Math 专页 / ' + source
+    '来源：SAT Math 专页 / ' + source + (channel ? ' / ' + channel : '')
   ].join('\n');
   var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
   document.querySelectorAll('.wa-link').forEach(function(a){ a.href = url; a.target = '_blank'; a.rel = 'noopener'; });

@@ -275,13 +275,23 @@
     sat_630_parent: 'SAT Math 630 家长诊断页',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
+  var channelMap = {
+    sat_630_parent: 'SAT Math 630 家长诊断页',
+    xhs_sat_630_parent: '小红书 SAT Math 630 家长内容',
+    sat_630_parent_ny_gmail: 'NYChinaRen 广告询价',
+    sat_630_parent_sf_gmail: 'ChineseInSFBay 广告询价',
+    sat_630_parent_classified_link: '允许链接分类信息',
+    sat_630_parent_classified_short: '短字段分类信息',
+    sat_630_parent_51huaren_houston: '51 华人网 Houston 表单',
+    sat_630_parent_expanded_gmail: '扩展城市广告询价'
+  };
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel === 'sat_630_parent' || channel === 'xhs_sat_630_parent' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
   if (channel) {
-    source += ' / ' + channel;
+    source += ' / ' + (channelMap[channel] || channel);
   }
   var isSatSource = sourceKey === 'sat' || isSatParentChannel;
   var fieldIds = ['countryCity','grade','curriculum','subject','scoreTarget','examDate','problem','times','materials'];
