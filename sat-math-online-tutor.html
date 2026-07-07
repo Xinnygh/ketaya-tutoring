@@ -28,8 +28,7 @@
   "serviceType": "Online SAT Math tutoring",
   "availableChannel": {
     "@type": "ServiceChannel",
-    "servicePhone": "+8618156122672",
-    "serviceUrl": "https://wa.me/8618156122672"
+    "serviceUrl": "https://xinnygh.github.io/ketaya-tutoring/sat-math-online-tutor.html"
   },
   "offers": {
     "@type": "Offer",
@@ -130,9 +129,9 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">美国高中 · 华人学生 · Digital SAT Math</span>
-        <h1>SAT Math 卡在 <b>650-780</b>，先别只刷题。</h1>
-        <p class="sub">很多美高华人学生不是数学不会，而是 word problem、单位换算、函数图像、Desmos 使用和时间分配混在一起错。先做一节诊断型试课，把错因分清楚，再决定怎么补。</p>
+        <span class="eyebrow" id="heroEyebrow">美国高中 · 华人学生 · Digital SAT Math</span>
+        <h1 id="heroTitle">SAT Math 卡在 <b>650-780</b>，先别只刷题。</h1>
+        <p class="sub" id="heroSub">很多美高华人学生不是数学不会，而是 word problem、单位换算、函数图像、Desmos 使用和时间分配混在一起错。先做一节诊断型试课，把错因分清楚，再决定怎么补。</p>
         <div class="chips">
           <span>中英双语讲解</span>
           <span>Digital SAT Math</span>
@@ -175,8 +174,8 @@
     <div class="wrap parent-box">
       <div class="parent-note">
         <div class="kx">For Parents From Classified Ads</div>
-        <h2>如果是家长在找 SAT 一对一，先用错题筛老师。</h2>
-        <p>孩子 Math 600-680、想提高 80-120 分时，最容易一上来只问“老师背景”和“多少钱”。但这个分数段更该先看最近错题：基础断层、英文读题、graph / Desmos，还是时间分配。</p>
+        <h2 id="parentPanelTitle">如果是家长在找 SAT 一对一，先用错题筛老师。</h2>
+        <p id="parentPanelText">孩子 Math 600-680、想提高 80-120 分时，最容易一上来只问“老师背景”和“多少钱”。但这个分数段更该先看最近错题：基础断层、英文读题、graph / Desmos，还是时间分配。</p>
         <div class="cta-row">
           <a class="btn btn-primary wa-link" href="#">发 5 项信息 + 两个美国时区时间</a>
           <a class="btn btn-ghost" href="#pricing">看单节试课边界</a>
@@ -336,6 +335,10 @@
   source = source.replace(/[^\w\-./\u4e00-\u9fa5]/g, '').slice(0, 40) || 'sat-page';
   var sourcePresets = {
     sat_630_parent: {
+      heroTitle: 'SAT Math <b>630 左右</b>，先看错题再选老师。',
+      heroSub: '如果孩子 Math 600-680，目标提高 80-120 分，先别只问老师背景和价格。先发 5 行信息和最近错题，看主要卡在基础、英文题干、graph / Desmos，还是时间分配。',
+      parentTitle: '从分类信息过来？先用 5 行信息筛老师。',
+      parentText: '家长找 SAT 一对一时，最容易被价格、老师头衔和课包带偏。Math 630 左右更该先看最近错题：老师能不能讲清错因、下一周练什么，比先比较报价更重要。',
       quickLines: [
         '年级：',
         '当前 SAT/PSAT Math 分数：630 左右',
@@ -350,6 +353,10 @@
       intakeChannel: 'sat_630_parent'
     },
     xhs_sat_630_parent: {
+      heroTitle: 'SAT Math <b>630 想提 100</b>，先别只问价格。',
+      heroSub: '从小红书看到找老师建议的话，先用最近错题判断孩子到底卡在哪里。Math 630 背后可能是基础、英文题干、graph / Desmos 或时间问题，处理顺序不一样。',
+      parentTitle: '家长找 SAT 老师，先看错题是否讲得准。',
+      parentText: '这个分数段不建议一开始买长期课包。先看 1-2 道最近 Math 错题，判断老师能不能讲清错因和下一周练什么。',
       quickLines: [
         '年级：',
         '当前 SAT/PSAT Math 分数：630 左右',
@@ -365,6 +372,16 @@
     }
   };
   var preset = sourcePresets[source] || null;
+  if (preset) {
+    var heroTitle = document.getElementById('heroTitle');
+    var heroSub = document.getElementById('heroSub');
+    var parentPanelTitle = document.getElementById('parentPanelTitle');
+    var parentPanelText = document.getElementById('parentPanelText');
+    if (heroTitle && preset.heroTitle) heroTitle.innerHTML = preset.heroTitle;
+    if (heroSub && preset.heroSub) heroSub.textContent = preset.heroSub;
+    if (parentPanelTitle && preset.parentTitle) parentPanelTitle.textContent = preset.parentTitle;
+    if (parentPanelText && preset.parentText) parentPanelText.textContent = preset.parentText;
+  }
   var intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(source);
   if (preset && preset.intakeChannel) {
     intakeUrl = 'student-info-generator.html?source=sat&channel=' + encodeURIComponent(preset.intakeChannel);
