@@ -36,6 +36,38 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "SAT Math 630 左右先找老师还是先刷题？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "先看最近错题。Math 600-680 常见问题可能是基础、英文题干、function graph、Desmos 或时间分配，不同错因对应的练习顺序不同。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "美国华人家长找 SAT Math 一对一时怎么筛老师？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不要只比较头衔和价格。建议用 1-2 道孩子最近错题筛老师：能否讲清为什么错、下一周先练什么，以及是否适合继续。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "SAT Math 诊断试课什么时候付款？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "先收年级、当前分数、目标分、考试日期和错题/错因；老师和时间确认后，再发单节试课付款方式。"
+      }
+    }
+  ]
+}
+</script>
 <style>
   :root{
     --ink:#1b2b34; --muted:#5b6971; --line:#dfe7ea;
@@ -103,6 +135,10 @@
   .process{counter-reset:step}
   .step{position:relative;padding-top:34px}
   .step:before{counter-increment:step;content:counter(step);position:absolute;top:-14px;left:22px;width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:950}
+  .faq-grid{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
+  .faq-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .faq-card h3{font-size:18px;line-height:1.35}
+  .faq-card p{color:var(--muted);font-size:14px;margin-top:8px}
   .cta-band{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;border-radius:24px;padding:38px 28px;text-align:center;box-shadow:var(--shadow)}
   .cta-band h2{font-size:31px}.cta-band p{color:rgba(255,255,255,.88);margin:10px auto 0;max-width:720px}
   .contact-methods{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
@@ -110,7 +146,7 @@
   footer{background:var(--green-dark);color:#dce8e6;text-align:center;padding:30px 0;font-size:14px}
   footer a{color:#fff}
   .wa-float{position:fixed;right:18px;bottom:18px;z-index:30;background:#25D366;color:#fff;font-weight:950;font-size:15px;padding:13px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
-  @media(max-width:880px){.hero-grid,.g3,.g2,.parent-box{grid-template-columns:1fr}.diagnostic-card{margin-top:8px}.nav-actions a:not(.nav-cta){display:none}h1{font-size:32px}}
+  @media(max-width:880px){.hero-grid,.g3,.g2,.parent-box,.faq-grid{grid-template-columns:1fr}.diagnostic-card{margin-top:8px}.nav-actions a:not(.nav-cta){display:none}h1{font-size:32px}}
   @media(max-width:560px){.wrap{padding:0 16px}.hero{padding-top:36px}h1{font-size:29px}.btn,.contact-methods a{width:100%}.wa-float{left:12px;right:12px;text-align:center}body{padding-bottom:76px}}
 </style>
 </head>
@@ -278,6 +314,34 @@
     </div>
   </section>
 
+  <section id="parent-faq">
+    <div class="wrap">
+      <div class="head">
+        <div class="kx">US Chinese Parents</div>
+        <h2>美国华人家长找 SAT Math 老师，先问这 3 个问题</h2>
+        <p>这块是给 Math 600-680、想提高 80-120 分的家庭看的。先把判断标准说清楚，后面才容易进入诊断。</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-card">
+          <h3>孩子 Math 630，是先刷题还是找老师？</h3>
+          <p>先看最近错题。这个分数段可能是基础断层，也可能是英文题干、graph / Desmos 或时间问题。错因不同，练习顺序不一样。</p>
+        </div>
+        <div class="faq-card">
+          <h3>怎么判断老师不是只会讲答案？</h3>
+          <p>拿 1-2 道“看答案会懂、自己做会错”的题让老师讲。能讲清为什么错、下一周练什么，比只看头衔和价格更有用。</p>
+        </div>
+        <div class="faq-card">
+          <h3>什么时候才需要付款？</h3>
+          <p>先发 5 项信息和错题。客服确认适合、老师和时间能对上后，再发单节试课付款方式；不先推长期课包。</p>
+        </div>
+      </div>
+      <div class="cta-row" style="justify-content:center;margin-top:24px">
+        <a class="btn btn-primary intake-link" href="student-info-generator.html?source=sat&channel=sat_math_630_parent_faq">整理 5 项诊断信息</a>
+        <a class="btn btn-ghost wa-link" href="#">直接发 5 行给客服</a>
+      </div>
+    </div>
+  </section>
+
   <section id="pricing">
     <div class="wrap">
       <div class="head">
@@ -352,6 +416,42 @@
       intro: '你好，我想咨询 SAT Math 630 左右想提分的诊断课，先判断是否适合安排。',
       note: '如果方便，我可以再补最近 1-2 道 Math 错题截图。若适合排试课，我也可以给两个美国时区时间。',
       intakeChannel: 'sat_630_parent'
+    },
+    us_chinese_sat_parent: {
+      heroTitle: '美国华人 SAT Math 家长，先用错题筛老师。',
+      heroSub: '孩子 Math 600-680、想找线上一对一时，先别只比较老师头衔和价格。先看最近错题，判断是基础、英文题干、graph / Desmos，还是时间分配。',
+      parentTitle: '美国华人家长找 SAT Math 老师，先看错题。',
+      parentText: '如果孩子 Math 630 左右、想提高 80-120 分，第一步不是买课包，而是拿最近 1-2 道错题判断老师能否讲清错因和下一周练习重点。',
+      quickLines: [
+        '年级：',
+        '当前 SAT/PSAT Math 分数：600-680 / 630 左右',
+        '目标分：想提高 80-120 分',
+        '几月考试：',
+        '最常错：word problem / graph / Desmos / 基础题 / 时间不够',
+        '最近错题：有 / 没有',
+        '可上课时间（美国时区，选填）：'
+      ],
+      intro: '你好，我是美国高中家长，想咨询 SAT Math 线上一对一，先判断孩子是否适合诊断型试课。',
+      note: '我可以补最近 1-2 道 Math 错题截图。若适合排试课，也可以给两个美国时区时间。',
+      intakeChannel: 'us_chinese_sat_parent'
+    },
+    sat_math_630_parent_faq: {
+      heroTitle: 'SAT Math <b>630 左右</b>，先用错题判断老师是否匹配。',
+      heroSub: '从 FAQ 过来的家长，可以先发 5 项信息：年级、当前 Math 分、目标分、考试月份、最常错题型。客服先判断是否值得排一节诊断课。',
+      parentTitle: '先判断错因，再谈老师和付款。',
+      parentText: 'Math 600-680 想往上提时，最怕一上来买课包。先看错题能否讲清，再确认老师、时间和单节试课。',
+      quickLines: [
+        '年级：',
+        '当前 SAT/PSAT Math 分数：630 左右',
+        '目标分：',
+        '几月考试：',
+        '最常错：word problem / graph / Desmos / 基础题 / 时间不够',
+        '最近错题：有 / 没有',
+        '可上课时间（美国时区，选填）：'
+      ],
+      intro: '你好，我看了 SAT Math 家长 FAQ，想先发 5 项信息判断是否适合诊断课。',
+      note: '如果需要，我可以再补最近错题截图和两个美国时区时间。',
+      intakeChannel: 'sat_math_630_parent_faq'
     },
     xhs_sat_630_parent: {
       heroTitle: 'SAT Math <b>630 想提 100</b>，先别只问价格。',
