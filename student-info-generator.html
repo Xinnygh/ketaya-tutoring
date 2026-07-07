@@ -271,16 +271,19 @@
     golearn: 'GoLearn',
     superprof: 'Superprof',
     facebook: 'Facebook 群组',
-    kiasu: 'KiasuParents'
+    kiasu: 'KiasuParents',
+    sat_630_parent: 'SAT Math 630 家长诊断页',
+    xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
+  var isSatParentChannel = channel === 'sat_630_parent' || channel === 'xhs_sat_630_parent' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
   if (channel) {
     source += ' / ' + channel;
   }
-  var isSatSource = sourceKey === 'sat';
+  var isSatSource = sourceKey === 'sat' || isSatParentChannel;
   var fieldIds = ['countryCity','grade','curriculum','subject','scoreTarget','examDate','problem','times','materials'];
   var labels = {
     countryCity: '所在国家/城市',
@@ -392,6 +395,17 @@
       times: '美国时间周中晚上或周末下午，可以给两个时间段',
       materials: '有 2-3 道最近错题截图，可以 WhatsApp 发'
     },
+    'sat-630-parent': {
+      countryCity: '美国',
+      grade: 'Grade 10 / 11 / 12',
+      curriculum: 'SAT',
+      subject: 'Digital SAT Math',
+      scoreTarget: 'SAT/PSAT Math 630 左右，目标提高 80-120 分',
+      examDate: '预计 8 月 / 10 月 / 12 月考试',
+      problem: '孩子 Math 600 多，家长想先判断是基础断层、英文题干、word problem、graph/Desmos，还是时间分配问题。希望先用最近 2-3 道错题筛老师，判断是否适合一节诊断型试课。',
+      times: '美国时间周中晚上或周末下午，可以给两个时间段',
+      materials: '有 2-3 道最近 Math 错题或模考截图，可以 WhatsApp 发'
+    },
     'not-sure': {
       countryCity: '马来西亚槟城',
       grade: 'Year 9 / 国际学校',
@@ -482,6 +496,12 @@
     document.execCommand('copy');
     copyState.textContent = '已复制，可以直接粘贴到 WhatsApp。';
   });
+
+  if (isSatParentChannel && scenarios['sat-630-parent']) {
+    fieldIds.forEach(function(id){
+      document.getElementById(id).value = scenarios['sat-630-parent'][id] || '';
+    });
+  }
 
   updateMessage();
 })();
