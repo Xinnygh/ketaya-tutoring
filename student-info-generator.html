@@ -278,6 +278,7 @@
     huaren_find_sat_tutor: '北美华人 SAT 一对一找老师帖',
     huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
     huaren_sat_act_english_tutor: '北美华人 SAT/ACT 英文老师推荐帖',
+    huaren_sat_high_score_sprint: '北美华人 SAT 高分冲刺帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容'
   };
   var channelMap = {
@@ -287,6 +288,7 @@
     huaren_find_sat_tutor: '北美华人 SAT 一对一找老师帖',
     huaren_sat_tutor_recommendation: '北美华人 SAT tutor 推荐帖',
     huaren_sat_act_english_tutor: '北美华人 SAT/ACT 英文老师推荐帖',
+    huaren_sat_high_score_sprint: '北美华人 SAT 高分冲刺帖',
     xhs_sat_630_parent: '小红书 SAT Math 630 家长内容',
     sat_630_parent_ny_gmail: 'NYChinaRen 广告询价',
     sat_630_parent_sf_gmail: 'ChineseInSFBay 广告询价',
@@ -299,8 +301,9 @@
   var params = new URLSearchParams(window.location.search);
   var sourceKey = params.get('source') || '';
   var channel = (params.get('channel') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 64);
-  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor';
+  var isSatParentChannel = channel.indexOf('sat_630_parent') === 0 || channel === 'xhs_sat_630_parent' || channel === 'us_chinese_sat_parent' || channel === 'sat_math_630_parent_faq' || channel === 'huaren_find_sat_tutor' || channel === 'huaren_sat_tutor_recommendation' || channel === 'huaren_sat_act_english_tutor' || channel === 'huaren_sat_high_score_sprint' || sourceKey === 'sat_630_parent' || sourceKey === 'xhs_sat_630_parent' || sourceKey === 'us_chinese_sat_parent' || sourceKey === 'sat_math_630_parent_faq' || sourceKey === 'huaren_find_sat_tutor' || sourceKey === 'huaren_sat_tutor_recommendation' || sourceKey === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_high_score_sprint';
   var isSatActEnglishTutorChannel = channel === 'huaren_sat_act_english_tutor' || sourceKey === 'huaren_sat_act_english_tutor';
+  var isSatHighScoreChannel = channel === 'huaren_sat_high_score_sprint' || sourceKey === 'huaren_sat_high_score_sprint';
   var source = sourceMap[sourceKey] || '官网学情信息生成器';
   if (channel) {
     source += ' / ' + (channelMap[channel] || channel);
@@ -340,6 +343,17 @@
     times: { label: '方便上课时间（请写美国时区）', placeholder: '例如：Pacific Time 周二/周四 7pm 后，或周日下午' },
     materials: { label: '是否有分数 / 错题 / 模考截图', placeholder: '例如：有 CB / ACT 官方题错题截图；有 Bluebook 或 ACT 模考分数' }
   };
+  var satHighScoreFieldCopy = {
+    countryCity: { label: '所在地区 / 时区', placeholder: '例如：美国加州 / Eastern Time / Central Time' },
+    grade: { label: '年级', placeholder: '例如：Grade 11 / Grade 12' },
+    curriculum: { label: '考试 / 课程', placeholder: '' },
+    subject: { label: '想咨询的科目', placeholder: 'SAT English / Reading / Math 高分冲刺' },
+    scoreTarget: { label: '最近两次 SAT 分数 / 目标', placeholder: '例如：3月 English 740，Math 770；目标总分 1550' },
+    examDate: { label: '下一次考试日期', placeholder: '例如：2026 年 8 月 / 10 月 SAT' },
+    problem: { label: '这次掉分或卡分的题型', placeholder: '例如：English evidence/inference；Math hard module 的 word problem、graph/Desmos 或时间不够。' },
+    times: { label: '方便上课时间（请写美国时区）', placeholder: '例如：Pacific Time 周二/周四 7pm 后，或周日下午' },
+    materials: { label: '是否有分数 / 错题 / 模考截图', placeholder: '例如：有 3 月和 6 月的分数报告；有最近 3-5 道错题截图' }
+  };
   var form = document.getElementById('student-form');
   var preview = document.getElementById('preview');
   var whatsapp = document.getElementById('whatsapp-link');
@@ -348,7 +362,7 @@
   var copyState = document.getElementById('copy-state');
   document.getElementById('source-label').textContent = source;
   if (isSatSource) {
-    var activeFieldCopy = isSatActEnglishTutorChannel ? satActEnglishFieldCopy : satFieldCopy;
+    var activeFieldCopy = isSatHighScoreChannel ? satHighScoreFieldCopy : (isSatActEnglishTutorChannel ? satActEnglishFieldCopy : satFieldCopy);
     Object.keys(activeFieldCopy).forEach(function(id){
       var copy = activeFieldCopy[id];
       var input = document.getElementById(id);
@@ -452,6 +466,17 @@
       times: '美国时间周中晚上或周末下午，可以给两个时间段',
       materials: '有 2-3 道最近 Math 错题或模考截图，可以 WhatsApp 发'
     },
+    'sat-high-score-sprint': {
+      countryCity: '美国',
+      grade: 'Grade 11 / 12',
+      curriculum: 'SAT',
+      subject: 'SAT English / Reading / Math 高分冲刺',
+      scoreTarget: '最近两次 SAT：English 740 左右，Math 770 左右；目标总分 1550',
+      examDate: '预计 8 月 / 10 月再考',
+      problem: '想先比较两次考试错题：English 是 inference/evidence/time，Math 是 hard module、word problem、graph/Desmos 还是时间问题。',
+      times: '美国时间周中晚上或周末下午，可以给两个时间段',
+      materials: '有最近两次分数报告，或 3-5 道错题截图'
+    },
     'not-sure': {
       countryCity: '马来西亚槟城',
       grade: 'Year 9 / 国际学校',
@@ -543,9 +568,10 @@
     copyState.textContent = '已复制，可以直接粘贴到 WhatsApp。';
   });
 
-  if (isSatParentChannel && scenarios['sat-630-parent']) {
+  var defaultSatScenario = isSatHighScoreChannel ? 'sat-high-score-sprint' : 'sat-630-parent';
+  if (isSatParentChannel && scenarios[defaultSatScenario]) {
     fieldIds.forEach(function(id){
-      document.getElementById(id).value = scenarios['sat-630-parent'][id] || '';
+      document.getElementById(id).value = scenarios[defaultSatScenario][id] || '';
     });
   }
 
